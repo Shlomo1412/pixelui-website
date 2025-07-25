@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>API Reference - PixelUI Framework</title>
+    <meta name="description" content="Complete API reference for PixelUI framework - all widgets, functions, and methods documented.">
+    <meta name="keywords" content="ComputerCraft, CC:Tweaked, PixelUI, API, widgets, documentation">
+    <meta name="author" content="PixelUI Team">
+    <meta name="theme-color" content="#3b82f6">
+    <meta name="color-scheme" content="light dark">
+    
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="PixelUI API">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="./styles/main.css">
+    <link rel="stylesheet" href="./styles/api.css">
+    
+    <!-- Prism.js for code highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="./assets/logo.svg" alt="PixelUI" class="nav-logo">
+                <span class="nav-title">PixelUI</span>
+                <span class="nav-version">v1.0</span>
+            </div>
+            
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="index.html#features" class="nav-link">Features</a>
+                <a href="index.html#widgets" class="nav-link">Widgets</a>
+                <a href="index.html#examples" class="nav-link">Examples</a>
+                <a href="api.html" class="nav-link active">API</a>
+                <a href="index.html#download" class="nav-link">Download</a>
+            </div>
+            
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                    <i data-lucide="sun" class="theme-icon light-icon"></i>
+                    <i data-lucide="moon" class="theme-icon dark-icon"></i>
+                </button>
+                <a href="https://github.com/Shlomo1412/PixelUI" class="nav-github" target="_blank" rel="noopener">
+                    <i data-lucide="github"></i>
+                </a>
+                <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- API Header -->
+    <section class="api-header">
+        <div class="container">
+            <div class="api-header-content">
+                <h1 class="api-title">API Reference</h1>
+                <p class="api-description">
+                    Complete documentation for all PixelUI widgets, functions, and methods.
+                    Search through 30+ widgets and hundreds of properties and events.
+                </p>
+                
+                <div class="api-search-main">
+                    <div class="search-input-container">
+                        <input type="text" placeholder="Search widgets, functions, properties..." id="main-search">
+                        <i data-lucide="search"></i>
+                    </div>
+                    <div class="search-filters">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="widgets">Widgets</button>
+                        <button class="filter-btn" data-filter="functions">Functions</button>
+                        <button class="filter-btn" data-filter="events">Events</button>
+                        <button class="filter-btn" data-filter="properties">Properties</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- API Content -->
+    <section class="api-main">
+        <div class="container">
+            <div class="api-layout">
+                <!-- Sidebar Navigation -->
+                <aside class="api-sidebar">
+                    <div class="sidebar-content">
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">Core Framework</h3>
+                            <ul class="sidebar-nav">
+                                <li><a href="#init" class="sidebar-link">PixelUI.init()</a></li>
+                                <li><a href="#run" class="sidebar-link">PixelUI.run()</a></li>
+                                <li><a href="#clear" class="sidebar-link">PixelUI.clear()</a></li>
+                                <li><a href="#render" class="sidebar-link">PixelUI.render()</a></li>
+                                <li><a href="#animate" class="sidebar-link">PixelUI.animate()</a></li>
+                                <li><a href="#setTheme" class="sidebar-link">PixelUI.setTheme()</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">Input Widgets</h3>
+                            <ul class="sidebar-nav">
+                                <li><a href="#button" class="sidebar-link">button</a></li>
+                                <li><a href="#textBox" class="sidebar-link">textBox</a></li>
+                                <li><a href="#passwordBox" class="sidebar-link">passwordBox</a></li>
+                                <li><a href="#checkBox" class="sidebar-link">checkBox</a></li>
+                                <li><a href="#radioButton" class="sidebar-link">radioButton</a></li>
+                                <li><a href="#toggleSwitch" class="sidebar-link">toggleSwitch</a></li>
+                                <li><a href="#slider" class="sidebar-link">slider</a></li>
+                                <li><a href="#rangeSlider" class="sidebar-link">rangeSlider</a></li>
+                                <li><a href="#numericUpDown" class="sidebar-link">numericUpDown</a></li>
+                                <li><a href="#comboBox" class="sidebar-link">comboBox</a></li>
+                                <li><a href="#colorPicker" class="sidebar-link">colorPicker</a></li>
+                                <li><a href="#colorPickerDialog" class="sidebar-link">colorPickerDialog</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">Display Widgets</h3>
+                            <ul class="sidebar-nav">
+                                <li><a href="#label" class="sidebar-link">label</a></li>
+                                <li><a href="#progressBar" class="sidebar-link">progressBar</a></li>
+                                <li><a href="#listView" class="sidebar-link">listView</a></li>
+                                <li><a href="#chart" class="sidebar-link">chart</a></li>
+                                <li><a href="#canvas" class="sidebar-link">canvas</a></li>
+                                <li><a href="#loadingIndicator" class="sidebar-link">loadingIndicator</a></li>
+                                <li><a href="#spinner" class="sidebar-link">spinner</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">Layout Widgets</h3>
+                            <ul class="sidebar-nav">
+                                <li><a href="#container" class="sidebar-link">container</a></li>
+                                <li><a href="#groupBox" class="sidebar-link">groupBox</a></li>
+                                <li><a href="#modal" class="sidebar-link">modal</a></li>
+                                <li><a href="#window" class="sidebar-link">window</a></li>
+                                <li><a href="#spacer" class="sidebar-link">spacer</a></li>
+                                <li><a href="#grid" class="sidebar-link">grid</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">Navigation Widgets</h3>
+                            <ul class="sidebar-nav">
+                                <li><a href="#tabControl" class="sidebar-link">tabControl</a></li>
+                                <li><a href="#breadcrumb" class="sidebar-link">breadcrumb</a></li>
+                                <li><a href="#treeView" class="sidebar-link">treeView</a></li>
+                                <li><a href="#scrollBar" class="sidebar-link">scrollBar <span class="wip-badge">WIP</span></a></li>
+                            </ul>
+                        </div>
+
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">Feedback Widgets</h3>
+                            <ul class="sidebar-nav">
+                                <li><a href="#msgBox" class="sidebar-link">msgBox</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Main Content -->
+                <main class="api-content">
+                    <div id="api-docs-content">
+                        <!-- Content will be loaded here by JavaScript -->
+                    </div>
+                </main>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-brand">
+                        <img src="./assets/logo.svg" alt="PixelUI" class="footer-logo">
+                        <span class="footer-title">PixelUI</span>
+                    </div>
+                    <p class="footer-description">
+                        The most comprehensive UI framework for ComputerCraft/CC: Tweaked.
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 class="footer-heading">Documentation</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html#getting-started">Getting Started</a></li>
+                        <li><a href="index.html#widgets">Widget Reference</a></li>
+                        <li><a href="api.html">API Documentation</a></li>
+                        <li><a href="index.html#examples">Examples</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 class="footer-heading">Community</h3>
+                    <ul class="footer-links">
+                        <li><a href="https://github.com/Shlomo1412/PixelUI/issues" target="_blank">Report Issues</a></li>
+                        <li><a href="https://github.com/Shlomo1412/PixelUI/discussions" target="_blank">Discussions</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    © 2024 PixelUI Framework. Open source under MIT License.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="./scripts/api.js"></script>
+</body>
+</html>

@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>PixelUI Generator - Visual UI Builder</title>
+    <meta name="description" content="Visual drag-and-drop UI builder for PixelUI framework - Create ComputerCraft UIs visually like Figma.">
+    <meta name="keywords" content="PixelUI generator, UI builder, ComputerCraft, visual designer, drag and drop">
+    <meta name="theme-color" content="#3b82f6">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="./styles/main.css">
+    <link rel="stylesheet" href="./styles/generator.css">
+    
+    <!-- Canvas Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/interact.js/1.10.19/interact.min.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="./assets/logo.svg" alt="PixelUI" class="nav-logo">
+                <span class="nav-title">PixelUI Generator</span>
+                <span class="nav-version">v1.0</span>
+            </div>
+            
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="api.html" class="nav-link">API</a>
+                <a href="generator.html" class="nav-link active">
+                    🎨 Generator 
+                    <span class="wip-badge">WIP</span>
+                </a>
+            </div>
+            
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                    <i data-lucide="sun" class="theme-icon light-icon"></i>
+                    <i data-lucide="moon" class="theme-icon dark-icon"></i>
+                </button>
+                <a href="https://github.com/Shlomo1412/PixelUI" class="nav-github" target="_blank" rel="noopener">
+                    <i data-lucide="github"></i>
+                </a>
+                <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    
+
+    <!-- Main Generator Interface -->
+    <div class="generator-container">
+        <!-- Toolbar -->
+        <div class="generator-toolbar">
+            <div class="toolbar-section toolbar-left">
+                <button class="tool-btn active" id="select-tool" data-tool="select" title="Select Tool">
+                    <i data-lucide="mouse-pointer"></i>
+                </button>
+                <button class="tool-btn" id="pan-tool" data-tool="pan" title="Pan Tool">
+                    <i data-lucide="hand"></i>
+                </button>
+            </div>
+            
+            <div class="toolbar-section toolbar-center">
+                <button class="tool-btn" id="zoom-out" title="Zoom Out">
+                    <i data-lucide="zoom-out"></i>
+                </button>
+                <span class="zoom-level">100%</span>
+                <button class="tool-btn" id="zoom-in" title="Zoom In">
+                    <i data-lucide="zoom-in"></i>
+                </button>
+                <button class="tool-btn" id="zoom-fit" title="Fit to Screen">
+                    <i data-lucide="maximize"></i>
+                </button>
+                <div class="toolbar-divider"></div>
+                <button class="tool-btn" id="grid-toggle" title="Toggle Grid">
+                    <i data-lucide="grid-3x3"></i>
+                </button>
+                <button class="tool-btn" id="snap-toggle" title="Toggle Snap" class="active">
+                    <i data-lucide="magnet"></i>
+                </button>
+                <button class="tool-btn" id="rulers-toggle" title="Toggle Rulers">
+                    <i data-lucide="ruler"></i>
+                </button>
+            </div>
+            
+            <div class="toolbar-section toolbar-right">
+                <button class="tool-btn" id="undo" title="Undo (Ctrl+Z)" disabled>
+                    <i data-lucide="undo"></i>
+                </button>
+                <button class="tool-btn" id="redo" title="Redo (Ctrl+Shift+Z)" disabled>
+                    <i data-lucide="redo"></i>
+                </button>
+                <div class="toolbar-divider"></div>
+                <button class="tool-btn" id="copy" title="Copy (Ctrl+C)" disabled>
+                    <i data-lucide="copy"></i>
+                </button>
+                <button class="tool-btn" id="paste" title="Paste (Ctrl+V)" disabled>
+                    <i data-lucide="clipboard"></i>
+                </button>
+                <button class="tool-btn" id="delete" title="Delete" disabled>
+                    <i data-lucide="trash-2"></i>
+                </button>
+                <div class="toolbar-divider"></div>
+                <button class="tool-btn btn-primary" id="preview" title="Preview Interface">
+                    <i data-lucide="play"></i>
+                    <span>Preview</span>
+                </button>
+                <button class="tool-btn btn-success" id="export" title="Export Code">
+                    <i data-lucide="download"></i>
+                    <span>Export</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="generator-content">
+            <!-- Widget Library -->
+            <div class="widget-library">
+                <div class="library-header">
+                    <h3>Widget Library</h3>
+                    <input type="search" class="library-search" placeholder="Search widgets...">
+                </div>
+                
+                <div class="library-content">
+                    <!-- Input Widgets -->
+                    <div class="widget-category">
+                        <h4>
+                            <i data-lucide="edit"></i>
+                            Input
+                        </h4>
+                        <div class="widget-grid">
+                            <div class="widget-item" data-widget="button">
+                                <div class="widget-preview">
+                                    <div class="preview-button">Button</div>
+                                </div>
+                                <span>Button</span>
+                            </div>
+                            <div class="widget-item" data-widget="textBox">
+                                <div class="widget-preview">
+                                    <div class="preview-input"></div>
+                                </div>
+                                <span>TextBox</span>
+                            </div>
+                            <div class="widget-item" data-widget="passwordBox">
+                                <div class="widget-preview">
+                                    <div class="preview-input password"></div>
+                                </div>
+                                <span>PasswordBox</span>
+                            </div>
+                            <div class="widget-item" data-widget="checkBox">
+                                <div class="widget-preview">
+                                    <div class="preview-checkbox">
+                                        <div class="check"></div>
+                                        <span>Check</span>
+                                    </div>
+                                </div>
+                                <span>CheckBox</span>
+                            </div>
+                            <div class="widget-item" data-widget="radioButton">
+                                <div class="widget-preview">
+                                    <div class="preview-radio">
+                                        <div class="radio"></div>
+                                        <span>Radio</span>
+                                    </div>
+                                </div>
+                                <span>RadioButton</span>
+                            </div>
+                            <div class="widget-item" data-widget="toggleSwitch">
+                                <div class="widget-preview">
+                                    <div class="preview-toggle"></div>
+                                </div>
+                                <span>ToggleSwitch</span>
+                            </div>
+                            <div class="widget-item" data-widget="slider">
+                                <div class="widget-preview">
+                                    <div class="preview-slider">
+                                        <div class="slider-track">
+                                            <div class="slider-thumb"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span>Slider</span>
+                            </div>
+                            <div class="widget-item" data-widget="rangeSlider">
+                                <div class="widget-preview">
+                                    <div class="preview-slider">
+                                        <div class="slider-track">
+                                            <div class="slider-thumb left"></div>
+                                            <div class="slider-thumb right"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span>RangeSlider</span>
+                            </div>
+                            <div class="widget-item" data-widget="numericUpDown">
+                                <div class="widget-preview">
+                                    <div class="preview-numeric">
+                                        <span>123</span>
+                                        <div class="numeric-buttons">
+                                            <div class="btn-up">▲</div>
+                                            <div class="btn-down">▼</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span>NumericUpDown</span>
+                            </div>
+                            <div class="widget-item" data-widget="comboBox">
+                                <div class="widget-preview">
+                                    <div class="preview-combo">
+                                        <span>Select...</span>
+                                        <div class="combo-arrow">▼</div>
+                                    </div>
+                                </div>
+                                <span>ComboBox</span>
+                            </div>
+                            <div class="widget-item" data-widget="colorPicker">
+                                <div class="widget-preview">
+                                    <div class="preview-color-picker">
+                                        <div class="color-swatch red"></div>
+                                        <div class="color-swatch green"></div>
+                                        <div class="color-swatch blue"></div>
+                                        <div class="color-swatch yellow"></div>
+                                    </div>
+                                </div>
+                                <span>ColorPicker</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Display Widgets -->
+                    <div class="widget-category">
+                        <h4>
+                            <i data-lucide="eye"></i>
+                            Display
+                        </h4>
+                        <div class="widget-grid">
+                            <div class="widget-item" data-widget="label">
+                                <div class="widget-preview">
+                                    <div class="preview-label">Label</div>
+                                </div>
+                                <span>Label</span>
+                            </div>
+                            <div class="widget-item" data-widget="progressBar">
+                                <div class="widget-preview">
+                                    <div class="preview-progress">
+                                        <div class="progress-fill"></div>
+                                    </div>
+                                </div>
+                                <span>ProgressBar</span>
+                            </div>
+                            <div class="widget-item" data-widget="progressRing">
+                                <div class="widget-preview">
+                                    <div class="preview-ring">
+                                        <div class="ring-fill"></div>
+                                    </div>
+                                </div>
+                                <span>ProgressRing</span>
+                            </div>
+                            <div class="widget-item" data-widget="circularProgressBar">
+                                <div class="widget-preview">
+                                    <div class="preview-circular">
+                                        <div class="circular-fill"></div>
+                                    </div>
+                                </div>
+                                <span>CircularProgress</span>
+                            </div>
+                            <div class="widget-item" data-widget="loadingIndicator">
+                                <div class="widget-preview">
+                                    <div class="preview-loading">
+                                        <div class="loading-bar"></div>
+                                    </div>
+                                </div>
+                                <span>LoadingIndicator</span>
+                            </div>
+                            <div class="widget-item" data-widget="spinner">
+                                <div class="widget-preview">
+                                    <div class="preview-spinner"></div>
+                                </div>
+                                <span>Spinner</span>
+                            </div>
+                            <div class="widget-item" data-widget="chart">
+                                <div class="widget-preview">
+                                    <div class="preview-chart">
+                                        <div class="chart-line"></div>
+                                    </div>
+                                </div>
+                                <span>Chart</span>
+                            </div>
+                            <div class="widget-item" data-widget="canvas">
+                                <div class="widget-preview">
+                                    <div class="preview-canvas">
+                                        <div class="canvas-pixel"></div>
+                                        <div class="canvas-pixel"></div>
+                                        <div class="canvas-pixel"></div>
+                                    </div>
+                                </div>
+                                <span>Canvas</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Container Widgets -->
+                    <div class="widget-category">
+                        <h4>
+                            <i data-lucide="layout"></i>
+                            Layout
+                        </h4>
+                        <div class="widget-grid">
+                            <div class="widget-item" data-widget="container">
+                                <div class="widget-preview">
+                                    <div class="preview-container">
+                                        <div class="container-border"></div>
+                                    </div>
+                                </div>
+                                <span>Container</span>
+                            </div>
+                            <div class="widget-item" data-widget="groupBox">
+                                <div class="widget-preview">
+                                    <div class="preview-group">
+                                        <div class="group-title">Group</div>
+                                        <div class="group-border"></div>
+                                    </div>
+                                </div>
+                                <span>GroupBox</span>
+                            </div>
+                            <div class="widget-item" data-widget="tabControl">
+                                <div class="widget-preview">
+                                    <div class="preview-tabs">
+                                        <div class="tab active">Tab1</div>
+                                        <div class="tab">Tab2</div>
+                                    </div>
+                                </div>
+                                <span>TabControl</span>
+                            </div>
+                            <div class="widget-item" data-widget="listView">
+                                <div class="widget-preview">
+                                    <div class="preview-list">
+                                        <div class="list-item">Item 1</div>
+                                        <div class="list-item selected">Item 2</div>
+                                        <div class="list-item">Item 3</div>
+                                    </div>
+                                </div>
+                                <span>ListView</span>
+                            </div>
+                            <div class="widget-item" data-widget="treeView">
+                                <div class="widget-preview">
+                                    <div class="preview-tree">
+                                        <div class="tree-item">
+                                            <span class="tree-icon">▶</span>
+                                            <span>Node</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span>TreeView</span>
+                            </div>
+                            <div class="widget-item" data-widget="scrollBar">
+                                <div class="widget-preview">
+                                    <div class="preview-scrollbar">
+                                        <div class="scrollbar-track">
+                                            <div class="scrollbar-thumb"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span>ScrollBar</span>
+                            </div>
+                            <div class="widget-item" data-widget="spacer">
+                                <div class="widget-preview">
+                                    <div class="preview-spacer"></div>
+                                </div>
+                                <span>Spacer</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dialog Widgets -->
+                    <div class="widget-category">
+                        <h4>
+                            <i data-lucide="message-square"></i>
+                            Dialogs
+                        </h4>
+                        <div class="widget-grid">
+                            <div class="widget-item" data-widget="modal">
+                                <div class="widget-preview">
+                                    <div class="preview-modal">
+                                        <div class="modal-header"></div>
+                                        <div class="modal-content"></div>
+                                    </div>
+                                </div>
+                                <span>Modal</span>
+                            </div>
+                            <div class="widget-item" data-widget="window">
+                                <div class="widget-preview">
+                                    <div class="preview-window">
+                                        <div class="window-title">Window</div>
+                                        <div class="window-content"></div>
+                                    </div>
+                                </div>
+                                <span>Window</span>
+                            </div>
+                            <div class="widget-item" data-widget="msgBox">
+                                <div class="widget-preview">
+                                    <div class="preview-msgbox">
+                                        <div class="msgbox-icon">!</div>
+                                        <div class="msgbox-text">Msg</div>
+                                    </div>
+                                </div>
+                                <span>MsgBox</span>
+                            </div>
+                            <div class="widget-item" data-widget="colorPickerDialog">
+                                <div class="widget-preview">
+                                    <div class="preview-color-dialog">
+                                        <div class="color-grid">
+                                            <div class="color-cell"></div>
+                                            <div class="color-cell"></div>
+                                            <div class="color-cell"></div>
+                                            <div class="color-cell"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span>ColorDialog</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Widgets -->
+                    <div class="widget-category">
+                        <h4>
+                            <i data-lucide="navigation"></i>
+                            Navigation
+                        </h4>
+                        <div class="widget-grid">
+                            <div class="widget-item" data-widget="breadcrumb">
+                                <div class="widget-preview">
+                                    <div class="preview-breadcrumb">
+                                        <span>Home</span>
+                                        <span class="separator">></span>
+                                        <span>Page</span>
+                                    </div>
+                                </div>
+                                <span>Breadcrumb</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Canvas Area -->
+            <div class="canvas-area">
+                <div class="canvas-header">
+                    <div class="canvas-info">
+                        <span class="canvas-title">Untitled UI</span>
+                        <span class="canvas-size">51x19</span>
+                    </div>
+                    <div class="canvas-controls">
+                        <button class="canvas-btn" id="grid-toggle" title="Toggle Grid">
+                            <i data-lucide="grid-3x3"></i>
+                        </button>
+                        <button class="canvas-btn" id="snap-toggle" title="Toggle Snap">
+                            <i data-lucide="magnet"></i>
+                        </button>
+                        <button class="canvas-btn" id="rulers-toggle" title="Toggle Rulers">
+                            <i data-lucide="ruler"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="canvas-wrapper">
+                    <div class="canvas-rulers">
+                        <div class="ruler-horizontal"></div>
+                        <div class="ruler-vertical"></div>
+                        <div class="ruler-corner"></div>
+                    </div>
+                    <div class="canvas-viewport">
+                        <div class="canvas" id="design-canvas">
+                            <div class="canvas-background"></div>
+                            <div class="canvas-grid"></div>
+                            <div class="canvas-content"></div>
+                            <div class="selection-overlay"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Properties Panel -->
+            <div class="properties-panel">
+                <div class="panel-header">
+                    <h3>Properties</h3>
+                    <button class="panel-toggle" title="Collapse Panel">
+                        <i data-lucide="chevron-right"></i>
+                    </button>
+                </div>
+                
+                <div class="panel-content" id="properties-content">
+                    <div class="no-selection">
+                        <i data-lucide="mouse-pointer"></i>
+                        <span>Select a widget to edit properties</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Layers Panel -->
+        <div class="layers-panel">
+            <div class="panel-header">
+                <h3>Layers</h3>
+                <div class="panel-actions">
+                    <button class="panel-btn" id="add-layer" title="Add Layer">
+                        <i data-lucide="plus"></i>
+                    </button>
+                    <button class="panel-btn" id="duplicate-layer" title="Duplicate Layer" disabled>
+                        <i data-lucide="copy"></i>
+                    </button>
+                    <button class="panel-btn" id="delete-layer" title="Delete Layer" disabled>
+                        <i data-lucide="trash-2"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="panel-content">
+                <div class="layers-list" id="layers-list">
+                    <div class="layer-item root-layer">
+                        <div class="layer-icon">
+                            <i data-lucide="layers"></i>
+                        </div>
+                        <span class="layer-name">Root Container</span>
+                        <div class="layer-actions">
+                            <button class="layer-btn" title="Toggle Visibility">
+                                <i data-lucide="eye"></i>
+                            </button>
+                            <button class="layer-btn" title="Lock/Unlock">
+                                <i data-lucide="unlock"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Modal -->
+    <div class="modal-overlay" id="export-modal">
+        <div class="modal-dialog export-dialog">
+            <div class="modal-header">
+                <h3>Export PixelUI Code</h3>
+                <button class="modal-close" id="close-export">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="export-options">
+                    <div class="export-format">
+                        <label>
+                            <input type="radio" name="export-format" value="lua" checked>
+                            <span>Lua Code</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="export-format" value="json">
+                            <span>JSON Data</span>
+                        </label>
+                    </div>
+                    
+                    <div class="export-settings">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="include-comments" checked>
+                            <span>Include Comments</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="minify-code">
+                            <span>Minify Code</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="include-pixelui-init" checked>
+                            <span>Include PixelUI.init()</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="code-output">
+                    <div class="code-header">
+                        <span class="filename">pixelui_generated.lua</span>
+                        <button class="copy-code-btn" id="copy-exported-code">
+                            <i data-lucide="copy"></i>
+                            Copy
+                        </button>
+                    </div>
+                    <pre><code id="exported-code" class="language-lua">-- Generated PixelUI Code
+-- Export your design to see the code here</code></pre>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary" id="save-file">
+                    <i data-lucide="download"></i>
+                    Save File
+                </button>
+                <button class="btn primary" id="copy-to-clipboard">
+                    <i data-lucide="clipboard"></i>
+                    Copy to Clipboard
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preview Modal -->
+    <div class="modal-overlay" id="preview-modal">
+        <div class="modal-dialog preview-dialog">
+            <div class="modal-header">
+                <h3>UI Preview</h3>
+                <button class="modal-close" id="close-preview">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="preview-container">
+                    <div class="computercraft-screen" id="preview-screen">
+                        <div class="screen-content" id="preview-content">
+                            <!-- Preview will be rendered here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary" id="preview-refresh">
+                    <i data-lucide="refresh-cw"></i>
+                    Refresh
+                </button>
+                <button class="btn primary" id="preview-export">
+                    <i data-lucide="download"></i>
+                    Export Code
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Context Menu -->
+    <div class="context-menu" id="context-menu">
+        <div class="context-item" data-action="copy">
+            <i data-lucide="copy"></i>
+            <span>Copy</span>
+            <span class="shortcut">Ctrl+C</span>
+        </div>
+        <div class="context-item" data-action="paste">
+            <i data-lucide="clipboard"></i>
+            <span>Paste</span>
+            <span class="shortcut">Ctrl+V</span>
+        </div>
+        <div class="context-item" data-action="duplicate">
+            <i data-lucide="layers"></i>
+            <span>Duplicate</span>
+            <span class="shortcut">Ctrl+D</span>
+        </div>
+        <div class="context-divider"></div>
+        <div class="context-item" data-action="bring-forward">
+            <i data-lucide="move-up"></i>
+            <span>Bring Forward</span>
+        </div>
+        <div class="context-item" data-action="send-backward">
+            <i data-lucide="move-down"></i>
+            <span>Send Backward</span>
+        </div>
+        <div class="context-divider"></div>
+        <div class="context-item danger" data-action="delete">
+            <i data-lucide="trash-2"></i>
+            <span>Delete</span>
+            <span class="shortcut">Del</span>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+        <!-- Scripts -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/generator-core.js"></script>
+    <script src="scripts/generator-widgets.js"></script>
+    <script src="scripts/generator-export.js"></script>
+</body>
+</html>
+    <script src="./scripts/generator-widgets.js"></script>
+    <script src="./scripts/generator-export.js"></script>
+    <script src="./scripts/generator-preview.js"></script>
+    <script src="./scripts/generator.js"></script>
+    
+    <!-- Initialize Icons -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
