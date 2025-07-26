@@ -439,7 +439,7 @@
 .note {
     background-color: rgba(59, 130, 246, 0.1);
     border-left: 4px solid var(--primary);
-    padding: 1rem;
+    padding: 1.25rem 1.5rem;
     border-radius: var(--radius-md);
     margin: 1rem 0;
 }
@@ -472,7 +472,21 @@
 .note-content,
 .warning-content {
     color: var(--text-secondary);
-    line-height: 1.5;
+    line-height: 1.7;
+    margin-top: 0.5rem;
+}
+
+.note-content ul,
+.note-content ol {
+    margin: 0.5em 0 0.5em 1.5em;
+    padding: 0;
+    list-style-position: inside;
+}
+
+.note-content li {
+    margin-bottom: 0.25em;
+    padding-left: 0.25em;
+}
 }
 
 /* Search Results */
