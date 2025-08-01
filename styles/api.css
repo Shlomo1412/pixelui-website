@@ -1,3 +1,69 @@
+/* --- Mobile/Responsive Enhancements (2025-07) --- */
+@media (max-width: 640px) {
+  /* Make modals and overlays scrollable and fit screen */
+  .modal-dialog, .export-dialog, .preview-dialog {
+    max-width: 98vw;
+    width: 100%;
+    min-width: 0;
+    margin: 1.5vh auto;
+    border-radius: var(--radius-md);
+    box-sizing: border-box;
+  }
+  .modal-body, .modal-footer {
+    max-width: 100vw;
+    overflow-x: auto;
+    box-sizing: border-box;
+  }
+  .modal-header {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  /* Code blocks and pre elements */
+  pre, code, .code-block, .widget-example, .terminal-content {
+    white-space: pre;
+    word-break: break-word;
+    overflow-x: auto;
+    max-width: 100vw;
+    font-size: 0.85em;
+    box-sizing: border-box;
+  }
+  /* Tables */
+  table, .property-table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  th, td {
+    min-width: 100px;
+    white-space: nowrap;
+  }
+  /* Utility: hide on mobile */
+  .hide-mobile {
+    display: none !important;
+  }
+  /* Utility: show only on mobile */
+  .show-mobile {
+    display: block !important;
+  }
+  /* Utility: full width on mobile */
+  .full-width-mobile {
+    width: 100% !important;
+    max-width: 100vw !important;
+    box-sizing: border-box;
+  }
+  /* Utility: stack children vertically on mobile */
+  .stack-mobile {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  /* Ensure nav and footer are always touch-friendly */
+  .navbar, .footer {
+    min-width: 0;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
 /* API Reference Page Styles */
 
 /* API Header */
