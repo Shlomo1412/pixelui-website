@@ -1742,7 +1742,413 @@ local clearBtn = button.new(categoryForm, 15, 13, 15, 2, {
         },
         notes: ['ComboBox supports both simple strings and complex objects as items', 'Use searchable option for long lists', 'Consider providing default selections for better UX', 'Nested dropdowns can create powerful filtering interfaces']
     },
-    
+
+    // Data Display Widgets
+    dataGrid: {
+        type: 'widget',
+        category: 'Data Display',
+        title: 'PixelUI.dataGrid()',
+        description: 'Advanced table widget with sorting, filtering, pagination, and row selection capabilities.',
+        syntax: 'PixelUI.dataGrid(props)',
+        parameters: [
+            { name: 'props', type: 'table', description: 'DataGrid properties and configuration' }
+        ],
+        returns: { type: 'DataGrid', description: 'DataGrid widget object' },
+        properties: [
+            { name: 'x', type: 'number', required: true, description: 'X position on screen' },
+            { name: 'y', type: 'number', required: true, description: 'Y position on screen' },
+            { name: 'width', type: 'number', required: true, description: 'Grid width' },
+            { name: 'height', type: 'number', required: true, description: 'Grid height' },
+            { name: 'columns', type: 'table', required: true, description: 'Array of column definitions' },
+            { name: 'data', type: 'table', default: '{}', description: 'Array of row data objects' },
+            { name: 'headers', type: 'table', default: 'auto', description: 'Column headers array' },
+            { name: 'showHeaders', type: 'boolean', default: 'true', description: 'Whether to show column headers' },
+            { name: 'sortable', type: 'boolean', default: 'true', description: 'Enable column sorting' },
+            { name: 'selectable', type: 'boolean', default: 'true', description: 'Enable row selection' },
+            { name: 'multiSelect', type: 'boolean', default: 'false', description: 'Allow multiple row selection' },
+            { name: 'alternatingRows', type: 'boolean', default: 'true', description: 'Alternate row colors' },
+            { name: 'gridLines', type: 'boolean', default: 'true', description: 'Show grid lines' },
+            { name: 'headerColor', type: 'color', default: 'colors.lightGray', description: 'Header text color' },
+            { name: 'headerBackground', type: 'color', default: 'colors.gray', description: 'Header background color' },
+            { name: 'selectedBackground', type: 'color', default: 'colors.lightBlue', description: 'Selected row background' }
+        ],
+        events: [
+            { name: 'onRowSelect', parameters: 'self, rowIndex, rowData', description: 'Called when a row is selected' },
+            { name: 'onRowDoubleClick', parameters: 'self, rowIndex, rowData', description: 'Called when a row is double-clicked' },
+            { name: 'onSort', parameters: 'self, columnIndex, direction', description: 'Called when column is sorted' },
+            { name: 'onCellClick', parameters: 'self, rowIndex, columnIndex, value', description: 'Called when a cell is clicked' }
+        ],
+        example: {
+            basic: `-- Simple data grid
+local userGrid = PixelUI.dataGrid({
+    x = 2, y = 2,
+    width = 40, height = 15,
+    columns = {
+        { field = "name", title = "Name", width = 15 },
+        { field = "age", title = "Age", width = 8 },
+        { field = "email", title = "Email", width = 20 }
+    },
+    data = {
+        { name = "John Doe", age = 30, email = "john@example.com" },
+        { name = "Jane Smith", age = 25, email = "jane@example.com" },
+        { name = "Bob Johnson", age = 35, email = "bob@example.com" }
+    },
+    onRowSelect = function(self, rowIndex, rowData)
+        print("Selected: " .. rowData.name)
+    end
+})`,
+            advanced: `-- Advanced data grid with dynamic data
+local productGrid = PixelUI.dataGrid({
+    x = 5, y = 3,
+    width = 60, height = 20,
+    columns = {
+        { field = "id", title = "ID", width = 8, sortable = true },
+        { field = "name", title = "Product Name", width = 20, sortable = true },
+        { field = "category", title = "Category", width = 12, sortable = true },
+        { field = "price", title = "Price", width = 10, format = "currency" },
+        { field = "stock", title = "Stock", width = 8, format = "number" }
+    },
+    data = loadProductData(),
+    sortable = true,
+    selectable = true,
+    multiSelect = true,
+    alternatingRows = true,
+    gridLines = true,
+    onRowSelect = function(self, rowIndex, rowData)
+        showProductDetails(rowData)
+    end,
+    onSort = function(self, columnIndex, direction)
+        -- Custom sorting logic
+        local field = self.columns[columnIndex].field
+        self.data = sortData(self.data, field, direction)
+        self:refresh()
+    end,
+    onCellClick = function(self, rowIndex, columnIndex, value)
+        local column = self.columns[columnIndex]
+        if column.field == "price" then
+            editPrice(rowIndex, value)
+        end
+    end
+})`
+        },
+        methods: [
+            { name: 'addRow(rowData)', description: 'Add a new row to the grid' },
+            { name: 'removeRow(index)', description: 'Remove a row by index' },
+            { name: 'updateRow(index, rowData)', description: 'Update an existing row' },
+            { name: 'getSelectedRows()', description: 'Get array of selected row indices' },
+            { name: 'setSelectedRows(indices)', description: 'Set selected rows by indices' },
+            { name: 'sort(columnIndex, direction)', description: 'Sort by column' },
+            { name: 'refresh()', description: 'Refresh the grid display' }
+        ]
+    },
+
+    notificationToast: {
+        type: 'widget',
+        category: 'Feedback',
+        title: 'PixelUI.notificationToast()',
+        description: 'Animated toast notification widget for displaying temporary messages with customizable styling.',
+        syntax: 'PixelUI.notificationToast(props)',
+        parameters: [
+            { name: 'props', type: 'table', description: 'NotificationToast properties and configuration' }
+        ],
+        returns: { type: 'NotificationToast', description: 'NotificationToast widget object' },
+        properties: [
+            { name: 'message', type: 'string', required: true, description: 'Toast message text' },
+            { name: 'title', type: 'string', default: '""', description: 'Optional toast title' },
+            { name: 'type', type: 'string', default: '"info"', description: 'Toast type: "info", "success", "warning", "error"' },
+            { name: 'duration', type: 'number', default: '3000', description: 'Display duration in milliseconds' },
+            { name: 'position', type: 'string', default: '"top-right"', description: 'Screen position for toast' },
+            { name: 'closeable', type: 'boolean', default: 'true', description: 'Whether toast can be manually closed' },
+            { name: 'autoHide', type: 'boolean', default: 'true', description: 'Whether toast auto-hides after duration' },
+            { name: 'animateIn', type: 'boolean', default: 'true', description: 'Enable slide-in animation' },
+            { name: 'animateOut', type: 'boolean', default: 'true', description: 'Enable slide-out animation' },
+            { name: 'animationType', type: 'string', default: '"slide"', description: 'Animation type: "slide", "fade", "both"' },
+            { name: 'color', type: 'color', default: 'colors.white', description: 'Message text color' },
+            { name: 'titleColor', type: 'color', default: 'colors.white', description: 'Title text color' },
+            { name: 'background', type: 'color', default: 'auto', description: 'Background color (auto based on type)' }
+        ],
+        events: [
+            { name: 'onShow', parameters: 'self', description: 'Called when toast is shown' },
+            { name: 'onHide', parameters: 'self', description: 'Called when toast is hidden' },
+            { name: 'onClick', parameters: 'self, x, y', description: 'Called when toast is clicked' }
+        ],
+        example: {
+            basic: `-- Simple success toast
+PixelUI.showToast("Data saved successfully!", "Success", "success", 2000)`,
+            advanced: `-- Custom toast with advanced options
+local toast = PixelUI.notificationToast({
+    title = "Connection Error",
+    message = "Unable to connect to server. Please check your network.",
+    type = "error",
+    duration = 5000,
+    position = "top-center",
+    closeable = true,
+    autoHide = true,
+    animationType = "both",
+    onShow = function(self)
+        playErrorSound()
+    end,
+    onClick = function(self)
+        showNetworkDiagnostics()
+        self:hide()
+    end
+})
+toast:show()`
+        },
+        methods: [
+            { name: 'show()', description: 'Display the toast notification' },
+            { name: 'hide()', description: 'Hide the toast notification' },
+            { name: 'setMessage(message)', description: 'Update the toast message' },
+            { name: 'setType(type)', description: 'Change the toast type and styling' }
+        ],
+        notes: ['Toasts automatically stack when multiple are shown', 'Use appropriate types for better user feedback', 'Consider screen real estate when setting duration']
+    },
+
+    loadingIndicator: {
+        type: 'widget',
+        category: 'Feedback',
+        title: 'PixelUI.loadingIndicator()',
+        description: 'Customizable loading indicator widget with multiple styles and progress tracking.',
+        syntax: 'PixelUI.loadingIndicator(props)',
+        parameters: [
+            { name: 'props', type: 'table', description: 'LoadingIndicator properties and configuration' }
+        ],
+        returns: { type: 'LoadingIndicator', description: 'LoadingIndicator widget object' },
+        properties: [
+            { name: 'x', type: 'number', required: true, description: 'X position on screen' },
+            { name: 'y', type: 'number', required: true, description: 'Y position on screen' },
+            { name: 'width', type: 'number', default: '20', description: 'Loading indicator width' },
+            { name: 'height', type: 'number', default: '1', description: 'Loading indicator height' },
+            { name: 'progress', type: 'number', default: '0', description: 'Current progress (0-100)' },
+            { name: 'style', type: 'string', default: '"bar"', description: 'Style: "bar", "dots", "pulse"' },
+            { name: 'text', type: 'string', default: '""', description: 'Loading text to display' },
+            { name: 'showPercent', type: 'boolean', default: 'true', description: 'Whether to show percentage' },
+            { name: 'animated', type: 'boolean', default: 'true', description: 'Enable animations' },
+            { name: 'animationSpeed', type: 'number', default: '10', description: 'Animation speed (frames per second)' },
+            { name: 'color', type: 'color', default: 'colors.cyan', description: 'Progress color' },
+            { name: 'background', type: 'color', default: 'colors.gray', description: 'Background color' }
+        ],
+        events: [],
+        example: {
+            basic: `-- Simple loading bar
+local loader = PixelUI.loadingIndicator({
+    x = 10, y = 5,
+    width = 25,
+    style = "bar",
+    text = "Loading...",
+    color = colors.green
+})
+
+-- Update progress
+for i = 0, 100, 10 do
+    loader:setProgress(i)
+    sleep(0.2)
+end`,
+            advanced: `-- File download progress indicator
+local downloadProgress = PixelUI.loadingIndicator({
+    x = 5, y = 8,
+    width = 40,
+    height = 2,
+    progress = 0,
+    style = "bar",
+    text = "Downloading files...",
+    showPercent = true,
+    animated = true,
+    color = colors.blue,
+    background = colors.lightGray
+})
+
+-- Simulate download progress
+local files = {"config.lua", "main.lua", "utils.lua", "data.json"}
+for i, file in ipairs(files) do
+    downloadProgress.text = "Downloading " .. file
+    local progress = (i / #files) * 100
+    downloadProgress:setProgress(progress)
+    PixelUI.render()
+    sleep(1)
+end
+downloadProgress.text = "Download complete!"
+downloadProgress:setProgress(100)`
+        },
+        methods: [
+            { name: 'setProgress(progress)', description: 'Set progress value (0-100)' },
+            { name: 'getProgress()', description: 'Get current progress value' },
+            { name: 'setText(text)', description: 'Update loading text' },
+            { name: 'setStyle(style)', description: 'Change loading style' },
+            { name: 'start()', description: 'Start animation' },
+            { name: 'stop()', description: 'Stop animation' }
+        ]
+    },
+
+    spinner: {
+        type: 'widget',
+        category: 'Feedback',
+        title: 'PixelUI.spinner()',
+        description: 'Advanced spinning loading indicator with multiple animation styles and text positioning.',
+        syntax: 'PixelUI.spinner(props)',
+        parameters: [
+            { name: 'props', type: 'table', description: 'Spinner properties and configuration' }
+        ],
+        returns: { type: 'Spinner', description: 'Spinner widget object' },
+        properties: [
+            { name: 'x', type: 'number', required: true, description: 'X position on screen' },
+            { name: 'y', type: 'number', required: true, description: 'Y position on screen' },
+            { name: 'style', type: 'string', default: '"classic"', description: 'Style: "classic", "dots", "arrow", "clock", "bar"' },
+            { name: 'text', type: 'string', default: '""', description: 'Text to display alongside spinner' },
+            { name: 'textPosition', type: 'string', default: '"right"', description: 'Text position: "right", "bottom", "left", "top"' },
+            { name: 'speed', type: 'number', default: '8', description: 'Animation speed (frames per second)' },
+            { name: 'active', type: 'boolean', default: 'true', description: 'Whether spinner is active/spinning' },
+            { name: 'color', type: 'color', default: 'colors.cyan', description: 'Spinner color' }
+        ],
+        events: [],
+        example: {
+            basic: `-- Simple spinner
+local spinner = PixelUI.spinner({
+    x = 15, y = 10,
+    style = "classic",
+    text = "Processing...",
+    textPosition = "right",
+    color = colors.yellow
+})
+
+-- Start/stop spinner
+spinner:start()
+processData()
+spinner:stop()`,
+            advanced: `-- Multiple spinners for different operations
+local operations = {
+    { text = "Connecting...", style = "dots", speed = 6 },
+    { text = "Authenticating...", style = "arrow", speed = 8 },
+    { text = "Loading data...", style = "clock", speed = 4 },
+    { text = "Finalizing...", style = "bar", speed = 10 }
+}
+
+local function runOperations()
+    for i, op in ipairs(operations) do
+        local spinner = PixelUI.spinner({
+            x = 10, y = 5 + i * 2,
+            style = op.style,
+            text = op.text,
+            speed = op.speed,
+            color = colors.lime
+        })
+        
+        spinner:start()
+        -- Simulate operation
+        sleep(2)
+        spinner:stop()
+        
+        -- Show completion
+        spinner.text = op.text:gsub("%.%.%.", " ✓")
+        PixelUI.render()
+        sleep(0.5)
+    end
+end`
+        },
+        methods: [
+            { name: 'start()', description: 'Start the spinner animation' },
+            { name: 'stop()', description: 'Stop the spinner animation' },
+            { name: 'setText(text)', description: 'Update spinner text' },
+            { name: 'setStyle(style)', description: 'Change spinner style' },
+            { name: 'setSpeed(speed)', description: 'Change animation speed' },
+            { name: 'isActive()', description: 'Check if spinner is currently active' }
+        ]
+    },
+
+    // Threading and Background Processing
+    spawnThread: {
+        type: 'function',
+        category: 'Threading',
+        title: 'PixelUI.spawnThread()',
+        description: 'Create and start a background thread for non-blocking operations with cooperative multitasking.',
+        syntax: 'PixelUI.spawnThread(func, name)',
+        parameters: [
+            { name: 'func', type: 'function', required: true, description: 'Function to run in background thread' },
+            { name: 'name', type: 'string', optional: true, description: 'Optional thread name for debugging' }
+        ],
+        returns: { type: 'number', description: 'Thread ID for management and monitoring' },
+        example: {
+            basic: `-- Simple background task
+local threadId = PixelUI.spawnThread(function()
+    for i = 1, 100 do
+        processItem(i)
+        PixelUI.sleep(0.1) -- Yield control
+    end
+    print("Background processing complete!")
+end, "DataProcessor")`,
+            advanced: `-- File processing with progress tracking
+local function processFiles(files, progressCallback)
+    return PixelUI.spawnThread(function()
+        for i, file in ipairs(files) do
+            -- Process file
+            local result = processFile(file)
+            
+            -- Update UI (safe from background thread)
+            if progressCallback then
+                progressCallback(i, #files, file, result)
+            end
+            
+            -- Yield control to main thread
+            PixelUI.sleep(0.05)
+        end
+    end, "FileProcessor")
+end
+
+-- Start background file processing
+local files = {"file1.txt", "file2.txt", "file3.txt"}
+local threadId = processFiles(files, function(current, total, filename, result)
+    progressBar:setValue((current / total) * 100)
+    statusLabel.text = "Processing: " .. filename
+end)`
+        },
+        notes: ['Background threads run cooperatively with the main UI thread', 'Always use PixelUI.sleep() in threads to yield control', 'Thread functions should be self-contained and not access UI directly']
+    },
+
+    killThread: {
+        type: 'function',
+        category: 'Threading',
+        title: 'PixelUI.killThread()',
+        description: 'Terminate a background thread by its ID.',
+        syntax: 'PixelUI.killThread(threadId)',
+        parameters: [
+            { name: 'threadId', type: 'number', required: true, description: 'ID of thread to terminate' }
+        ],
+        returns: { type: 'boolean', description: 'True if thread was successfully killed' },
+        example: {
+            basic: `-- Start and then cancel a thread
+local threadId = PixelUI.spawnThread(longRunningTask, "LongTask")
+
+-- Cancel after 5 seconds
+PixelUI.setTimeout(function()
+    if PixelUI.killThread(threadId) then
+        print("Thread cancelled successfully")
+    end
+end, 5000)`
+        }
+    },
+
+    sleep: {
+        type: 'function',
+        category: 'Threading',
+        title: 'PixelUI.sleep()',
+        description: 'Sleep/yield control in background threads. Required for cooperative multitasking.',
+        syntax: 'PixelUI.sleep(duration)',
+        parameters: [
+            { name: 'duration', type: 'number', required: true, description: 'Sleep duration in seconds' }
+        ],
+        returns: { type: 'void', description: 'No return value' },
+        example: {
+            basic: `-- Proper thread sleep usage
+PixelUI.spawnThread(function()
+    while running do
+        doWork()
+        PixelUI.sleep(0.1) -- Yield for 100ms
+    end
+end)`
+        },
+        notes: ['Only use PixelUI.sleep() inside background threads', 'Regular sleep() function will block the entire UI', 'Minimum recommended sleep time is 0.05 seconds']
+    },
+
     colorPicker: {
         name: 'ColorPicker',
         category: 'Input Widgets',
@@ -3589,7 +3995,455 @@ end`
         },
         notes: ['Spinners provide visual feedback during indeterminate waiting periods', 'Different styles suit different UI contexts and themes', 'Keep spinner animations lightweight for smooth performance', 'Use appropriate colors that match your application theme']
     },
-    
+
+    // Layout and Container Widgets
+    modal: {
+        type: 'widget',
+        category: 'Layout',
+        title: 'PixelUI.modal()',
+        description: 'Modal dialog widget with overlay, customizable content, and animation support.',
+        syntax: 'PixelUI.modal(props)',
+        parameters: [
+            { name: 'props', type: 'table', description: 'Modal properties and configuration' }
+        ],
+        returns: { type: 'Modal', description: 'Modal widget object' },
+        properties: [
+            { name: 'title', type: 'string', required: true, description: 'Modal title text' },
+            { name: 'content', type: 'string|table', required: true, description: 'Modal content (text or widget)' },
+            { name: 'width', type: 'number', default: '30', description: 'Modal width' },
+            { name: 'height', type: 'number', default: '15', description: 'Modal height' },
+            { name: 'centerX', type: 'boolean', default: 'true', description: 'Center modal horizontally' },
+            { name: 'centerY', type: 'boolean', default: 'true', description: 'Center modal vertically' },
+            { name: 'closeable', type: 'boolean', default: 'true', description: 'Whether modal can be closed' },
+            { name: 'overlay', type: 'boolean', default: 'true', description: 'Show background overlay' },
+            { name: 'overlayColor', type: 'color', default: 'colors.black', description: 'Overlay background color' },
+            { name: 'animation', type: 'string', default: '"fade"', description: 'Animation type: "fade", "slide", "scale"' },
+            { name: 'buttons', type: 'table', default: '{}', description: 'Array of button definitions' },
+            { name: 'closeOnOverlay', type: 'boolean', default: 'true', description: 'Close when clicking overlay' },
+            { name: 'closeOnEscape', type: 'boolean', default: 'true', description: 'Close on escape key' }
+        ],
+        events: [
+            { name: 'onShow', parameters: 'self', description: 'Called when modal is shown' },
+            { name: 'onHide', parameters: 'self', description: 'Called when modal is hidden' },
+            { name: 'onClose', parameters: 'self, reason', description: 'Called when modal is closed' },
+            { name: 'onButtonClick', parameters: 'self, buttonId, buttonText', description: 'Called when modal button is clicked' }
+        ],
+        example: {
+            basic: `-- Simple confirmation modal
+local confirmModal = PixelUI.modal({
+    title = "Confirm Action",
+    content = "Are you sure you want to delete this file?",
+    width = 35,
+    height = 8,
+    buttons = {
+        { id = "confirm", text = "Delete", color = colors.red },
+        { id = "cancel", text = "Cancel", color = colors.gray }
+    },
+    onButtonClick = function(self, buttonId)
+        if buttonId == "confirm" then
+            deleteFile()
+        end
+        self:close()
+    end
+})
+
+confirmModal:show()`,
+            advanced: `-- Advanced modal with form content
+local settingsModal = PixelUI.modal({
+    title = "Application Settings",
+    width = 45,
+    height = 20,
+    animation = "slide",
+    closeOnOverlay = false,
+    buttons = {
+        { id = "save", text = "Save Settings", color = colors.green },
+        { id = "reset", text = "Reset to Defaults", color = colors.orange },
+        { id = "cancel", text = "Cancel", color = colors.gray }
+    },
+    onShow = function(self)
+        -- Initialize form widgets inside modal
+        self.nameInput = PixelUI.textBox({
+            parent = self,
+            x = 2, y = 3,
+            width = 25,
+            placeholder = "Application Name"
+        })
+        
+        self.autoSaveCheck = PixelUI.checkBox({
+            parent = self,
+            x = 2, y = 5,
+            text = "Enable Auto-Save",
+            checked = settings.autoSave
+        })
+    end,
+    onButtonClick = function(self, buttonId)
+        if buttonId == "save" then
+            settings.name = self.nameInput.text
+            settings.autoSave = self.autoSaveCheck.checked
+            saveSettings()
+            showToast("Settings saved successfully!", "success")
+        elseif buttonId == "reset" then
+            resetToDefaults()
+        end
+        
+        if buttonId ~= "reset" then
+            self:close()
+        end
+    end
+})`
+        },
+        methods: [
+            { name: 'show()', description: 'Display the modal' },
+            { name: 'hide()', description: 'Hide the modal without closing' },
+            { name: 'close()', description: 'Close and destroy the modal' },
+            { name: 'setTitle(title)', description: 'Update modal title' },
+            { name: 'setContent(content)', description: 'Update modal content' },
+            { name: 'addButton(button)', description: 'Add a new button to modal' }
+        ]
+    },
+
+    window: {
+        type: 'widget',
+        category: 'Layout',
+        title: 'PixelUI.window()',
+        description: 'Draggable window widget with title bar, content area, and optional controls.',
+        syntax: 'PixelUI.window(props)',
+        parameters: [
+            { name: 'props', type: 'table', description: 'Window properties and configuration' }
+        ],
+        returns: { type: 'Window', description: 'Window widget object' },
+        properties: [
+            { name: 'x', type: 'number', required: true, description: 'Initial X position' },
+            { name: 'y', type: 'number', required: true, description: 'Initial Y position' },
+            { name: 'width', type: 'number', required: true, description: 'Window width' },
+            { name: 'height', type: 'number', required: true, description: 'Window height' },
+            { name: 'title', type: 'string', required: true, description: 'Window title text' },
+            { name: 'draggable', type: 'boolean', default: 'true', description: 'Whether window can be dragged' },
+            { name: 'resizable', type: 'boolean', default: 'false', description: 'Whether window can be resized' },
+            { name: 'closeable', type: 'boolean', default: 'true', description: 'Show close button' },
+            { name: 'minimizable', type: 'boolean', default: 'false', description: 'Show minimize button' },
+            { name: 'maximizable', type: 'boolean', default: 'false', description: 'Show maximize button' },
+            { name: 'titleBarHeight', type: 'number', default: '1', description: 'Title bar height' },
+            { name: 'border', type: 'boolean', default: 'true', description: 'Show window border' },
+            { name: 'shadow', type: 'boolean', default: 'true', description: 'Show drop shadow' }
+        ],
+        events: [
+            { name: 'onMove', parameters: 'self, newX, newY', description: 'Called when window is moved' },
+            { name: 'onResize', parameters: 'self, newWidth, newHeight', description: 'Called when window is resized' },
+            { name: 'onClose', parameters: 'self', description: 'Called when close button is clicked' },
+            { name: 'onMinimize', parameters: 'self', description: 'Called when minimize button is clicked' },
+            { name: 'onMaximize', parameters: 'self', description: 'Called when maximize button is clicked' },
+            { name: 'onFocus', parameters: 'self', description: 'Called when window gains focus' },
+            { name: 'onBlur', parameters: 'self', description: 'Called when window loses focus' }
+        ],
+        example: {
+            basic: `-- Simple draggable window
+local infoWindow = PixelUI.window({
+    x = 10, y = 5,
+    width = 30, height = 15,
+    title = "Information",
+    draggable = true,
+    closeable = true,
+    onClose = function(self)
+        self:hide()
+    end
+})
+
+-- Add content to window
+local infoLabel = PixelUI.label({
+    parent = infoWindow,
+    x = 2, y = 3,
+    text = "This is a draggable window!"
+})`,
+            advanced: `-- Advanced window with multiple controls
+local toolWindow = PixelUI.window({
+    x = 5, y = 2,
+    width = 40, height = 25,
+    title = "Development Tools",
+    draggable = true,
+    resizable = true,
+    closeable = true,
+    minimizable = true,
+    maximizable = true,
+    border = true,
+    shadow = true,
+    onMove = function(self, newX, newY)
+        -- Save window position
+        saveWindowPosition("tools", newX, newY)
+    end,
+    onResize = function(self, newWidth, newHeight)
+        -- Adjust content layout
+        self.contentArea:resize(newWidth - 2, newHeight - 3)
+    end,
+    onClose = function(self)
+        -- Confirm before closing
+        local modal = PixelUI.modal({
+            title = "Close Tools",
+            content = "Save changes before closing?",
+            buttons = {
+                { id = "save", text = "Save & Close" },
+                { id = "discard", text = "Close without Saving" },
+                { id = "cancel", text = "Cancel" }
+            },
+            onButtonClick = function(modal, buttonId)
+                if buttonId == "save" then
+                    saveChanges()
+                    self:hide()
+                elseif buttonId == "discard" then
+                    self:hide()
+                end
+                modal:close()
+            end
+        })
+        modal:show()
+    end
+})
+
+-- Add toolbar to window
+local toolbar = PixelUI.container({
+    parent = toolWindow,
+    x = 1, y = 2,
+    width = toolWindow.width - 1,
+    height = 2
+})
+
+-- Add tool buttons
+for i, tool in ipairs({"Debug", "Profile", "Log", "Test"}) do
+    PixelUI.button({
+        parent = toolbar,
+        x = (i-1) * 8 + 1, y = 1,
+        width = 7, height = 1,
+        text = tool,
+        onClick = function() activateTool(tool) end
+    })
+end`
+        },
+        methods: [
+            { name: 'show()', description: 'Show the window' },
+            { name: 'hide()', description: 'Hide the window' },
+            { name: 'close()', description: 'Close and destroy the window' },
+            { name: 'move(x, y)', description: 'Move window to new position' },
+            { name: 'resize(width, height)', description: 'Resize the window' },
+            { name: 'minimize()', description: 'Minimize the window' },
+            { name: 'maximize()', description: 'Maximize the window' },
+            { name: 'restore()', description: 'Restore from minimized/maximized' },
+            { name: 'focus()', description: 'Bring window to front and focus' },
+            { name: 'setTitle(title)', description: 'Update window title' }
+        ]
+    },
+
+    breadcrumb: {
+        type: 'widget',
+        category: 'Navigation',
+        title: 'PixelUI.breadcrumb()',
+        description: 'Navigation breadcrumb widget showing hierarchical paths with clickable segments.',
+        syntax: 'PixelUI.breadcrumb(props)',
+        parameters: [
+            { name: 'props', type: 'table', description: 'Breadcrumb properties and configuration' }
+        ],
+        returns: { type: 'Breadcrumb', description: 'Breadcrumb widget object' },
+        properties: [
+            { name: 'x', type: 'number', required: true, description: 'X position on screen' },
+            { name: 'y', type: 'number', required: true, description: 'Y position on screen' },
+            { name: 'width', type: 'number', required: true, description: 'Breadcrumb width' },
+            { name: 'path', type: 'table', default: '{}', description: 'Array of path segments' },
+            { name: 'separator', type: 'string', default: '">"', description: 'Separator between segments' },
+            { name: 'clickable', type: 'boolean', default: 'true', description: 'Whether segments are clickable' },
+            { name: 'maxSegments', type: 'number', default: '0', description: 'Max visible segments (0 = unlimited)' },
+            { name: 'ellipsis', type: 'string', default: '"..."', description: 'Text for collapsed segments' },
+            { name: 'color', type: 'color', default: 'colors.lightBlue', description: 'Segment text color' },
+            { name: 'separatorColor', type: 'color', default: 'colors.gray', description: 'Separator color' },
+            { name: 'currentColor', type: 'color', default: 'colors.white', description: 'Current segment color' }
+        ],
+        events: [
+            { name: 'onSegmentClick', parameters: 'self, segmentIndex, segment', description: 'Called when segment is clicked' }
+        ],
+        example: {
+            basic: `-- File system breadcrumb
+local fileBreadcrumb = PixelUI.breadcrumb({
+    x = 2, y = 1,
+    width = 40,
+    path = {"Root", "Documents", "Projects", "MyApp"},
+    separator = " / ",
+    onSegmentClick = function(self, segmentIndex, segment)
+        navigateToPath(segmentIndex)
+        self:updatePath(getPathUpTo(segmentIndex))
+    end
+})`,
+            advanced: `-- Navigation breadcrumb with dynamic updates
+local navBreadcrumb = PixelUI.breadcrumb({
+    x = 3, y = 2,
+    width = 50,
+    path = getCurrentPath(),
+    separator = " → ",
+    maxSegments = 5,
+    ellipsis = "⋯",
+    clickable = true,
+    color = colors.cyan,
+    separatorColor = colors.lightGray,
+    currentColor = colors.yellow,
+    onSegmentClick = function(self, segmentIndex, segment)
+        local newPath = {}
+        for i = 1, segmentIndex do
+            newPath[i] = self.path[i]
+        end
+        
+        navigateToSection(newPath)
+        self:setPath(newPath)
+        
+        -- Update related navigation
+        updateSidebar(newPath)
+        updateContentArea(newPath)
+    end
+})
+
+-- Function to update breadcrumb when navigation changes
+function updateNavigation(newPath)
+    navBreadcrumb:setPath(newPath)
+    saveNavigationState(newPath)
+end`
+        },
+        methods: [
+            { name: 'setPath(path)', description: 'Update the breadcrumb path' },
+            { name: 'addSegment(segment)', description: 'Add new segment to end of path' },
+            { name: 'removeSegment(index)', description: 'Remove segment at index' },
+            { name: 'goToSegment(index)', description: 'Navigate to specific segment' },
+            { name: 'getPath()', description: 'Get current path array' }
+        ]
+    },
+
+    treeView: {
+        type: 'widget',
+        category: 'Data Display',
+        title: 'PixelUI.treeView()',
+        description: 'Hierarchical tree view widget with expandable nodes, selection, and custom icons.',
+        syntax: 'PixelUI.treeView(props)',
+        parameters: [
+            { name: 'props', type: 'table', description: 'TreeView properties and configuration' }
+        ],
+        returns: { type: 'TreeView', description: 'TreeView widget object' },
+        properties: [
+            { name: 'x', type: 'number', required: true, description: 'X position on screen' },
+            { name: 'y', type: 'number', required: true, description: 'Y position on screen' },
+            { name: 'width', type: 'number', required: true, description: 'Tree view width' },
+            { name: 'height', type: 'number', required: true, description: 'Tree view height' },
+            { name: 'data', type: 'table', default: '{}', description: 'Tree data structure' },
+            { name: 'selectable', type: 'boolean', default: 'true', description: 'Enable node selection' },
+            { name: 'multiSelect', type: 'boolean', default: 'false', description: 'Allow multiple selection' },
+            { name: 'expandable', type: 'boolean', default: 'true', description: 'Enable expand/collapse' },
+            { name: 'showLines', type: 'boolean', default: 'true', description: 'Show connection lines' },
+            { name: 'showIcons', type: 'boolean', default: 'true', description: 'Show node icons' },
+            { name: 'indentSize', type: 'number', default: '2', description: 'Indentation per level' },
+            { name: 'nodeColor', type: 'color', default: 'colors.white', description: 'Node text color' },
+            { name: 'selectedColor', type: 'color', default: 'colors.yellow', description: 'Selected node color' },
+            { name: 'lineColor', type: 'color', default: 'colors.gray', description: 'Connection line color' }
+        ],
+        events: [
+            { name: 'onNodeClick', parameters: 'self, node, path', description: 'Called when node is clicked' },
+            { name: 'onNodeDoubleClick', parameters: 'self, node, path', description: 'Called when node is double-clicked' },
+            { name: 'onNodeExpand', parameters: 'self, node, path', description: 'Called when node is expanded' },
+            { name: 'onNodeCollapse', parameters: 'self, node, path', description: 'Called when node is collapsed' },
+            { name: 'onSelectionChange', parameters: 'self, selectedNodes', description: 'Called when selection changes' }
+        ],
+        example: {
+            basic: `-- File system tree
+local fileTree = PixelUI.treeView({
+    x = 2, y = 3,
+    width = 25, height = 15,
+    data = {
+        {
+            text = "Root",
+            expanded = true,
+            children = {
+                { text = "Documents", icon = "📁", children = {
+                    { text = "file1.txt", icon = "📄" },
+                    { text = "file2.txt", icon = "📄" }
+                }},
+                { text = "Pictures", icon = "📁", children = {
+                    { text = "photo.png", icon = "🖼️" }
+                }},
+                { text = "readme.md", icon = "📄" }
+            }
+        }
+    },
+    onNodeClick = function(self, node, path)
+        if node.icon == "📄" then
+            openFile(node.text, path)
+        end
+    end,
+    onNodeDoubleClick = function(self, node, path)
+        if node.children and #node.children > 0 then
+            self:toggleNode(path)
+        end
+    end
+})`,
+            advanced: `-- Project structure tree with lazy loading
+local projectTree = PixelUI.treeView({
+    x = 1, y = 1,
+    width = 30, height = 20,
+    data = loadProjectStructure(),
+    selectable = true,
+    multiSelect = true,
+    showLines = true,
+    showIcons = true,
+    indentSize = 3,
+    onNodeExpand = function(self, node, path)
+        -- Lazy load children if not already loaded
+        if not node.childrenLoaded and node.type == "directory" then
+            node.children = loadDirectoryContents(node.fullPath)
+            node.childrenLoaded = true
+            self:refresh()
+        end
+    end,
+    onNodeClick = function(self, node, path)
+        -- Update details panel
+        showNodeDetails(node)
+        
+        -- Update breadcrumb
+        breadcrumb:setPath(pathToArray(path))
+    end,
+    onSelectionChange = function(self, selectedNodes)
+        -- Update context menu options
+        updateContextMenu(selectedNodes)
+        
+        -- Update toolbar states
+        updateToolbarButtons(selectedNodes)
+    end,
+    onNodeDoubleClick = function(self, node, path)
+        if node.type == "file" then
+            openInEditor(node.fullPath)
+        else
+            self:toggleNode(path)
+        end
+    end
+})
+
+-- Context menu integration
+projectTree.onRightClick = function(self, node, path, x, y)
+    local contextMenu = PixelUI.contextMenu({
+        x = x, y = y,
+        items = getContextMenuItems(node),
+        onItemClick = function(menu, item)
+            executeAction(item.action, node, path)
+            menu:hide()
+        end
+    })
+    contextMenu:show()
+end`
+        },
+        methods: [
+            { name: 'expandNode(path)', description: 'Expand node at path' },
+            { name: 'collapseNode(path)', description: 'Collapse node at path' },
+            { name: 'toggleNode(path)', description: 'Toggle node expansion' },
+            { name: 'selectNode(path)', description: 'Select node at path' },
+            { name: 'getSelected()', description: 'Get selected node paths' },
+            { name: 'addNode(parentPath, node)', description: 'Add new node' },
+            { name: 'removeNode(path)', description: 'Remove node at path' },
+            { name: 'updateNode(path, data)', description: 'Update node data' },
+            { name: 'refresh()', description: 'Refresh tree display' }
+        ]
+    },
+
     groupBox: {
         name: 'GroupBox',
         category: 'Layout Widgets',
@@ -6616,6 +7470,213 @@ function demonstrateMsgBoxes()
 end`
         },
         notes: ['MsgBox provides a unified interface for all user dialogs', 'Use appropriate message types (info, warning, error) for semantic clarity', 'Consider timeout for non-critical notifications', 'Queue multiple messages to prevent dialog overlap and improve UX']
+    },
+
+    // Advanced Animation and Timing Functions
+    animate: {
+        type: 'function',
+        category: 'Animation',
+        title: 'PixelUI.animate()',
+        description: 'Advanced animation system for smooth transitions and effects on widgets.',
+        syntax: 'PixelUI.animate(target, properties, duration, options)',
+        parameters: [
+            { name: 'target', type: 'widget', required: true, description: 'Widget to animate' },
+            { name: 'properties', type: 'table', required: true, description: 'Properties to animate' },
+            { name: 'duration', type: 'number', required: true, description: 'Animation duration in milliseconds' },
+            { name: 'options', type: 'table', default: '{}', description: 'Animation options and callbacks' }
+        ],
+        returns: { type: 'Animation', description: 'Animation object for control' },
+        example: {
+            basic: `-- Simple fade in animation
+PixelUI.animate(myButton, {
+    opacity = 1
+}, 500, {
+    easing = "easeInOut",
+    onComplete = function()
+        print("Animation finished!")
+    end
+})
+
+-- Move and resize animation
+PixelUI.animate(myWindow, {
+    x = 20,
+    y = 10,
+    width = 50,
+    height = 30
+}, 1000)`,
+            advanced: `-- Complex multi-step animation
+local function animateMenuOpen(menu)
+    -- First fade in
+    local fadeIn = PixelUI.animate(menu, {
+        opacity = 1
+    }, 200, {
+        easing = "easeOut",
+        onComplete = function()
+            -- Then slide down
+            PixelUI.animate(menu, {
+                height = menu.targetHeight
+            }, 300, {
+                easing = "easeOutBounce",
+                onComplete = function()
+                    -- Finally animate items
+                    for i, item in ipairs(menu.items) do
+                        PixelUI.animate(item, {
+                            x = item.targetX,
+                            opacity = 1
+                        }, 150, {
+                            delay = i * 50,
+                            easing = "easeOut"
+                        })
+                    end
+                end
+            })
+        end
+    })
+end`
+        },
+        methods: [
+            { name: 'play()', description: 'Start/resume animation' },
+            { name: 'pause()', description: 'Pause animation' },
+            { name: 'stop()', description: 'Stop and reset animation' },
+            { name: 'reverse()', description: 'Reverse animation direction' },
+            { name: 'setSpeed(speed)', description: 'Change animation speed' }
+        ]
+    },
+
+    setTimeout: {
+        type: 'function',
+        category: 'Timing',
+        title: 'PixelUI.setTimeout()',
+        description: 'Execute a function after a specified delay, similar to JavaScript setTimeout.',
+        syntax: 'PixelUI.setTimeout(callback, delay)',
+        parameters: [
+            { name: 'callback', type: 'function', required: true, description: 'Function to execute' },
+            { name: 'delay', type: 'number', required: true, description: 'Delay in milliseconds' }
+        ],
+        returns: { type: 'number', description: 'Timer ID for cancellation' },
+        example: {
+            basic: `-- Simple delayed action
+local timerId = PixelUI.setTimeout(function()
+    showNotification("Hello after 2 seconds!")
+end, 2000)
+
+-- Cancel if needed
+-- PixelUI.clearTimeout(timerId)`
+        }
+    },
+
+    setInterval: {
+        type: 'function',
+        category: 'Timing',
+        title: 'PixelUI.setInterval()',
+        description: 'Execute a function repeatedly at specified intervals.',
+        syntax: 'PixelUI.setInterval(callback, interval)',
+        parameters: [
+            { name: 'callback', type: 'function', required: true, description: 'Function to execute repeatedly' },
+            { name: 'interval', type: 'number', required: true, description: 'Interval in milliseconds' }
+        ],
+        returns: { type: 'number', description: 'Timer ID for cancellation' },
+        example: {
+            basic: `-- Update clock every second
+local clockTimer = PixelUI.setInterval(function()
+    clockLabel.text = os.date("%H:%M:%S")
+end, 1000)
+
+-- Stop the timer later
+-- PixelUI.clearInterval(clockTimer)`
+        }
+    },
+
+    // Theme and Styling System
+    setTheme: {
+        type: 'function',
+        category: 'Theming',
+        title: 'PixelUI.setTheme()',
+        description: 'Apply a complete theme to all PixelUI widgets with colors, fonts, and styling.',
+        syntax: 'PixelUI.setTheme(theme)',
+        parameters: [
+            { name: 'theme', type: 'table', required: true, description: 'Theme configuration object' }
+        ],
+        returns: { type: 'void', description: 'No return value' },
+        example: {
+            basic: `-- Apply dark theme
+PixelUI.setTheme({
+    name = "Dark",
+    colors = {
+        primary = colors.cyan,
+        secondary = colors.lightBlue,
+        background = colors.black,
+        surface = colors.gray,
+        text = colors.white,
+        textSecondary = colors.lightGray,
+        accent = colors.lime,
+        warning = colors.orange,
+        error = colors.red,
+        success = colors.green
+    },
+    fonts = {
+        default = "minecraft",
+        header = "minecraft",
+        mono = "minecraft"
+    },
+    spacing = {
+        small = 1,
+        medium = 2,
+        large = 4
+    }
+})`,
+            advanced: `-- Custom theme with advanced styling
+PixelUI.setTheme({
+    name = "Corporate",
+    colors = {
+        primary = colors.blue,
+        primaryDark = colors.lightBlue,
+        secondary = colors.gray,
+        background = colors.white,
+        surface = colors.lightGray,
+        text = colors.black,
+        textSecondary = colors.gray,
+        accent = colors.yellow,
+        border = colors.gray,
+        shadow = colors.black,
+        success = colors.green,
+        warning = colors.orange,
+        error = colors.red,
+        info = colors.cyan
+    },
+    components = {
+        button = {
+            borderRadius = 2,
+            padding = { x = 3, y = 1 },
+            fontSize = 1,
+            fontWeight = "normal"
+        },
+        input = {
+            borderRadius = 1,
+            borderWidth = 1,
+            padding = { x = 2, y = 1 },
+            focusColor = colors.blue
+        },
+        modal = {
+            borderRadius = 3,
+            shadow = true,
+            backdropOpacity = 0.5
+        }
+    },
+    animations = {
+        duration = {
+            fast = 150,
+            normal = 300,
+            slow = 500
+        },
+        easing = {
+            default = "easeInOut",
+            enter = "easeOut",
+            exit = "easeIn"
+        }
+    }
+})`
+        }
     }
 };
 
@@ -6713,9 +7774,21 @@ class APIDocumentationManager {
                             <i data-lucide="layout"></i>
                             Layout Container
                         </a>
+                        <a href="#dataGrid" class="quick-link">
+                            <i data-lucide="table"></i>
+                            Data Grid
+                        </a>
+                        <a href="#modal" class="quick-link">
+                            <i data-lucide="layers"></i>
+                            Modal Dialog
+                        </a>
                         <a href="#animate" class="quick-link">
                             <i data-lucide="move"></i>
                             Animation System
+                        </a>
+                        <a href="#spawnThread" class="quick-link">
+                            <i data-lucide="cpu"></i>
+                            Background Threading
                         </a>
                         <a href="#run" class="quick-link">
                             <i data-lucide="play-circle"></i>
