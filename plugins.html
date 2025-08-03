@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Plugin System - PixelUI Framework</title>
+    <meta name="description" content="Comprehensive guide to PixelUI's plugin system - create custom widgets, themes, animations, and extend functionality.">
+    <meta name="keywords" content="ComputerCraft, CC:Tweaked, PixelUI, plugins, extensions, custom widgets">
+    <meta name="author" content="PixelUI Team">
+    <meta name="theme-color" content="#3b82f6">
+    <meta name="color-scheme" content="light dark">
+    
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="PixelUI Plugins">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="./styles/main.css">
+    <link rel="stylesheet" href="./styles/api.css">
+    
+    <!-- Prism.js for code highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="./assets/logo.svg" alt="PixelUI" class="nav-logo">
+                <span class="nav-title">PixelUI</span>
+                <span class="nav-version">v1.0</span>
+            </div>
+            
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="index.html#features" class="nav-link">Features</a>
+                <a href="index.html#widgets" class="nav-link">Widgets</a>
+                <a href="index.html#examples" class="nav-link">Examples</a>
+                <a href="api.html" class="nav-link">API</a>
+                <a href="plugins.html" class="nav-link active">Plugins</a>
+                <a href="index.html#download" class="nav-link">Download</a>
+            </div>
+            
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                    <i data-lucide="sun" class="theme-icon light-icon"></i>
+                    <i data-lucide="moon" class="theme-icon dark-icon"></i>
+                </button>
+                <a href="https://github.com/Shlomo1412/PixelUI" class="nav-github" target="_blank" rel="noopener">
+                    <i data-lucide="github"></i>
+                </a>
+                <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Plugin Header -->
+    <section class="api-header">
+        <div class="container">
+            <div class="api-header-content">
+                <h1 class="api-title">Plugin System</h1>
+                <p class="api-description">
+                    Extend PixelUI with custom widgets, themes, animations, and functionality.
+                    Build once, share everywhere with the powerful plugin architecture.
+                </p>
+                
+                <div class="api-search-main">
+                    <div class="search-input-container">
+                        <input type="text" placeholder="Search plugins, guides, examples..." id="plugin-search">
+                        <i data-lucide="search"></i>
+                    </div>
+                    <div class="search-filters">
+                        <button class="filter-btn active" data-filter="all">All Content</button>
+                        <button class="filter-btn" data-filter="guides">Guides</button>
+                        <button class="filter-btn" data-filter="examples">Examples</button>
+                        <button class="filter-btn" data-filter="reference">Reference</button>
+                        <button class="filter-btn" data-filter="community">Community</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Plugin Content -->
+    <section class="api-main">
+        <div class="container">
+            <div class="api-layout">
+                <!-- Sidebar Navigation -->
+                <aside class="api-sidebar">
+                    <div class="sidebar-content">
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">Getting Started</h3>
+                            <ul class="sidebar-nav">
+                                <li><a href="#plugin-overview" class="sidebar-link">Plugin Overview</a></li>
+                                <li><a href="#installation" class="sidebar-link">Installation</a></li>
+                                <li><a href="#basic-plugin" class="sidebar-link">Your First Plugin</a></li>
+                                <li><a href="#plugin-structure" class="sidebar-link">Plugin Structure</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">Plugin Types</h3>
+                            <ul class="sidebar-nav">
+                                <li><a href="#widget-plugins" class="sidebar-link">Widget Plugins</a></li>
+                                <li><a href="#theme-plugins" class="sidebar-link">Theme Plugins</a></li>
+                                <li><a href="#animation-plugins" class="sidebar-link">Animation Plugins</a></li>
+                                <li><a href="#utility-plugins" class="sidebar-link">Utility Plugins</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">Development Guide</h3>
+                            <ul class="sidebar-nav">
+                                <li><a href="#plugin-api" class="sidebar-link">Plugin API</a></li>
+                                <li><a href="#lifecycle" class="sidebar-link">Plugin Lifecycle</a></li>
+                                <li><a href="#configuration" class="sidebar-link">Configuration</a></li>
+                                <li><a href="#dependencies" class="sidebar-link">Dependencies</a></li>
+                                <li><a href="#testing" class="sidebar-link">Testing Plugins</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">Advanced Topics</h3>
+                            <ul class="sidebar-nav">
+                                <li><a href="#custom-events" class="sidebar-link">Custom Events</a></li>
+                                <li><a href="#plugin-communication" class="sidebar-link">Plugin Communication</a></li>
+                                <li><a href="#performance" class="sidebar-link">Performance Tips</a></li>
+                                <li><a href="#best-practices" class="sidebar-link">Best Practices</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">Community</h3>
+                            <ul class="sidebar-nav">
+                                <li><a href="#plugin-registry" class="sidebar-link">Plugin Registry</a></li>
+                                <li><a href="#contributing" class="sidebar-link">Contributing</a></li>
+                                <li><a href="#examples-gallery" class="sidebar-link">Examples Gallery</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Main Content -->
+                <main class="api-content">
+                    <div id="plugin-docs-content">
+                        <!-- Content will be loaded here by JavaScript -->
+                    </div>
+                </main>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-brand">
+                        <img src="./assets/logo.svg" alt="PixelUI" class="footer-logo">
+                        <span class="footer-title">PixelUI</span>
+                    </div>
+                    <p class="footer-description">
+                        The most comprehensive UI framework for ComputerCraft/CC: Tweaked
+                    </p>
+                    <div class="footer-social">
+                        <a href="https://github.com/Shlomo1412/PixelUI" class="footer-social-link">
+                            <i data-lucide="github"></i>
+                        </a>
+                        <a href="#" class="footer-social-link">
+                            <i data-lucide="message-circle"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 class="footer-heading">Documentation</h3>
+                    <ul class="footer-links">
+                        <li><a href="./api.html">API Reference</a></li>
+                        <li><a href="./plugins.html">Plugin System</a></li>
+                        <li><a href="index.html#getting-started">Getting Started</a></li>
+                        <li><a href="index.html#examples">Examples</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 class="footer-heading">Community</h3>
+                    <ul class="footer-links">
+                        <li><a href="https://github.com/Shlomo1412/PixelUI">GitHub</a></li>
+                        <li><a href="#">Discord</a></li>
+                        <li><a href="#">Forum</a></li>
+                        <li><a href="#contributing">Contributing</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 class="footer-heading">Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html#download">Download</a></li>
+                        <li><a href="#plugin-registry">Plugin Registry</a></li>
+                        <li><a href="generator.html">UI Builder</a></li>
+                        <li><a href="#">Changelog</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    © 2024 PixelUI Framework. Open source under MIT License.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top" id="scroll-top" aria-label="Scroll to top">
+        <i data-lucide="chevron-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="./scripts/plugins.js"></script>
+</body>
+</html>
