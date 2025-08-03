@@ -1124,7 +1124,7 @@
         display: flex !important;
         align-items: center;
         gap: 0.5rem;
-        width: calc(100% - 2rem);
+        width: calc(100vw - 2rem);
         padding: 0.875rem 1rem;
         margin: 0 1rem 1rem;
         background: var(--primary);
@@ -1141,7 +1141,6 @@
         touch-action: manipulation;
         -webkit-tap-highlight-color: transparent;
         box-sizing: border-box;
-        max-width: calc(100vw - 2rem);
     }
 
     .mobile-sidebar-toggle:hover,
