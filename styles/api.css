@@ -1,5 +1,73 @@
 /* --- Mobile/Responsive Enhancements (2025-07) --- */
 @media (max-width: 640px) {
+  /* Prevent horizontal overflow globally */
+  html, body {
+    max-width: 100vw;
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+  
+  /* Fix navbar horizontal overflow */
+  .navbar {
+    width: 100vw;
+    max-width: 100vw;
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+  
+  .nav-container {
+    width: 100%;
+    max-width: 100vw;
+    padding: 0 0.75rem;
+    box-sizing: border-box;
+    min-width: 0;
+  }
+  
+  .nav-brand {
+    min-width: 0;
+    flex-shrink: 1;
+    overflow: hidden;
+  }
+  
+  .nav-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .nav-version {
+    flex-shrink: 0;
+  }
+  
+  .nav-actions {
+    flex-shrink: 0;
+    gap: 0.5rem;
+  }
+  
+  .nav-links {
+    display: none !important;
+  }
+  
+  .mobile-menu-toggle {
+    display: flex !important;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    flex-shrink: 0;
+  }
+  
+  .theme-toggle {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+  }
+  
+  .nav-github {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+  }
+  
   /* Make modals and overlays scrollable and fit screen */
   .modal-dialog, .export-dialog, .preview-dialog {
     max-width: 98vw;
@@ -57,8 +125,8 @@
     flex-direction: column !important;
     align-items: stretch !important;
   }
-  /* Ensure nav and footer are always touch-friendly */
-  .navbar, .footer {
+  /* Ensure nav and footer are always touch-friendly - but don't override above */
+  .footer {
     min-width: 0;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
