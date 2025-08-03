@@ -7496,10 +7496,10 @@ class APIDocumentationManager {
                     <tbody>
                         ${parameters.map(param => `
                             <tr>
-                                <td><code class="property-name">${param.name}</code></td>
-                                <td><span class="property-type">${param.type}</span></td>
-                                <td>${param.optional ? 'No' : 'Yes'}</td>
-                                <td class="property-description">${param.description}</td>
+                                <td data-label="Name"><code class="property-name">${param.name}</code></td>
+                                <td data-label="Type"><span class="property-type">${param.type}</span></td>
+                                <td data-label="Required">${param.optional ? 'No' : 'Yes'}</td>
+                                <td data-label="Description" class="property-description">${param.description}</td>
                             </tr>
                         `).join('')}
                     </tbody>
@@ -7539,13 +7539,13 @@ class APIDocumentationManager {
                     <tbody>
                         ${properties.map(prop => `
                             <tr>
-                                <td>
+                                <td data-label="Property">
                                     <code class="property-name">${prop.name}</code>
                                     ${prop.required ? ' <span style="color: var(--danger);">*</span>' : ''}
                                 </td>
-                                <td><span class="property-type">${prop.type}</span></td>
-                                <td><code>${prop.default || 'N/A'}</code></td>
-                                <td class="property-description">${prop.description}</td>
+                                <td data-label="Type"><span class="property-type">${prop.type}</span></td>
+                                <td data-label="Default"><code>${prop.default || 'N/A'}</code></td>
+                                <td data-label="Description" class="property-description">${prop.description}</td>
                             </tr>
                         `).join('')}
                     </tbody>
@@ -7574,9 +7574,9 @@ class APIDocumentationManager {
                     <tbody>
                         ${events.map(event => `
                             <tr>
-                                <td><code class="property-name">${event.name}</code></td>
-                                <td><code>${event.parameters}</code></td>
-                                <td class="property-description">${event.description}</td>
+                                <td data-label="Event"><code class="property-name">${event.name}</code></td>
+                                <td data-label="Parameters"><code>${event.parameters}</code></td>
+                                <td data-label="Description" class="property-description">${event.description}</td>
                             </tr>
                         `).join('')}
                     </tbody>
@@ -7602,8 +7602,8 @@ class APIDocumentationManager {
                     <tbody>
                         ${methods.map(method => `
                             <tr>
-                                <td><code class="property-name">${method.name}</code></td>
-                                <td class="property-description">${method.description}</td>
+                                <td data-label="Method"><code class="property-name">${method.name}</code></td>
+                                <td data-label="Description" class="property-description">${method.description}</td>
                             </tr>
                         `).join('')}
                     </tbody>
@@ -7846,12 +7846,76 @@ class MobileMenu {
     }
 }
 
+// Mobile Sidebar Toggle for API page
+class MobileSidebar {
+    constructor() {
+        this.sidebar = document.querySelector('.api-sidebar');
+        this.content = document.querySelector('.api-content');
+        this.createToggleButton();
+        this.init();
+    }
+
+    createToggleButton() {
+        // Create mobile sidebar toggle button
+        const toggleBtn = document.createElement('button');
+        toggleBtn.className = 'mobile-sidebar-toggle';
+        toggleBtn.innerHTML = '<i data-lucide="menu"></i><span>Navigation</span>';
+        toggleBtn.setAttribute('aria-label', 'Toggle API Navigation');
+
+        // Insert before the API content
+        if (this.content && this.sidebar) {
+            this.content.parentNode.insertBefore(toggleBtn, this.content);
+            this.toggleBtn = toggleBtn;
+        }
+    }
+
+    init() {
+        if (!this.toggleBtn || !this.sidebar) return;
+
+        this.toggleBtn.addEventListener('click', () => {
+            this.sidebar.classList.toggle('mobile-open');
+            this.toggleBtn.classList.toggle('active');
+            
+            // Update ARIA
+            const isOpen = this.sidebar.classList.contains('mobile-open');
+            this.toggleBtn.setAttribute('aria-expanded', isOpen);
+        });
+
+        // Close sidebar when clicking on content area
+        this.content?.addEventListener('click', () => {
+            this.sidebar.classList.remove('mobile-open');
+            this.toggleBtn.classList.remove('active');
+            this.toggleBtn.setAttribute('aria-expanded', 'false');
+        });
+
+        // Close sidebar when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!this.sidebar.contains(e.target) && !this.toggleBtn.contains(e.target)) {
+                this.sidebar.classList.remove('mobile-open');
+                this.toggleBtn.classList.remove('active');
+                this.toggleBtn.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Close sidebar on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                this.sidebar.classList.remove('mobile-open');
+                this.toggleBtn.classList.remove('active');
+                this.toggleBtn.setAttribute('aria-expanded', 'false');
+            }
+        });
+    }
+}
+
 // Initialize everything
 let apiManager;
 
 document.addEventListener('DOMContentLoaded', function() {
     new ThemeManager();
     new MobileMenu();
+    new MobileSidebar();
+    new ScrollToTop();
     apiManager = new APIDocumentationManager();
     
     // Highlight code
@@ -7859,3 +7923,32 @@ document.addEventListener('DOMContentLoaded', function() {
         Prism.highlightAll();
     }
 });
+
+// Scroll to Top functionality
+class ScrollToTop {
+    constructor() {
+        this.button = document.getElementById('scroll-top');
+        this.init();
+    }
+
+    init() {
+        if (!this.button) return;
+
+        // Show/hide button based on scroll position
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                this.button.classList.add('visible');
+            } else {
+                this.button.classList.remove('visible');
+            }
+        });
+
+        // Smooth scroll to top when clicked
+        this.button.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+}
