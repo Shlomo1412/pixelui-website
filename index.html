@@ -689,6 +689,288 @@ PixelUI.button({
         </div>
     </section>
 
+    <!-- Plugin System Section -->
+    <section class="section plugin-system" id="plugin-system">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Extensible Plugin System</h2>
+                <p class="section-description">
+                    Extend PixelUI with custom widgets, themes, and functionality through our powerful plugin architecture
+                </p>
+            </div>
+            
+            <div class="plugin-overview">
+                <div class="plugin-hero">
+                    <div class="plugin-hero-content">
+                        <h3 class="plugin-hero-title">Build Beyond the Core</h3>
+                        <p class="plugin-hero-description">
+                            PixelUI's plugin system allows you to create custom widgets, add new themes, 
+                            implement animations, and extend the framework with your own functionality. 
+                            Plugins integrate seamlessly with the core framework and can be shared with the community.
+                        </p>
+                        <div class="plugin-stats">
+                            <div class="stat-item">
+                                <span class="stat-number">35+</span>
+                                <span class="stat-label">Built-in Widgets</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">∞</span>
+                                <span class="stat-label">Custom Plugins</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">4</span>
+                                <span class="stat-label">Plugin Types</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="plugin-hero-visual">
+                        <div class="plugin-diagram">
+                            <div class="plugin-core">
+                                <i data-lucide="cpu"></i>
+                                <span>PixelUI Core</span>
+                            </div>
+                            <div class="plugin-connections">
+                                <div class="plugin-node" style="--delay: 0s">
+                                    <i data-lucide="puzzle"></i>
+                                    <span>Widgets</span>
+                                </div>
+                                <div class="plugin-node" style="--delay: 0.2s">
+                                    <i data-lucide="palette"></i>
+                                    <span>Themes</span>
+                                </div>
+                                <div class="plugin-node" style="--delay: 0.4s">
+                                    <i data-lucide="zap"></i>
+                                    <span>Hooks</span>
+                                </div>
+                                <div class="plugin-node" style="--delay: 0.6s">
+                                    <i data-lucide="code"></i>
+                                    <span>API</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="plugin-types">
+                <h3 class="subsection-title">Plugin Types</h3>
+                <div class="plugin-types-grid">
+                    <div class="plugin-type-card">
+                        <div class="plugin-type-icon">
+                            <i data-lucide="puzzle"></i>
+                        </div>
+                        <h4 class="plugin-type-title">Widget Plugins</h4>
+                        <p class="plugin-type-description">
+                            Create custom UI widgets with full integration into the PixelUI system, 
+                            including event handling, theming, and animation support.
+                        </p>
+                        <div class="plugin-type-features">
+                            <span class="feature-tag">Custom Rendering</span>
+                            <span class="feature-tag">Event Integration</span>
+                            <span class="feature-tag">Theme Support</span>
+                        </div>
+                    </div>
+                    
+                    <div class="plugin-type-card">
+                        <div class="plugin-type-icon">
+                            <i data-lucide="palette"></i>
+                        </div>
+                        <h4 class="plugin-type-title">Theme Plugins</h4>
+                        <p class="plugin-type-description">
+                            Design custom color schemes and visual styles that can be applied 
+                            to any PixelUI application with a single line of code.
+                        </p>
+                        <div class="plugin-type-features">
+                            <span class="feature-tag">Color Schemes</span>
+                            <span class="feature-tag">Visual Styles</span>
+                            <span class="feature-tag">Easy Application</span>
+                        </div>
+                    </div>
+                    
+                    <div class="plugin-type-card">
+                        <div class="plugin-type-icon">
+                            <i data-lucide="zap"></i>
+                        </div>
+                        <h4 class="plugin-type-title">Hook Plugins</h4>
+                        <p class="plugin-type-description">
+                            Extend framework behavior by hooking into core events and lifecycle methods, 
+                            perfect for adding logging, analytics, or custom behaviors.
+                        </p>
+                        <div class="plugin-type-features">
+                            <span class="feature-tag">Event Hooks</span>
+                            <span class="feature-tag">Lifecycle Control</span>
+                            <span class="feature-tag">Behavior Extension</span>
+                        </div>
+                    </div>
+                    
+                    <div class="plugin-type-card">
+                        <div class="plugin-type-icon">
+                            <i data-lucide="code"></i>
+                        </div>
+                        <h4 class="plugin-type-title">API Extensions</h4>
+                        <p class="plugin-type-description">
+                            Add new functionality to the PixelUI API, creating helper functions, 
+                            utilities, and enhanced features that other plugins can use.
+                        </p>
+                        <div class="plugin-type-features">
+                            <span class="feature-tag">API Enhancement</span>
+                            <span class="feature-tag">Utility Functions</span>
+                            <span class="feature-tag">Shared Libraries</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="plugin-showcase">
+                <h3 class="subsection-title">Plugin Development</h3>
+                <div class="plugin-development">
+                    <div class="plugin-dev-content">
+                        <div class="dev-step">
+                            <div class="step-number">1</div>
+                            <h4 class="step-title">Create Plugin Structure</h4>
+                            <p class="step-description">
+                                Start with a simple plugin template that includes metadata, 
+                                initialization, and your custom functionality.
+                            </p>
+                        </div>
+                        <div class="dev-step">
+                            <div class="step-number">2</div>
+                            <h4 class="step-title">Implement Features</h4>
+                            <p class="step-description">
+                                Add your widgets, themes, or extensions using PixelUI's 
+                                comprehensive plugin API and lifecycle hooks.
+                            </p>
+                        </div>
+                        <div class="dev-step">
+                            <div class="step-number">3</div>
+                            <h4 class="step-title">Load & Test</h4>
+                            <p class="step-description">
+                                Load your plugin into PixelUI and test it with real applications. 
+                                Debug and refine using built-in development tools.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="plugin-dev-visual">
+                        <div class="code-preview">
+                            <div class="code-header">
+                                <div class="code-dots">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                                <span class="code-title">my-plugin.lua</span>
+                            </div>
+                            <div class="code-content">
+                                <div class="code-line">
+                                    <span class="code-comment">-- Plugin Example</span>
+                                </div>
+                                <div class="code-line">
+                                    <span class="code-keyword">local</span> <span class="code-variable">plugin</span> <span class="code-operator">=</span> <span class="code-punctuation">{</span>
+                                </div>
+                                <div class="code-line">
+                                    <span class="code-property">  name</span> <span class="code-operator">=</span> <span class="code-string">"CustomWidget"</span><span class="code-punctuation">,</span>
+                                </div>
+                                <div class="code-line">
+                                    <span class="code-property">  version</span> <span class="code-operator">=</span> <span class="code-string">"1.0.0"</span><span class="code-punctuation">,</span>
+                                </div>
+                                <div class="code-line">
+                                    <span class="code-property">  type</span> <span class="code-operator">=</span> <span class="code-string">"widget"</span>
+                                </div>
+                                <div class="code-line">
+                                    <span class="code-punctuation">}</span>
+                                </div>
+                                <div class="code-line">
+                                    <span class="code-keyword">function</span> <span class="code-function">plugin.init</span><span class="code-punctuation">()</span>
+                                </div>
+                                <div class="code-line">
+                                    <span class="code-comment">  -- Plugin initialization</span>
+                                </div>
+                                <div class="code-line">
+                                    <span class="code-keyword">end</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="plugin-features">
+                <h3 class="subsection-title">Plugin System Features</h3>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <i data-lucide="download"></i>
+                        <h4>Auto-Loading</h4>
+                        <p>Plugins are automatically discovered and loaded from multiple sources including files, directories, and URLs.</p>
+                    </div>
+                    <div class="feature-item">
+                        <i data-lucide="layers"></i>
+                        <h4>Dependency Management</h4>
+                        <p>Plugins can specify dependencies and the system ensures proper loading order and compatibility.</p>
+                    </div>
+                    <div class="feature-item">
+                        <i data-lucide="activity"></i>
+                        <h4>Lifecycle Hooks</h4>
+                        <p>Full lifecycle management with initialization, activation, deactivation, and cleanup hooks.</p>
+                    </div>
+                    <div class="feature-item">
+                        <i data-lucide="shield-check"></i>
+                        <h4>Safe Sandboxing</h4>
+                        <p>Plugins run in controlled environments with access to approved APIs while maintaining system security.</p>
+                    </div>
+                    <div class="feature-item">
+                        <i data-lucide="refresh-cw"></i>
+                        <h4>Hot Reloading</h4>
+                        <p>Develop and test plugins with instant reloading during development for faster iteration cycles.</p>
+                    </div>
+                    <div class="feature-item">
+                        <i data-lucide="book-open"></i>
+                        <h4>Rich Documentation</h4>
+                        <p>Comprehensive API reference, examples, and guides for plugin development and best practices.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="plugin-cta">
+                <div class="cta-content">
+                    <h3 class="cta-title">Ready to Extend PixelUI?</h3>
+                    <p class="cta-description">
+                        Explore our comprehensive plugin documentation and start building your own extensions today.
+                    </p>
+                    <div class="cta-actions">
+                        <a href="./plugins.html" class="btn btn-primary">
+                            <i data-lucide="book"></i>
+                            Plugin Documentation
+                        </a>
+                        <a href="https://github.com/Shlomo1412/PixelUI/tree/main/plugins" class="btn btn-secondary" target="_blank">
+                            <i data-lucide="github"></i>
+                            Browse Examples
+                        </a>
+                    </div>
+                </div>
+                <div class="cta-visual">
+                    <div class="plugin-showcase-grid">
+                        <div class="showcase-item" style="--delay: 0s">
+                            <i data-lucide="calendar"></i>
+                            <span>DatePicker</span>
+                        </div>
+                        <div class="showcase-item" style="--delay: 0.1s">
+                            <i data-lucide="bar-chart"></i>
+                            <span>ChartWidget</span>
+                        </div>
+                        <div class="showcase-item" style="--delay: 0.2s">
+                            <i data-lucide="map"></i>
+                            <span>MapViewer</span>
+                        </div>
+                        <div class="showcase-item" style="--delay: 0.3s">
+                            <i data-lucide="music"></i>
+                            <span>AudioPlayer</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Download Section -->
     <section class="section download" id="download">
         <div class="container">
