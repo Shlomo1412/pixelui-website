@@ -18,8 +18,8 @@
     flex-wrap: wrap;
     gap: 0.5rem;
   }
-  /* Code blocks and pre elements */
-  pre, code, .code-block, .widget-example, .terminal-content {
+  /* Code blocks and pre elements - but not API-specific ones */
+  pre:not(.api-content pre), code:not(.api-content code), .code-block, .widget-example, .terminal-content {
     white-space: pre;
     word-break: break-word;
     overflow-x: auto;
@@ -27,14 +27,14 @@
     font-size: 0.85em;
     box-sizing: border-box;
   }
-  /* Tables */
-  table, .property-table {
+  /* Tables - but not property tables which have their own mobile handling */
+  table:not(.property-table) {
     display: block;
     width: 100%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
-  th, td {
+  th:not(.property-table th), td:not(.property-table td) {
     min-width: 100px;
     white-space: nowrap;
   }
@@ -1040,12 +1040,12 @@
 
     /* Mobile sidebar toggle button */
     .mobile-sidebar-toggle {
-        display: flex;
+        display: flex !important;
         align-items: center;
         gap: 0.5rem;
         width: 100%;
         padding: 0.875rem 1rem;
-        margin-bottom: 1rem;
+        margin: 0 1rem 1rem;
         background: var(--primary);
         color: var(--text-inverse);
         border: none;
@@ -1055,9 +1055,14 @@
         cursor: pointer;
         transition: all var(--transition-fast);
         box-shadow: var(--shadow-sm);
+        z-index: 999;
+        position: relative;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
     }
 
-    .mobile-sidebar-toggle:hover {
+    .mobile-sidebar-toggle:hover,
+    .mobile-sidebar-toggle:active {
         background: var(--primary-hover);
         transform: translateY(-1px);
         box-shadow: var(--shadow-md);
@@ -1065,17 +1070,19 @@
 
     .mobile-sidebar-toggle.active {
         background: var(--accent);
+        box-shadow: var(--shadow-lg);
     }
 
     .mobile-sidebar-toggle i {
         width: 18px;
         height: 18px;
+        flex-shrink: 0;
     }
 
     /* Mobile sidebar behavior */
     .api-sidebar.mobile-open {
-        position: fixed;
-        top: var(--nav-height);
+        position: fixed !important;
+        top: calc(var(--nav-height, 70px));
         left: 0;
         right: 0;
         bottom: 0;
@@ -1090,6 +1097,17 @@
         backdrop-filter: blur(10px);
         box-shadow: var(--shadow-xl);
         animation: slideInFromTop 0.3s ease-out;
+        display: block !important;
+        transform: translateZ(0); /* Force hardware acceleration */
+    }
+
+    /* Ensure sidebar is hidden by default on mobile */
+    .api-sidebar {
+        display: none;
+    }
+
+    .api-sidebar.mobile-open {
+        display: block !important;
     }
 
     @keyframes slideInFromTop {

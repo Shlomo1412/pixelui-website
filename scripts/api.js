@@ -7851,60 +7851,106 @@ class MobileSidebar {
     constructor() {
         this.sidebar = document.querySelector('.api-sidebar');
         this.content = document.querySelector('.api-content');
-        this.createToggleButton();
         this.init();
     }
 
+    init() {
+        // Wait for DOM to be fully ready
+        if (!this.sidebar || !this.content) {
+            console.warn('MobileSidebar: Required elements not found');
+            return;
+        }
+        
+        this.createToggleButton();
+        this.bindEvents();
+    }
+
     createToggleButton() {
+        // Check if button already exists
+        if (document.querySelector('.mobile-sidebar-toggle')) {
+            this.toggleBtn = document.querySelector('.mobile-sidebar-toggle');
+            return;
+        }
+
         // Create mobile sidebar toggle button
         const toggleBtn = document.createElement('button');
         toggleBtn.className = 'mobile-sidebar-toggle';
         toggleBtn.innerHTML = '<i data-lucide="menu"></i><span>Navigation</span>';
         toggleBtn.setAttribute('aria-label', 'Toggle API Navigation');
+        toggleBtn.setAttribute('type', 'button');
 
         // Insert before the API content
-        if (this.content && this.sidebar) {
-            this.content.parentNode.insertBefore(toggleBtn, this.content);
-            this.toggleBtn = toggleBtn;
+        const container = this.content.parentNode;
+        container.insertBefore(toggleBtn, this.content);
+        this.toggleBtn = toggleBtn;
+
+        // Initialize lucide icons for the new button
+        if (window.lucide) {
+            window.lucide.createIcons();
         }
+
+        console.log('MobileSidebar: Toggle button created');
     }
 
-    init() {
-        if (!this.toggleBtn || !this.sidebar) return;
+    bindEvents() {
+        if (!this.toggleBtn) {
+            console.warn('MobileSidebar: Toggle button not found');
+            return;
+        }
 
-        this.toggleBtn.addEventListener('click', () => {
-            this.sidebar.classList.toggle('mobile-open');
-            this.toggleBtn.classList.toggle('active');
-            
-            // Update ARIA
-            const isOpen = this.sidebar.classList.contains('mobile-open');
-            this.toggleBtn.setAttribute('aria-expanded', isOpen);
+        // Add click event to toggle button
+        this.toggleBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            this.toggleSidebar();
+            console.log('MobileSidebar: Toggle clicked');
         });
 
         // Close sidebar when clicking on content area
         this.content?.addEventListener('click', () => {
-            this.sidebar.classList.remove('mobile-open');
-            this.toggleBtn.classList.remove('active');
-            this.toggleBtn.setAttribute('aria-expanded', 'false');
+            this.closeSidebar();
         });
 
         // Close sidebar when clicking outside
         document.addEventListener('click', (e) => {
             if (!this.sidebar.contains(e.target) && !this.toggleBtn.contains(e.target)) {
-                this.sidebar.classList.remove('mobile-open');
-                this.toggleBtn.classList.remove('active');
-                this.toggleBtn.setAttribute('aria-expanded', 'false');
+                this.closeSidebar();
             }
         });
 
         // Close sidebar on escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                this.sidebar.classList.remove('mobile-open');
-                this.toggleBtn.classList.remove('active');
-                this.toggleBtn.setAttribute('aria-expanded', 'false');
+                this.closeSidebar();
             }
         });
+
+        console.log('MobileSidebar: Events bound');
+    }
+
+    toggleSidebar() {
+        const isOpen = this.sidebar.classList.contains('mobile-open');
+        if (isOpen) {
+            this.closeSidebar();
+        } else {
+            this.openSidebar();
+        }
+    }
+
+    openSidebar() {
+        this.sidebar.classList.add('mobile-open');
+        this.toggleBtn.classList.add('active');
+        this.toggleBtn.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        console.log('MobileSidebar: Sidebar opened');
+    }
+
+    closeSidebar() {
+        this.sidebar.classList.remove('mobile-open');
+        this.toggleBtn.classList.remove('active');
+        this.toggleBtn.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = ''; // Restore scrolling
+        console.log('MobileSidebar: Sidebar closed');
     }
 }
 
@@ -7912,9 +7958,16 @@ class MobileSidebar {
 let apiManager;
 
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('API page: DOM loaded, initializing components...');
+    
     new ThemeManager();
     new MobileMenu();
-    new MobileSidebar();
+    
+    // Initialize mobile sidebar with a small delay to ensure DOM is ready
+    setTimeout(() => {
+        new MobileSidebar();
+    }, 100);
+    
     new ScrollToTop();
     apiManager = new APIDocumentationManager();
     
@@ -7922,6 +7975,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (window.Prism) {
         Prism.highlightAll();
     }
+    
+    console.log('API page: All components initialized');
 });
 
 // Scroll to Top functionality
