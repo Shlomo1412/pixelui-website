@@ -7823,26 +7823,14 @@ class APIDocumentationManager {
     }
 }
 
-// Mobile menu (reuse from main.js)
+// Mobile menu (reuse from main.js but disable for API page)
 class MobileMenu {
     constructor() {
         this.toggle = document.getElementById('mobile-menu-toggle');
         this.navLinks = document.querySelector('.nav-links');
-        this.init();
-    }
-    
-    init() {
-        if (!this.toggle || !this.navLinks) return;
-        
-        this.toggle.addEventListener('click', () => {
-            this.navLinks.classList.toggle('active');
-        });
-        
-        document.addEventListener('click', (e) => {
-            if (!this.toggle.contains(e.target) && !this.navLinks.contains(e.target)) {
-                this.navLinks.classList.remove('active');
-            }
-        });
+        // Don't initialize the regular mobile menu on API page
+        // The mobile sidebar will handle the mobile menu toggle button
+        console.log('MobileMenu: Skipping initialization on API page');
     }
 }
 
@@ -7851,6 +7839,7 @@ class MobileSidebar {
     constructor() {
         this.sidebar = document.querySelector('.api-sidebar');
         this.content = document.querySelector('.api-content');
+        this.mobileMenuToggle = document.getElementById('mobile-menu-toggle');
         this.init();
     }
 
@@ -7906,6 +7895,16 @@ class MobileSidebar {
             console.log('MobileSidebar: Toggle clicked');
         });
 
+        // Bind top navbar mobile menu toggle to API sidebar
+        if (this.mobileMenuToggle) {
+            this.mobileMenuToggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.toggleSidebar();
+                console.log('MobileSidebar: Top nav toggle clicked');
+            });
+        }
+
         // Close sidebar when clicking on content area
         this.content?.addEventListener('click', () => {
             this.closeSidebar();
@@ -7913,7 +7912,9 @@ class MobileSidebar {
 
         // Close sidebar when clicking outside
         document.addEventListener('click', (e) => {
-            if (!this.sidebar.contains(e.target) && !this.toggleBtn.contains(e.target)) {
+            if (!this.sidebar.contains(e.target) && 
+                !this.toggleBtn.contains(e.target) && 
+                (!this.mobileMenuToggle || !this.mobileMenuToggle.contains(e.target))) {
                 this.closeSidebar();
             }
         });
@@ -7923,6 +7924,18 @@ class MobileSidebar {
             if (e.key === 'Escape') {
                 this.closeSidebar();
             }
+        });
+
+        // Handle sidebar link clicks
+        const sidebarLinks = this.sidebar.querySelectorAll('.sidebar-link');
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                // Let the link navigate naturally, but close the sidebar
+                setTimeout(() => {
+                    this.closeSidebar();
+                }, 100);
+                console.log('MobileSidebar: Sidebar link clicked, closing sidebar');
+            });
         });
 
         console.log('MobileSidebar: Events bound');

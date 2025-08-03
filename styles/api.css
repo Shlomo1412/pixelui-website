@@ -68,6 +68,19 @@
     flex-shrink: 0;
   }
   
+  /* Fix theme responsive icons */
+  .mobile-menu-toggle i,
+  .theme-toggle i,
+  .nav-github i {
+    color: var(--text-primary);
+  }
+  
+  [data-theme="dark"] .mobile-menu-toggle i,
+  [data-theme="dark"] .theme-toggle i,
+  [data-theme="dark"] .nav-github i {
+    color: var(--text-inverse);
+  }
+  
   /* Make modals and overlays scrollable and fit screen */
   .modal-dialog, .export-dialog, .preview-dialog {
     max-width: 98vw;
@@ -1111,7 +1124,7 @@
         display: flex !important;
         align-items: center;
         gap: 0.5rem;
-        width: 100%;
+        width: calc(100% - 2rem);
         padding: 0.875rem 1rem;
         margin: 0 1rem 1rem;
         background: var(--primary);
@@ -1127,6 +1140,8 @@
         position: relative;
         touch-action: manipulation;
         -webkit-tap-highlight-color: transparent;
+        box-sizing: border-box;
+        max-width: calc(100vw - 2rem);
     }
 
     .mobile-sidebar-toggle:hover,
