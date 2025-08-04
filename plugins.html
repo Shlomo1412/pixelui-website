@@ -70,27 +70,136 @@
         </div>
     </nav>
 
-    <!-- Plugin Header -->
+    <!-- Enhanced Plugin Header -->
     <section class="api-header">
+        <div class="api-header-background">
+            <div class="api-header-pattern"></div>
+            <div class="api-header-glow"></div>
+        </div>
+        
         <div class="container">
             <div class="api-header-content">
-                <h1 class="api-title">Plugin System</h1>
+                <div class="api-badge">
+                    <i data-lucide="puzzle"></i>
+                    <span>Developer Resources</span>
+                </div>
+                
+                <h1 class="api-title">
+                    Plugin <span class="gradient-text">System</span>
+                </h1>
+                
                 <p class="api-description">
                     Extend PixelUI with custom widgets, themes, animations, and functionality.
-                    Build once, share everywhere with the powerful plugin architecture.
+                    Build once, share everywhere with our powerful and flexible plugin architecture.
                 </p>
                 
-                <div class="api-search-main">
-                    <div class="search-input-container">
-                        <input type="text" placeholder="Search plugins, guides, examples..." id="plugin-search">
-                        <i data-lucide="search"></i>
+                <!-- Plugin Statistics -->
+                <div class="api-stats">
+                    <div class="api-stat">
+                        <div class="stat-icon">
+                            <i data-lucide="package"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">50+</div>
+                            <div class="stat-label">Community Plugins</div>
+                        </div>
                     </div>
-                    <div class="search-filters">
-                        <button class="filter-btn active" data-filter="all">All Content</button>
-                        <button class="filter-btn" data-filter="guides">Guides</button>
-                        <button class="filter-btn" data-filter="examples">Examples</button>
-                        <button class="filter-btn" data-filter="reference">Reference</button>
-                        <button class="filter-btn" data-filter="community">Community</button>
+                    <div class="api-stat">
+                        <div class="stat-icon">
+                            <i data-lucide="code"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">4</div>
+                            <div class="stat-label">Plugin Types</div>
+                        </div>
+                    </div>
+                    <div class="api-stat">
+                        <div class="stat-icon">
+                            <i data-lucide="users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">200+</div>
+                            <div class="stat-label">Active Developers</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Enhanced Search -->
+                <div class="api-search-main">
+                    <div class="search-container">
+                        <div class="search-input-container">
+                            <i data-lucide="search" class="search-icon"></i>
+                            <input type="text" placeholder="Search plugin guides, examples, and documentation..." id="plugin-search" class="search-input">
+                            <div class="search-shortcut">
+                                <span>⌘</span>
+                                <span>K</span>
+                            </div>
+                        </div>
+                        <div class="search-filters">
+                            <button class="filter-btn active" data-filter="all">
+                                <i data-lucide="grid-3x3"></i>
+                                All Content
+                            </button>
+                            <button class="filter-btn" data-filter="guides">
+                                <i data-lucide="book-open"></i>
+                                Guides
+                            </button>
+                            <button class="filter-btn" data-filter="examples">
+                                <i data-lucide="code"></i>
+                                Examples
+                            </button>
+                            <button class="filter-btn" data-filter="reference">
+                                <i data-lucide="file-text"></i>
+                                Reference
+                            </button>
+                            <button class="filter-btn" data-filter="community">
+                                <i data-lucide="users"></i>
+                                Community
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="api-quick-links">
+                    <h3 class="quick-links-title">Quick Start</h3>
+                    <div class="quick-links-grid">
+                        <a href="#plugin-overview" class="quick-link">
+                            <div class="quick-link-icon">
+                                <i data-lucide="play"></i>
+                            </div>
+                            <div class="quick-link-content">
+                                <div class="quick-link-title">Plugin Overview</div>
+                                <div class="quick-link-desc">Learn about the plugin system</div>
+                            </div>
+                        </a>
+                        <a href="#basic-plugin" class="quick-link">
+                            <div class="quick-link-icon">
+                                <i data-lucide="plus"></i>
+                            </div>
+                            <div class="quick-link-content">
+                                <div class="quick-link-title">Create Your First Plugin</div>
+                                <div class="quick-link-desc">Build a simple widget plugin</div>
+                            </div>
+                        </a>
+                        <a href="#plugin-registry" class="quick-link">
+                            <div class="quick-link-icon">
+                                <i data-lucide="package"></i>
+                            </div>
+                            <div class="quick-link-content">
+                                <div class="quick-link-title">Browse Plugins</div>
+                                <div class="quick-link-desc">Explore community plugins</div>
+                            </div>
+                        </a>
+                        <a href="#examples-gallery" class="quick-link">
+                            <div class="quick-link-icon">
+                                <i data-lucide="image"></i>
+                            </div>
+                            <div class="quick-link-content">
+                                <div class="quick-link-title">Examples Gallery</div>
+                                <div class="quick-link-desc">Ready-to-use examples</div>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -101,65 +210,585 @@
     <section class="api-main">
         <div class="container">
             <div class="api-layout">
-                <!-- Sidebar Navigation -->
+                <!-- Enhanced Sidebar Navigation -->
                 <aside class="api-sidebar">
+                    <div class="sidebar-header">
+                        <div class="sidebar-search">
+                            <div class="sidebar-search-container">
+                                <i data-lucide="search" class="sidebar-search-icon"></i>
+                                <input type="text" placeholder="Filter documentation..." id="sidebar-search" class="sidebar-search-input">
+                            </div>
+                        </div>
+                        
+                        <div class="sidebar-stats">
+                            <div class="sidebar-stat">
+                                <span class="stat-number">8</span>
+                                <span class="stat-label">Sections</span>
+                            </div>
+                            <div class="sidebar-stat">
+                                <span class="stat-number">32</span>
+                                <span class="stat-label">Topics</span>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="sidebar-content">
                         <div class="sidebar-section">
-                            <h3 class="sidebar-title">Getting Started</h3>
-                            <ul class="sidebar-nav">
-                                <li><a href="#plugin-overview" class="sidebar-link">Plugin Overview</a></li>
-                                <li><a href="#installation" class="sidebar-link">Installation</a></li>
-                                <li><a href="#basic-plugin" class="sidebar-link">Your First Plugin</a></li>
-                                <li><a href="#plugin-structure" class="sidebar-link">Plugin Structure</a></li>
+                            <div class="sidebar-section-header">
+                                <div class="section-icon">
+                                    <i data-lucide="play-circle"></i>
+                                </div>
+                                <h3 class="sidebar-title">Getting Started</h3>
+                                <div class="section-count">4</div>
+                                <button class="section-toggle" data-section="getting-started">
+                                    <i data-lucide="chevron-down"></i>
+                                </button>
+                            </div>
+                            <ul class="sidebar-nav" id="nav-getting-started">
+                                <li><a href="#plugin-overview" class="sidebar-link">
+                                    <i data-lucide="info"></i>
+                                    <span>Plugin Overview</span>
+                                    <span class="link-type">guide</span>
+                                </a></li>
+                                <li><a href="#installation" class="sidebar-link">
+                                    <i data-lucide="download"></i>
+                                    <span>Installation</span>
+                                    <span class="link-type">guide</span>
+                                </a></li>
+                                <li><a href="#basic-plugin" class="sidebar-link">
+                                    <i data-lucide="plus-circle"></i>
+                                    <span>Your First Plugin</span>
+                                    <span class="link-type">tutorial</span>
+                                </a></li>
+                                <li><a href="#plugin-structure" class="sidebar-link">
+                                    <i data-lucide="folder-tree"></i>
+                                    <span>Plugin Structure</span>
+                                    <span class="link-type">reference</span>
+                                </a></li>
                             </ul>
                         </div>
 
                         <div class="sidebar-section">
-                            <h3 class="sidebar-title">Plugin Types</h3>
-                            <ul class="sidebar-nav">
-                                <li><a href="#widget-plugins" class="sidebar-link">Widget Plugins</a></li>
-                                <li><a href="#theme-plugins" class="sidebar-link">Theme Plugins</a></li>
-                                <li><a href="#animation-plugins" class="sidebar-link">Animation Plugins</a></li>
-                                <li><a href="#utility-plugins" class="sidebar-link">Utility Plugins</a></li>
+                            <div class="sidebar-section-header">
+                                <div class="section-icon">
+                                    <i data-lucide="package"></i>
+                                </div>
+                                <h3 class="sidebar-title">Plugin Types</h3>
+                                <div class="section-count">4</div>
+                                <button class="section-toggle" data-section="plugin-types">
+                                    <i data-lucide="chevron-down"></i>
+                                </button>
+                            </div>
+                            <ul class="sidebar-nav" id="nav-plugin-types">
+                                <li><a href="#widget-plugins" class="sidebar-link">
+                                    <i data-lucide="monitor"></i>
+                                    <span>Widget Plugins</span>
+                                    <span class="link-type">guide</span>
+                                </a></li>
+                                <li><a href="#theme-plugins" class="sidebar-link">
+                                    <i data-lucide="palette"></i>
+                                    <span>Theme Plugins</span>
+                                    <span class="link-type">guide</span>
+                                </a></li>
+                                <li><a href="#animation-plugins" class="sidebar-link">
+                                    <i data-lucide="move"></i>
+                                    <span>Animation Plugins</span>
+                                    <span class="link-type">guide</span>
+                                </a></li>
+                                <li><a href="#utility-plugins" class="sidebar-link">
+                                    <i data-lucide="tool"></i>
+                                    <span>Utility Plugins</span>
+                                    <span class="link-type">guide</span>
+                                </a></li>
                             </ul>
                         </div>
 
                         <div class="sidebar-section">
-                            <h3 class="sidebar-title">Development Guide</h3>
-                            <ul class="sidebar-nav">
-                                <li><a href="#plugin-api" class="sidebar-link">Plugin API</a></li>
-                                <li><a href="#lifecycle" class="sidebar-link">Plugin Lifecycle</a></li>
-                                <li><a href="#configuration" class="sidebar-link">Configuration</a></li>
-                                <li><a href="#dependencies" class="sidebar-link">Dependencies</a></li>
-                                <li><a href="#testing" class="sidebar-link">Testing Plugins</a></li>
+                            <div class="sidebar-section-header">
+                                <div class="section-icon">
+                                    <i data-lucide="wrench"></i>
+                                </div>
+                                <h3 class="sidebar-title">Development Guide</h3>
+                                <div class="section-count">5</div>
+                                <button class="section-toggle" data-section="development">
+                                    <i data-lucide="chevron-down"></i>
+                                </button>
+                            </div>
+                            <ul class="sidebar-nav" id="nav-development">
+                                <li><a href="#plugin-api" class="sidebar-link">
+                                    <i data-lucide="code"></i>
+                                    <span>Plugin API</span>
+                                    <span class="link-type">reference</span>
+                                </a></li>
+                                <li><a href="#lifecycle" class="sidebar-link">
+                                    <i data-lucide="refresh-cw"></i>
+                                    <span>Plugin Lifecycle</span>
+                                    <span class="link-type">guide</span>
+                                </a></li>
+                                <li><a href="#configuration" class="sidebar-link">
+                                    <i data-lucide="settings"></i>
+                                    <span>Configuration</span>
+                                    <span class="link-type">guide</span>
+                                </a></li>
+                                <li><a href="#dependencies" class="sidebar-link">
+                                    <i data-lucide="git-branch"></i>
+                                    <span>Dependencies</span>
+                                    <span class="link-type">guide</span>
+                                </a></li>
+                                <li><a href="#testing" class="sidebar-link">
+                                    <i data-lucide="check-circle"></i>
+                                    <span>Testing Plugins</span>
+                                    <span class="link-type">guide</span>
+                                </a></li>
                             </ul>
                         </div>
 
                         <div class="sidebar-section">
-                            <h3 class="sidebar-title">Advanced Topics</h3>
-                            <ul class="sidebar-nav">
-                                <li><a href="#custom-events" class="sidebar-link">Custom Events</a></li>
-                                <li><a href="#plugin-communication" class="sidebar-link">Plugin Communication</a></li>
-                                <li><a href="#performance" class="sidebar-link">Performance Tips</a></li>
-                                <li><a href="#best-practices" class="sidebar-link">Best Practices</a></li>
+                            <div class="sidebar-section-header">
+                                <div class="section-icon">
+                                    <i data-lucide="zap"></i>
+                                </div>
+                                <h3 class="sidebar-title">Advanced Topics</h3>
+                                <div class="section-count">4</div>
+                                <button class="section-toggle" data-section="advanced">
+                                    <i data-lucide="chevron-down"></i>
+                                </button>
+                            </div>
+                            <ul class="sidebar-nav" id="nav-advanced">
+                                <li><a href="#custom-events" class="sidebar-link">
+                                    <i data-lucide="radio"></i>
+                                    <span>Custom Events</span>
+                                    <span class="link-type">advanced</span>
+                                </a></li>
+                                <li><a href="#plugin-communication" class="sidebar-link">
+                                    <i data-lucide="message-square"></i>
+                                    <span>Plugin Communication</span>
+                                    <span class="link-type">advanced</span>
+                                </a></li>
+                                <li><a href="#performance" class="sidebar-link">
+                                    <i data-lucide="gauge"></i>
+                                    <span>Performance Tips</span>
+                                    <span class="link-type">optimization</span>
+                                </a></li>
+                                <li><a href="#best-practices" class="sidebar-link">
+                                    <i data-lucide="star"></i>
+                                    <span>Best Practices</span>
+                                    <span class="link-type">guide</span>
+                                </a></li>
                             </ul>
                         </div>
 
                         <div class="sidebar-section">
-                            <h3 class="sidebar-title">Community</h3>
-                            <ul class="sidebar-nav">
-                                <li><a href="#plugin-registry" class="sidebar-link">Plugin Registry</a></li>
-                                <li><a href="#contributing" class="sidebar-link">Contributing</a></li>
-                                <li><a href="#examples-gallery" class="sidebar-link">Examples Gallery</a></li>
+                            <div class="sidebar-section-header">
+                                <div class="section-icon">
+                                    <i data-lucide="users"></i>
+                                </div>
+                                <h3 class="sidebar-title">Community</h3>
+                                <div class="section-count">3</div>
+                                <button class="section-toggle" data-section="community">
+                                    <i data-lucide="chevron-down"></i>
+                                </button>
+                            </div>
+                            <ul class="sidebar-nav" id="nav-community">
+                                <li><a href="#plugin-registry" class="sidebar-link">
+                                    <i data-lucide="database"></i>
+                                    <span>Plugin Registry</span>
+                                    <span class="link-type">showcase</span>
+                                </a></li>
+                                <li><a href="#contributing" class="sidebar-link">
+                                    <i data-lucide="git-pull-request"></i>
+                                    <span>Contributing</span>
+                                    <span class="link-type">guide</span>
+                                </a></li>
+                                <li><a href="#examples-gallery" class="sidebar-link">
+                                    <i data-lucide="image"></i>
+                                    <span>Examples Gallery</span>
+                                    <span class="link-type">showcase</span>
+                                </a></li>
                             </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar-footer">
+                        <div class="sidebar-footer-actions">
+                            <a href="./plugin-showcase.html" class="sidebar-footer-link">
+                                <i data-lucide="eye"></i>
+                                Browse Plugin Gallery
+                            </a>
+                            <a href="https://github.com/Shlomo1412/PixelUI-plugins" class="sidebar-footer-link" target="_blank">
+                                <i data-lucide="external-link"></i>
+                                Plugin Repository
+                            </a>
                         </div>
                     </div>
                 </aside>
 
-                <!-- Main Content -->
+                <!-- Enhanced Main Content -->
                 <main class="api-content">
-                    <div id="plugin-docs-content">
-                        <!-- Content will be loaded here by JavaScript -->
+                    <!-- Plugin Overview Section -->
+                    <div class="widget-doc" id="plugin-overview">
+                        <div class="widget-header">
+                            <h2 class="widget-title">
+                                Plugin Overview
+                                <span class="widget-category-badge">Getting Started</span>
+                            </h2>
+                        </div>
+                        
+                        <div class="widget-description">
+                            <h3 class="widget-subtitle">
+                                Extend PixelUI with powerful, reusable components that integrate seamlessly into any application.
+                            </h3>
+                        </div>
+
+                        <div class="property-section">
+                            <h3 class="section-title">
+                                <i data-lucide="package"></i>
+                                What are PixelUI Plugins?
+                            </h3>
+                            <p>PixelUI plugins are modular extensions that add new functionality to the framework. They can include:</p>
+                            <ul>
+                                <li><strong>Custom Widgets:</strong> New UI components with unique functionality</li>
+                                <li><strong>Themes:</strong> Complete visual styling packages</li>
+                                <li><strong>Animations:</strong> Custom transition and motion effects</li>
+                                <li><strong>Utilities:</strong> Helper functions and tools for development</li>
+                            </ul>
+                        </div>
+
+                        <div class="note">
+                            <div class="note-title">
+                                <i data-lucide="lightbulb"></i>
+                                Why Use Plugins?
+                            </div>
+                            <div class="note-content">
+                                <p>Plugins allow you to:</p>
+                                <ul>
+                                    <li>Extend functionality without modifying core code</li>
+                                    <li>Share components with the community</li>
+                                    <li>Maintain clean, modular applications</li>
+                                    <li>Leverage community-created solutions</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Installation Section -->
+                    <div class="widget-doc" id="installation">
+                        <div class="widget-header">
+                            <h2 class="widget-title">
+                                Installation
+                                <span class="widget-category-badge">Setup</span>
+                            </h2>
+                        </div>
+
+                        <div class="property-section">
+                            <h3 class="section-title">
+                                <i data-lucide="download"></i>
+                                Installing Plugins
+                            </h3>
+                            
+                            <div class="example-section">
+                                <div class="example-tabs">
+                                    <button class="example-tab active" data-tab="manual">Manual Installation</button>
+                                    <button class="example-tab" data-tab="manager">Plugin Manager</button>
+                                </div>
+                                
+                                <div class="example-content active" data-content="manual">
+                                    <div class="code-example">
+                                        <button class="copy-btn" onclick="copyToClipboard(this)">
+                                            <i data-lucide="copy"></i>
+                                        </button>
+                                        <pre><code class="language-lua">-- Download and place plugin file in plugins directory
+-- /your-project/plugins/awesome-widget.lua
+
+local PixelUI = require("pixelui")
+
+-- Load the plugin
+PixelUI.loadPlugin("awesome-widget")
+
+-- Plugin is now available for use
+local myWidget = PixelUI.awesomeWidget({
+    x = 10, y = 5,
+    text = "Hello from plugin!"
+})</code></pre>
+                                    </div>
+                                </div>
+                                
+                                <div class="example-content" data-content="manager">
+                                    <div class="code-example">
+                                        <button class="copy-btn" onclick="copyToClipboard(this)">
+                                            <i data-lucide="copy"></i>
+                                        </button>
+                                        <pre><code class="language-lua">-- Using the built-in plugin manager
+local PixelUI = require("pixelui")
+
+-- Install from repository
+PixelUI.plugins.install("awesome-widget")
+
+-- Or install from URL
+PixelUI.plugins.installFromUrl("https://example.com/plugin.lua")
+
+-- List installed plugins
+local plugins = PixelUI.plugins.list()
+for name, info in pairs(plugins) do
+    print(name .. " v" .. info.version)
+end</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Basic Plugin Section -->
+                    <div class="widget-doc" id="basic-plugin">
+                        <div class="widget-header">
+                            <h2 class="widget-title">
+                                Your First Plugin
+                                <span class="widget-category-badge">Tutorial</span>
+                            </h2>
+                        </div>
+                        
+                        <div class="widget-description">
+                            <h3 class="widget-subtitle">
+                                Create a simple "Hello World" widget plugin to understand the basic structure.
+                            </h3>
+                        </div>
+
+                        <div class="property-section">
+                            <h3 class="section-title">
+                                <i data-lucide="file-plus"></i>
+                                Create the Plugin File
+                            </h3>
+                            
+                            <p>Create a new file <code>hello-widget.lua</code> in your plugins directory:</p>
+                            
+                            <div class="code-example">
+                                <button class="copy-btn" onclick="copyToClipboard(this)">
+                                    <i data-lucide="copy"></i>
+                                </button>
+                                <pre><code class="language-lua">-- hello-widget.lua
+-- A simple "Hello World" widget plugin
+
+local HelloWidget = {}
+
+-- Plugin metadata
+HelloWidget.info = {
+    name = "HelloWidget",
+    version = "1.0.0",
+    description = "A simple hello world widget",
+    author = "Your Name",
+    type = "widget"
+}
+
+-- Widget constructor
+function HelloWidget.new(parent, x, y, options)
+    options = options or {}
+    
+    local widget = {
+        x = x or 1,
+        y = y or 1,
+        text = options.text or "Hello, World!",
+        color = options.color or colors.white,
+        backgroundColor = options.backgroundColor or colors.black,
+        visible = true
+    }
+    
+    -- Render function
+    function widget:render(terminal)
+        if not self.visible then return end
+        
+        terminal.setCursorPos(self.x, self.y)
+        terminal.setTextColor(self.color)
+        terminal.setBackgroundColor(self.backgroundColor)
+        terminal.write(self.text)
+    end
+    
+    -- Update text
+    function widget:setText(newText)
+        self.text = newText
+    end
+    
+    -- Event handlers
+    function widget:onClick(x, y)
+        self.text = "Clicked!"
+        return true
+    end
+    
+    return widget
+end
+
+-- Register the plugin
+return HelloWidget</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="property-section">
+                            <h3 class="section-title">
+                                <i data-lucide="play"></i>
+                                Using Your Plugin
+                            </h3>
+                            
+                            <div class="code-example">
+                                <button class="copy-btn" onclick="copyToClipboard(this)">
+                                    <i data-lucide="copy"></i>
+                                </button>
+                                <pre><code class="language-lua">-- main.lua
+local PixelUI = require("pixelui")
+
+-- Initialize PixelUI
+PixelUI.init()
+
+-- Load your plugin
+PixelUI.loadPlugin("hello-widget")
+
+-- Create the widget
+local hello = PixelUI.helloWidget(nil, 5, 3, {
+    text = "Hello from my plugin!",
+    color = colors.yellow,
+    backgroundColor = colors.blue
+})
+
+-- Add to render loop
+PixelUI.addWidget(hello)
+
+-- Run the application
+PixelUI.run()</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="warning">
+                            <div class="warning-title">
+                                <i data-lucide="alert-triangle"></i>
+                                Important Notes
+                            </div>
+                            <div class="warning-content">
+                                <ul>
+                                    <li>Plugin names should be unique within your application</li>
+                                    <li>Always include proper metadata in your plugins</li>
+                                    <li>Test your plugins thoroughly before sharing</li>
+                                    <li>Follow naming conventions: use camelCase for function names</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Plugin Structure Section -->
+                    <div class="widget-doc" id="plugin-structure">
+                        <div class="widget-header">
+                            <h2 class="widget-title">
+                                Plugin Structure
+                                <span class="widget-category-badge">Reference</span>
+                            </h2>
+                        </div>
+
+                        <div class="property-section">
+                            <h3 class="section-title">
+                                <i data-lucide="folder-tree"></i>
+                                Required Components
+                            </h3>
+                            
+                            <table class="property-table">
+                                <thead>
+                                    <tr>
+                                        <th>Component</th>
+                                        <th>Type</th>
+                                        <th>Required</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="property-name">info</span></td>
+                                        <td><span class="property-type">table</span></td>
+                                        <td>Yes</td>
+                                        <td class="property-description">Plugin metadata including name, version, description</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="property-name">new</span></td>
+                                        <td><span class="property-type">function</span></td>
+                                        <td>Yes</td>
+                                        <td class="property-description">Constructor function that creates widget instances</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="property-name">init</span></td>
+                                        <td><span class="property-type">function</span></td>
+                                        <td>No</td>
+                                        <td class="property-description">Optional initialization function called when plugin loads</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="property-name">cleanup</span></td>
+                                        <td><span class="property-type">function</span></td>
+                                        <td>No</td>
+                                        <td class="property-description">Optional cleanup function called when plugin unloads</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="property-section">
+                            <h3 class="section-title">
+                                <i data-lucide="info"></i>
+                                Metadata Properties
+                            </h3>
+                            
+                            <table class="property-table">
+                                <thead>
+                                    <tr>
+                                        <th>Property</th>
+                                        <th>Type</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="property-name">name</span></td>
+                                        <td><span class="property-type">string</span></td>
+                                        <td class="property-description">Unique plugin identifier</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="property-name">version</span></td>
+                                        <td><span class="property-type">string</span></td>
+                                        <td class="property-description">Plugin version (semantic versioning recommended)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="property-name">description</span></td>
+                                        <td><span class="property-type">string</span></td>
+                                        <td class="property-description">Brief description of plugin functionality</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="property-name">author</span></td>
+                                        <td><span class="property-type">string</span></td>
+                                        <td class="property-description">Plugin author name</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="property-name">type</span></td>
+                                        <td><span class="property-type">string</span></td>
+                                        <td class="property-description">Plugin type: "widget", "theme", "animation", "utility"</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="property-name">dependencies</span></td>
+                                        <td><span class="property-type">table</span></td>
+                                        <td class="property-description">List of required plugins or libraries</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Continue with more sections... -->
+                    <div class="note">
+                        <div class="note-title">
+                            <i data-lucide="construction"></i>
+                            Documentation in Progress
+                        </div>
+                        <div class="note-content">
+                            <p>This documentation is currently being expanded. More sections including Widget Plugins, Theme Plugins, Advanced Topics, and Community resources are coming soon!</p>
+                            <p>In the meantime, you can:</p>
+                            <ul>
+                                <li>Explore the <a href="./plugin-showcase.html">Plugin Gallery</a> for examples</li>
+                                <li>Check out the <a href="https://github.com/Shlomo1412/PixelUI-plugins" target="_blank">Plugin Repository</a></li>
+                                <li>Join our community for support and discussions</li>
+                            </ul>
+                        </div>
                     </div>
                 </main>
             </div>

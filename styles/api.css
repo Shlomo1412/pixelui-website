@@ -1938,3 +1938,138 @@
     transform: translateY(-2px);
     box-shadow: var(--shadow-xl);
 }
+
+/* Plugin-specific enhancements */
+.link-type.guide {
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--primary);
+}
+
+.link-type.tutorial {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--accent);
+}
+
+.link-type.reference {
+    background: rgba(139, 92, 246, 0.1);
+    color: #8b5cf6;
+}
+
+.link-type.advanced {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--warning);
+}
+
+.link-type.optimization {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.link-type.showcase {
+    background: rgba(236, 72, 153, 0.1);
+    color: #ec4899;
+}
+
+/* Enhanced code examples for plugins */
+.widget-doc .code-example {
+    background: linear-gradient(135deg, var(--bg-code), rgba(59, 130, 246, 0.05));
+    border: 1px solid var(--border-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.widget-doc .code-example::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+
+/* Plugin documentation navigation */
+.plugin-nav-hint {
+    position: fixed;
+    bottom: 6rem;
+    right: 2rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.75rem;
+    box-shadow: var(--shadow-lg);
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    z-index: 999;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all var(--transition-normal);
+}
+
+.plugin-nav-hint.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Copy button enhancements */
+.copy-btn {
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.copy-btn:hover {
+    background: rgba(59, 130, 246, 0.2);
+    border-color: var(--primary);
+    transform: scale(1.05);
+}
+
+/* Plugin metadata styling */
+.plugin-metadata {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.metadata-item {
+    text-align: center;
+}
+
+.metadata-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.metadata-value {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* Plugin type badges */
+.plugin-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: white;
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.plugin-type-badge i {
+    font-size: 0.875rem;
+}
