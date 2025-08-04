@@ -7834,6 +7834,87 @@ class MobileMenu {
     }
 }
 
+// Sidebar Section Toggle Functionality
+class SidebarSectionToggle {
+    constructor() {
+        this.sections = document.querySelectorAll('.sidebar-section');
+        this.init();
+    }
+
+    init() {
+        console.log('SidebarSectionToggle: Initializing collapsible sections...');
+        
+        this.sections.forEach(section => {
+            const header = section.querySelector('.sidebar-section-header');
+            const toggle = section.querySelector('.section-toggle');
+            const nav = section.querySelector('.sidebar-nav');
+            
+            if (!header || !toggle || !nav) {
+                console.warn('SidebarSectionToggle: Missing elements in section', section);
+                return;
+            }
+
+            // Set initial state (all sections expanded by default)
+            section.classList.remove('collapsed');
+            nav.style.maxHeight = nav.scrollHeight + 'px';
+            
+            // Handle toggle button click
+            toggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.toggleSection(section, nav);
+            });
+
+            // Handle header click (for better UX)
+            header.addEventListener('click', (e) => {
+                // Only toggle if clicking the header itself, not child elements
+                if (e.target === header || e.target.closest('.sidebar-title')) {
+                    e.preventDefault();
+                    this.toggleSection(section, nav);
+                }
+            });
+        });
+
+        console.log(`SidebarSectionToggle: Initialized ${this.sections.length} collapsible sections`);
+    }
+
+    toggleSection(section, nav) {
+        const isCollapsed = section.classList.contains('collapsed');
+        
+        if (isCollapsed) {
+            // Expand section
+            section.classList.remove('collapsed');
+            nav.style.maxHeight = nav.scrollHeight + 'px';
+            console.log('SidebarSectionToggle: Expanded section', section.querySelector('.sidebar-title').textContent);
+        } else {
+            // Collapse section
+            section.classList.add('collapsed');
+            nav.style.maxHeight = '0px';
+            console.log('SidebarSectionToggle: Collapsed section', section.querySelector('.sidebar-title').textContent);
+        }
+    }
+
+    expandAllSections() {
+        this.sections.forEach(section => {
+            const nav = section.querySelector('.sidebar-nav');
+            if (nav) {
+                section.classList.remove('collapsed');
+                nav.style.maxHeight = nav.scrollHeight + 'px';
+            }
+        });
+    }
+
+    collapseAllSections() {
+        this.sections.forEach(section => {
+            const nav = section.querySelector('.sidebar-nav');
+            if (nav) {
+                section.classList.add('collapsed');
+                nav.style.maxHeight = '0px';
+            }
+        });
+    }
+}
+
 // Mobile Sidebar Toggle for API page
 class MobileSidebar {
     constructor() {
@@ -7975,6 +8056,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     new ThemeManager();
     new MobileMenu();
+    
+    // Initialize sidebar section toggles
+    new SidebarSectionToggle();
     
     // Initialize mobile sidebar with a small delay to ensure DOM is ready
     setTimeout(() => {

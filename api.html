@@ -70,27 +70,144 @@
         </div>
     </nav>
 
-    <!-- API Header -->
+    <!-- Enhanced API Header -->
     <section class="api-header">
+        <div class="api-header-background">
+            <div class="api-header-pattern"></div>
+            <div class="api-header-glow"></div>
+        </div>
+        
         <div class="container">
             <div class="api-header-content">
-                <h1 class="api-title">API Reference</h1>
+                <div class="api-badge">
+                    <i data-lucide="book-open"></i>
+                    <span>Complete Documentation</span>
+                </div>
+                
+                <h1 class="api-title">
+                    API <span class="gradient-text">Reference</span>
+                </h1>
+                
                 <p class="api-description">
                     Complete documentation for all PixelUI widgets, functions, and methods.
-                    Search through 30+ widgets and hundreds of properties and events.
+                    Search through 30+ widgets, hundreds of properties, events, and advanced features 
+                    to build amazing UIs for ComputerCraft.
                 </p>
                 
-                <div class="api-search-main">
-                    <div class="search-input-container">
-                        <input type="text" placeholder="Search widgets, functions, properties..." id="main-search">
-                        <i data-lucide="search"></i>
+                <div class="api-stats">
+                    <div class="api-stat">
+                        <div class="stat-icon">
+                            <i data-lucide="package"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">30+</div>
+                            <div class="stat-label">Widgets</div>
+                        </div>
                     </div>
-                    <div class="search-filters">
-                        <button class="filter-btn active" data-filter="all">All</button>
-                        <button class="filter-btn" data-filter="widgets">Widgets</button>
-                        <button class="filter-btn" data-filter="functions">Functions</button>
-                        <button class="filter-btn" data-filter="events">Events</button>
-                        <button class="filter-btn" data-filter="properties">Properties</button>
+                    <div class="api-stat">
+                        <div class="stat-icon">
+                            <i data-lucide="function-square"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">200+</div>
+                            <div class="stat-label">Functions</div>
+                        </div>
+                    </div>
+                    <div class="api-stat">
+                        <div class="stat-icon">
+                            <i data-lucide="zap"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">100+</div>
+                            <div class="stat-label">Events</div>
+                        </div>
+                    </div>
+                    <div class="api-stat">
+                        <div class="stat-icon">
+                            <i data-lucide="settings"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">500+</div>
+                            <div class="stat-label">Properties</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="api-search-main">
+                    <div class="search-container">
+                        <div class="search-input-container">
+                            <i data-lucide="search" class="search-icon"></i>
+                            <input type="text" placeholder="Search widgets, functions, properties..." id="main-search" class="search-input">
+                            <div class="search-shortcut">
+                                <span>Ctrl</span>
+                                <span>K</span>
+                            </div>
+                        </div>
+                        
+                        <div class="search-filters">
+                            <button class="filter-btn active" data-filter="all">
+                                <i data-lucide="grid-3x3"></i>
+                                <span>All</span>
+                            </button>
+                            <button class="filter-btn" data-filter="widgets">
+                                <i data-lucide="package"></i>
+                                <span>Widgets</span>
+                            </button>
+                            <button class="filter-btn" data-filter="functions">
+                                <i data-lucide="function-square"></i>
+                                <span>Functions</span>
+                            </button>
+                            <button class="filter-btn" data-filter="events">
+                                <i data-lucide="zap"></i>
+                                <span>Events</span>
+                            </button>
+                            <button class="filter-btn" data-filter="properties">
+                                <i data-lucide="settings"></i>
+                                <span>Properties</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="api-quick-links">
+                    <h3 class="quick-links-title">Quick Start</h3>
+                    <div class="quick-links-grid">
+                        <a href="#getting-started" class="quick-link">
+                            <div class="quick-link-icon">
+                                <i data-lucide="play"></i>
+                            </div>
+                            <div class="quick-link-content">
+                                <div class="quick-link-title">Getting Started</div>
+                                <div class="quick-link-desc">Initialize and setup PixelUI</div>
+                            </div>
+                        </a>
+                        <a href="#widgets" class="quick-link">
+                            <div class="quick-link-icon">
+                                <i data-lucide="package"></i>
+                            </div>
+                            <div class="quick-link-content">
+                                <div class="quick-link-title">Widget Reference</div>
+                                <div class="quick-link-desc">Browse all available widgets</div>
+                            </div>
+                        </a>
+                        <a href="#examples" class="quick-link">
+                            <div class="quick-link-icon">
+                                <i data-lucide="code"></i>
+                            </div>
+                            <div class="quick-link-content">
+                                <div class="quick-link-title">Code Examples</div>
+                                <div class="quick-link-desc">Copy-paste ready examples</div>
+                            </div>
+                        </a>
+                        <a href="#advanced" class="quick-link">
+                            <div class="quick-link-icon">
+                                <i data-lucide="rocket"></i>
+                            </div>
+                            <div class="quick-link-content">
+                                <div class="quick-link-title">Advanced Features</div>
+                                <div class="quick-link-desc">Animation, theming, and more</div>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -101,96 +218,380 @@
     <section class="api-main">
         <div class="container">
             <div class="api-layout">
-                <!-- Sidebar Navigation -->
+                <!-- Enhanced Sidebar Navigation -->
                 <aside class="api-sidebar">
+                    <div class="sidebar-header">
+                        <div class="sidebar-search">
+                            <div class="sidebar-search-container">
+                                <i data-lucide="search" class="sidebar-search-icon"></i>
+                                <input type="text" placeholder="Filter documentation..." id="sidebar-search" class="sidebar-search-input">
+                            </div>
+                        </div>
+                        
+                        <div class="sidebar-stats">
+                            <div class="sidebar-stat">
+                                <span class="stat-number">6</span>
+                                <span class="stat-label">Sections</span>
+                            </div>
+                            <div class="sidebar-stat">
+                                <span class="stat-number">43</span>
+                                <span class="stat-label">APIs</span>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="sidebar-content">
                         <div class="sidebar-section">
-                            <h3 class="sidebar-title">Core Framework</h3>
-                            <ul class="sidebar-nav">
-                                <li><a href="#init" class="sidebar-link">PixelUI.init()</a></li>
-                                <li><a href="#run" class="sidebar-link">PixelUI.run()</a></li>
-                                <li><a href="#clear" class="sidebar-link">PixelUI.clear()</a></li>
-                                <li><a href="#render" class="sidebar-link">PixelUI.render()</a></li>
-                                <li><a href="#animate" class="sidebar-link">PixelUI.animate()</a></li>
-                                <li><a href="#setTheme" class="sidebar-link">PixelUI.setTheme()</a></li>
+                            <div class="sidebar-section-header">
+                                <div class="section-icon">
+                                    <i data-lucide="settings"></i>
+                                </div>
+                                <h3 class="sidebar-title">Core Framework</h3>
+                                <div class="section-count">6</div>
+                                <button class="section-toggle" data-section="core">
+                                    <i data-lucide="chevron-down"></i>
+                                </button>
+                            </div>
+                            <ul class="sidebar-nav" id="nav-core">
+                                <li><a href="#init" class="sidebar-link">
+                                    <i data-lucide="play-circle"></i>
+                                    <span>PixelUI.init()</span>
+                                    <span class="link-type">function</span>
+                                </a></li>
+                                <li><a href="#run" class="sidebar-link">
+                                    <i data-lucide="play"></i>
+                                    <span>PixelUI.run()</span>
+                                    <span class="link-type">function</span>
+                                </a></li>
+                                <li><a href="#clear" class="sidebar-link">
+                                    <i data-lucide="eraser"></i>
+                                    <span>PixelUI.clear()</span>
+                                    <span class="link-type">function</span>
+                                </a></li>
+                                <li><a href="#render" class="sidebar-link">
+                                    <i data-lucide="refresh-cw"></i>
+                                    <span>PixelUI.render()</span>
+                                    <span class="link-type">function</span>
+                                </a></li>
+                                <li><a href="#animate" class="sidebar-link">
+                                    <i data-lucide="move"></i>
+                                    <span>PixelUI.animate()</span>
+                                    <span class="link-type">function</span>
+                                </a></li>
+                                <li><a href="#setTheme" class="sidebar-link">
+                                    <i data-lucide="palette"></i>
+                                    <span>PixelUI.setTheme()</span>
+                                    <span class="link-type">function</span>
+                                </a></li>
                             </ul>
                         </div>
 
                         <div class="sidebar-section">
-                            <h3 class="sidebar-title">Threading</h3>
-                            <ul class="sidebar-nav">
-                                <li><a href="#spawnThread" class="sidebar-link">PixelUI.spawnThread()</a></li>
-                                <li><a href="#runAsync" class="sidebar-link">PixelUI.runAsync()</a></li>
-                                <li><a href="#showToast" class="sidebar-link">PixelUI.showToast()</a></li>
+                            <div class="sidebar-section-header">
+                                <div class="section-icon">
+                                    <i data-lucide="cpu"></i>
+                                </div>
+                                <h3 class="sidebar-title">Threading</h3>
+                                <div class="section-count">3</div>
+                                <button class="section-toggle" data-section="threading">
+                                    <i data-lucide="chevron-down"></i>
+                                </button>
+                            </div>
+                            <ul class="sidebar-nav" id="nav-threading">
+                                <li><a href="#spawnThread" class="sidebar-link">
+                                    <i data-lucide="zap"></i>
+                                    <span>PixelUI.spawnThread()</span>
+                                    <span class="link-type">function</span>
+                                </a></li>
+                                <li><a href="#runAsync" class="sidebar-link">
+                                    <i data-lucide="timer"></i>
+                                    <span>PixelUI.runAsync()</span>
+                                    <span class="link-type">function</span>
+                                </a></li>
+                                <li><a href="#showToast" class="sidebar-link">
+                                    <i data-lucide="message-circle"></i>
+                                    <span>PixelUI.showToast()</span>
+                                    <span class="link-type">function</span>
+                                </a></li>
                             </ul>
                         </div>
 
                         <div class="sidebar-section">
-                            <h3 class="sidebar-title">Input Widgets</h3>
-                            <ul class="sidebar-nav">
-                                <li><a href="#button" class="sidebar-link">button</a></li>
-                                <li><a href="#textBox" class="sidebar-link">textBox</a></li>
-                                <li><a href="#passwordBox" class="sidebar-link">passwordBox</a></li>
-                                <li><a href="#checkBox" class="sidebar-link">checkBox</a></li>
-                                <li><a href="#radioButton" class="sidebar-link">radioButton</a></li>
-                                <li><a href="#toggleSwitch" class="sidebar-link">toggleSwitch</a></li>
-                                <li><a href="#slider" class="sidebar-link">slider</a></li>
-                                <li><a href="#rangeSlider" class="sidebar-link">rangeSlider</a></li>
-                                <li><a href="#numericUpDown" class="sidebar-link">numericUpDown</a></li>
-                                <li><a href="#comboBox" class="sidebar-link">comboBox</a></li>
-                                <li><a href="#colorPicker" class="sidebar-link">colorPicker</a></li>
-                                <li><a href="#colorPickerDialog" class="sidebar-link">colorPickerDialog</a></li>
-                                <li><a href="#richTextBox" class="sidebar-link">richTextBox</a></li>
-                                <li><a href="#codeEditor" class="sidebar-link">codeEditor</a></li>
-                                <li><a href="#filePicker" class="sidebar-link">filePicker</a></li>
+                            <div class="sidebar-section-header">
+                                <div class="section-icon">
+                                    <i data-lucide="mouse-pointer-click"></i>
+                                </div>
+                                <h3 class="sidebar-title">Input Widgets</h3>
+                                <div class="section-count">15</div>
+                                <button class="section-toggle" data-section="input">
+                                    <i data-lucide="chevron-down"></i>
+                                </button>
+                            </div>
+                            <ul class="sidebar-nav" id="nav-input">
+                                <li><a href="#button" class="sidebar-link">
+                                    <i data-lucide="square"></i>
+                                    <span>button</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#textBox" class="sidebar-link">
+                                    <i data-lucide="type"></i>
+                                    <span>textBox</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#passwordBox" class="sidebar-link">
+                                    <i data-lucide="lock"></i>
+                                    <span>passwordBox</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#checkBox" class="sidebar-link">
+                                    <i data-lucide="check-square"></i>
+                                    <span>checkBox</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#radioButton" class="sidebar-link">
+                                    <i data-lucide="circle-dot"></i>
+                                    <span>radioButton</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#toggleSwitch" class="sidebar-link">
+                                    <i data-lucide="toggle-left"></i>
+                                    <span>toggleSwitch</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#slider" class="sidebar-link">
+                                    <i data-lucide="sliders-horizontal"></i>
+                                    <span>slider</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#rangeSlider" class="sidebar-link">
+                                    <i data-lucide="move-horizontal"></i>
+                                    <span>rangeSlider</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#numericUpDown" class="sidebar-link">
+                                    <i data-lucide="plus-minus"></i>
+                                    <span>numericUpDown</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#comboBox" class="sidebar-link">
+                                    <i data-lucide="chevron-down-square"></i>
+                                    <span>comboBox</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#colorPicker" class="sidebar-link">
+                                    <i data-lucide="palette"></i>
+                                    <span>colorPicker</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#colorPickerDialog" class="sidebar-link">
+                                    <i data-lucide="pipette"></i>
+                                    <span>colorPickerDialog</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#richTextBox" class="sidebar-link">
+                                    <i data-lucide="text-cursor-input"></i>
+                                    <span>richTextBox</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#codeEditor" class="sidebar-link">
+                                    <i data-lucide="code"></i>
+                                    <span>codeEditor</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#filePicker" class="sidebar-link">
+                                    <i data-lucide="folder-open"></i>
+                                    <span>filePicker</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
                             </ul>
                         </div>
 
                         <div class="sidebar-section">
-                            <h3 class="sidebar-title">Display Widgets</h3>
-                            <ul class="sidebar-nav">
-                                <li><a href="#label" class="sidebar-link">label</a></li>
-                                <li><a href="#progressBar" class="sidebar-link">progressBar</a></li>
-                                <li><a href="#listView" class="sidebar-link">listView</a></li>
-                                <li><a href="#chart" class="sidebar-link">chart</a></li>
-                                <li><a href="#canvas" class="sidebar-link">canvas</a></li>
-                                <li><a href="#loadingIndicator" class="sidebar-link">loadingIndicator</a></li>
-                                <li><a href="#spinner" class="sidebar-link">spinner</a></li>
-                                <li><a href="#notificationToast" class="sidebar-link">notificationToast</a></li>
-                                <li><a href="#dataGrid" class="sidebar-link">dataGrid</a></li>
-                                <li><a href="#minimap" class="sidebar-link">minimap</a></li>
-                                <li><a href="#statusBar" class="sidebar-link">statusBar</a></li>
+                            <div class="sidebar-section-header">
+                                <div class="section-icon">
+                                    <i data-lucide="monitor"></i>
+                                </div>
+                                <h3 class="sidebar-title">Display Widgets</h3>
+                                <div class="section-count">11</div>
+                                <button class="section-toggle" data-section="display">
+                                    <i data-lucide="chevron-down"></i>
+                                </button>
+                            </div>
+                            <ul class="sidebar-nav" id="nav-display">
+                                <li><a href="#label" class="sidebar-link">
+                                    <i data-lucide="type"></i>
+                                    <span>label</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#progressBar" class="sidebar-link">
+                                    <i data-lucide="progress"></i>
+                                    <span>progressBar</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#listView" class="sidebar-link">
+                                    <i data-lucide="list"></i>
+                                    <span>listView</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#chart" class="sidebar-link">
+                                    <i data-lucide="bar-chart"></i>
+                                    <span>chart</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#canvas" class="sidebar-link">
+                                    <i data-lucide="paintbrush"></i>
+                                    <span>canvas</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#loadingIndicator" class="sidebar-link">
+                                    <i data-lucide="loader"></i>
+                                    <span>loadingIndicator</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#spinner" class="sidebar-link">
+                                    <i data-lucide="loader-2"></i>
+                                    <span>spinner</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#notificationToast" class="sidebar-link">
+                                    <i data-lucide="bell"></i>
+                                    <span>notificationToast</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#dataGrid" class="sidebar-link">
+                                    <i data-lucide="table"></i>
+                                    <span>dataGrid</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#minimap" class="sidebar-link">
+                                    <i data-lucide="map"></i>
+                                    <span>minimap</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#statusBar" class="sidebar-link">
+                                    <i data-lucide="info"></i>
+                                    <span>statusBar</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
                             </ul>
                         </div>
 
                         <div class="sidebar-section">
-                            <h3 class="sidebar-title">Layout Widgets</h3>
-                            <ul class="sidebar-nav">
-                                <li><a href="#container" class="sidebar-link">container</a></li>
-                                <li><a href="#groupBox" class="sidebar-link">groupBox</a></li>
-                                <li><a href="#modal" class="sidebar-link">modal</a></li>
-                                <li><a href="#window" class="sidebar-link">window</a></li>
-                                <li><a href="#spacer" class="sidebar-link">spacer</a></li>
-                                <li><a href="#grid" class="sidebar-link">grid</a></li>
-                                <li><a href="#accordion" class="sidebar-link">accordion</a></li>
+                            <div class="sidebar-section-header">
+                                <div class="section-icon">
+                                    <i data-lucide="layout-grid"></i>
+                                </div>
+                                <h3 class="sidebar-title">Layout Widgets</h3>
+                                <div class="section-count">7</div>
+                                <button class="section-toggle" data-section="layout">
+                                    <i data-lucide="chevron-down"></i>
+                                </button>
+                            </div>
+                            <ul class="sidebar-nav" id="nav-layout">
+                                <li><a href="#container" class="sidebar-link">
+                                    <i data-lucide="box"></i>
+                                    <span>container</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#groupBox" class="sidebar-link">
+                                    <i data-lucide="package"></i>
+                                    <span>groupBox</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#modal" class="sidebar-link">
+                                    <i data-lucide="square-stack"></i>
+                                    <span>modal</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#window" class="sidebar-link">
+                                    <i data-lucide="monitor"></i>
+                                    <span>window</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#spacer" class="sidebar-link">
+                                    <i data-lucide="space"></i>
+                                    <span>spacer</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#grid" class="sidebar-link">
+                                    <i data-lucide="grid-3x3"></i>
+                                    <span>grid</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#accordion" class="sidebar-link">
+                                    <i data-lucide="chevrons-down"></i>
+                                    <span>accordion</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
                             </ul>
                         </div>
 
                         <div class="sidebar-section">
-                            <h3 class="sidebar-title">Navigation Widgets</h3>
-                            <ul class="sidebar-nav">
-                                <li><a href="#tabControl" class="sidebar-link">tabControl</a></li>
-                                <li><a href="#breadcrumb" class="sidebar-link">breadcrumb</a></li>
-                                <li><a href="#treeView" class="sidebar-link">treeView</a></li>
-                                <li><a href="#scrollBar" class="sidebar-link">scrollBar <span class="wip-badge">WIP</span></a></li>
+                            <div class="sidebar-section-header">
+                                <div class="section-icon">
+                                    <i data-lucide="navigation"></i>
+                                </div>
+                                <h3 class="sidebar-title">Navigation Widgets</h3>
+                                <div class="section-count">4</div>
+                                <button class="section-toggle" data-section="navigation">
+                                    <i data-lucide="chevron-down"></i>
+                                </button>
+                            </div>
+                            <ul class="sidebar-nav" id="nav-navigation">
+                                <li><a href="#tabControl" class="sidebar-link">
+                                    <i data-lucide="tabs"></i>
+                                    <span>tabControl</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#breadcrumb" class="sidebar-link">
+                                    <i data-lucide="chevron-right"></i>
+                                    <span>breadcrumb</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#treeView" class="sidebar-link">
+                                    <i data-lucide="tree-pine"></i>
+                                    <span>treeView</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
+                                <li><a href="#scrollBar" class="sidebar-link">
+                                    <i data-lucide="scroll"></i>
+                                    <span>scrollBar</span>
+                                    <span class="link-type wip">WIP</span>
+                                </a></li>
                             </ul>
                         </div>
 
                         <div class="sidebar-section">
-                            <h3 class="sidebar-title">Feedback Widgets</h3>
-                            <ul class="sidebar-nav">
-                                <li><a href="#msgBox" class="sidebar-link">msgBox</a></li>
+                            <div class="sidebar-section-header">
+                                <div class="section-icon">
+                                    <i data-lucide="activity"></i>
+                                </div>
+                                <h3 class="sidebar-title">Feedback Widgets</h3>
+                                <div class="section-count">1</div>
+                                <button class="section-toggle" data-section="feedback">
+                                    <i data-lucide="chevron-down"></i>
+                                </button>
+                            </div>
+                            <ul class="sidebar-nav" id="nav-feedback">
+                                <li><a href="#msgBox" class="sidebar-link">
+                                    <i data-lucide="message-square"></i>
+                                    <span>msgBox</span>
+                                    <span class="link-type">widget</span>
+                                </a></li>
                             </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar-footer">
+                        <div class="sidebar-footer-actions">
+                            <a href="./index.html" class="sidebar-footer-link">
+                                <i data-lucide="home"></i>
+                                <span>Back to Home</span>
+                            </a>
+                            <a href="./plugin-showcase.html" class="sidebar-footer-link">
+                                <i data-lucide="puzzle"></i>
+                                <span>Browse Plugins</span>
+                            </a>
                         </div>
                     </div>
                 </aside>
