@@ -108,16 +108,15 @@ class PluginPage {
 PixelUI.init()
 
 -- Manual plugin loading from file
-PixelUI.plugins.loadFromFile("my-custom-widget.lua")
+PixelUI.loadPluginFromFile("my-custom-widget.lua")
 
 -- Load all plugins from a directory
-local loadedPlugins = PixelUI.plugins.loadFromDirectory("plugins")
+PixelUI.loadPluginsFromDirectory("plugins")
 
--- Enable loaded plugins
-for _, pluginInfo in ipairs(loadedPlugins) do
-    if pluginInfo.plugin then
-        PixelUI.plugins.enable(pluginInfo.plugin.id)
-    end
+-- Check if a plugin is loaded
+local plugin = PixelUI.getPlugin("my_plugin_id")
+if plugin then
+    print("Plugin loaded successfully")
 end</code></pre>
                         </div>
                     </div>
@@ -151,14 +150,7 @@ PixelUI.plugins.install("notification-system", {
                                 <i data-lucide="copy"></i>
                             </button>
                             <pre><code class="language-lua">-- Load from remote URL
-PixelUI.plugins.loadFromURL("https://plugins.pixelui.dev/weather-widget.lua")
-
--- Load with authentication
-PixelUI.plugins.loadFromURL("https://private-repo.com/plugin.lua", {
-    headers = {
-        Authorization = "Bearer your-token"
-    }
-})</code></pre>
+PixelUI.loadPluginFromURL("https://plugins.pixelui.dev/weather-widget.lua")</code></pre>
                         </div>
                     </div>
                 </div>
@@ -188,8 +180,10 @@ PixelUI.plugins.loadFromURL("https://private-repo.com/plugin.lua", {
                             <i data-lucide="copy"></i>
                         </button>
                         <pre><code class="language-lua">-- glow-button-plugin.lua
-local GlowButtonPlugin = {
-    -- Plugin metadata
+
+-- Register the plugin using the correct API
+registerPlugin({
+    id = "glow_button",
     name = "GlowButton",
     version = "1.0.0",
     author = "Your Name",
@@ -201,103 +195,121 @@ local GlowButtonPlugin = {
         defaultGlowColor = colors.cyan,
         animationDuration = 1.0,
         glowIntensity = 0.8
-    }
-}
-
--- Plugin initialization
-function GlowButtonPlugin:init(pixelUI)
-    self.PixelUI = pixelUI
+    },
     
-    -- Register our custom widget
-    pixelUI.registerWidget("glowButton", self.createGlowButton)
-    
-    -- Register custom animation easing
-    pixelUI.animations.registerEasing("glow", self.glowEasing)
-    
-    print("GlowButton plugin loaded successfully!")
-end
-
--- Create the GlowButton widget
-function GlowButtonPlugin:createGlowButton(props)
-    -- Validate required properties
-    if not props.text then
-        error("GlowButton requires 'text' property")
-    end
-    
-    -- Default properties
-    local widget = {
-        x = props.x or 1,
-        y = props.y or 1,
-        width = props.width or #props.text + 4,
-        height = props.height or 3,
-        text = props.text,
-        color = props.color or colors.white,
-        background = props.background or colors.gray,
-        glowColor = props.glowColor or self.config.defaultGlowColor,
-        onClick = props.onClick,
-        
-        -- Internal state
-        isGlowing = false,
-        glowIntensity = 0,
-        isHovered = false
-    }
-    
-    -- Widget methods
-    widget.render = function(self)
-        local bg = self.background
-        
-        -- Apply glow effect
-        if self.isGlowing then
-            local intensity = self.glowIntensity
-            bg = self.PixelUI.colors.blend(bg, self.glowColor, intensity)
-        end
-        
-        -- Draw button
-        self.PixelUI.drawFilledRect(self.x, self.y, self.width, self.height, bg)
-        self.PixelUI.drawBorder(self.x, self.y, self.width, self.height, 
+    -- Plugin initialization callback
+    onLoad = function(plugin)
+        -- Create the GlowButton widget
+        local function createGlowButton(props)
+            -- Validate required properties
+            if not props.text then
+                error("GlowButton requires 'text' property")
+            end
+            
+            -- Default properties
+            local widget = {
+                x = props.x or 1,
+                y = props.y or 1,
+                width = props.width or #props.text + 4,
+                height = props.height or 3,
+                text = props.text,
+                color = props.color or colors.white,
+                background = props.background or colors.gray,
+                glowColor = props.glowColor or plugin.config.defaultGlowColor,
+                onClick = props.onClick,
+                
+                -- Internal state
+                isGlowing = false,
+                glowIntensity = 0,
+                isHovered = false
+            }
+            
+            -- Widget methods
+            widget.render = function(self)
+                local bg = self.background
+                
+                -- Apply glow effect
+                if self.isGlowing then
+                    local intensity = self.glowIntensity
+                    bg = colors.blend(bg, self.glowColor, intensity)
+                end
+                
+                -- Draw button using available drawing functions
+                draw.drawFilledRect(self.x, self.y, self.width, self.height, bg)
+                draw.drawBorder(self.x, self.y, self.width, self.height, 
                                self.isHovered and self.glowColor or colors.lightGray)
-        
-        -- Draw text (centered)
-        local textX = self.x + math.floor((self.width - #self.text) / 2)
-        local textY = self.y + math.floor(self.height / 2)
-        self.PixelUI.drawText(textX, textY, self.text, self.color)
-    end
-    
-    widget.startGlow = function(self)
-        if self.isGlowing then return end
-        
-        self.isGlowing = true
-        self.PixelUI.animate(self, {
-            glowIntensity = self.config.glowIntensity
-        }, {
-            duration = self.config.animationDuration,
-            easing = "glow",
-            onComplete = function()
-                -- Fade out
-                self.PixelUI.animate(self, {
-                    glowIntensity = 0
+                
+                -- Draw text (centered)
+                local textX = self.x + math.floor((self.width - #self.text) / 2)
+                local textY = self.y + math.floor(self.height / 2)
+                draw.drawText(textX, textY, self.text, self.color)
+            end
+            
+            widget.startGlow = function(self)
+                if self.isGlowing then return end
+                
+                self.isGlowing = true
+                animate(self, {
+                    glowIntensity = plugin.config.glowIntensity
                 }, {
-                    duration = self.config.animationDuration,
+                    duration = plugin.config.animationDuration,
                     easing = "glow",
                     onComplete = function()
-                        self.isGlowing = false
+                        -- Fade out
+                        animate(self, {
+                            glowIntensity = 0
+                        }, {
+                            duration = plugin.config.animationDuration,
+                            easing = "glow",
+                            onComplete = function()
+                                self.isGlowing = false
+                            end
+                        })
                     end
                 })
             end
-        })
-    end
+            
+            widget.onMouseEnter = function(self)
+                self.isHovered = true
+                self:startGlow()
+            end
+            
+            widget.onMouseLeave = function(self)
+                self.isHovered = false
+            end
+            
+            widget.onMouseClick = function(self, x, y, button)
+                if self.onClick then
+                    self.onClick(self, x, y, button)
+                end
+                self:startGlow()
+            end
+            
+            return widget
+        end
+        
+        -- Register the widget type
+        registerWidget("glowButton", createGlowButton)
+        
+        -- Register custom easing function
+        registerEasing("glow", function(t)
+            -- Smooth in-out easing with slight overshoot
+            return t < 0.5 and 2 * t * t or 1 - math.pow(-2 * t + 2, 3) / 2
+        end)
+        
+        print("GlowButton plugin loaded successfully!")
+    end,
     
-    widget.onMouseEnter = function(self)
-        self.isHovered = true
-        self:startGlow()
+    -- Plugin cleanup
+    onUnload = function(plugin)
+        -- Unregister components
+        unregisterWidget("glowButton")
+        unregisterEasing("glow")
+        
+        print("GlowButton plugin unloaded")
     end
-    
-    widget.onMouseLeave = function(self)
-        self.isHovered = false
-    end
-    
-    widget.onMouseClick = function(self, x, y, button)
-        if self.onClick then
+})</code></pre>
+                    </div>
             self.onClick(self, x, y, button)
         end
         self:startGlow()
@@ -340,7 +352,7 @@ return GlowButtonPlugin</code></pre>
 local PixelUI = require("pixelui")
 
 -- Load our custom plugin
-PixelUI.plugins.loadFromFile("glow-button-plugin.lua")
+PixelUI.loadPluginFromFile("glow-button-plugin.lua")
 
 -- Initialize PixelUI
 PixelUI.init()
@@ -390,10 +402,16 @@ PixelUI.run()</code></pre>
                         </thead>
                         <tbody>
                             <tr>
+                                <td data-label="Property"><code class="property-name">id</code></td>
+                                <td data-label="Type"><span class="property-type">string</span></td>
+                                <td data-label="Required">Yes</td>
+                                <td data-label="Description" class="property-description">Unique plugin identifier (snake_case)</td>
+                            </tr>
+                            <tr>
                                 <td data-label="Property"><code class="property-name">name</code></td>
                                 <td data-label="Type"><span class="property-type">string</span></td>
                                 <td data-label="Required">Yes</td>
-                                <td data-label="Description" class="property-description">Unique plugin identifier</td>
+                                <td data-label="Description" class="property-description">Human-readable plugin name</td>
                             </tr>
                             <tr>
                                 <td data-label="Property"><code class="property-name">version</code></td>
@@ -402,10 +420,10 @@ PixelUI.run()</code></pre>
                                 <td data-label="Description" class="property-description">Semantic version (e.g., "1.0.0")</td>
                             </tr>
                             <tr>
-                                <td data-label="Property"><code class="property-name">init</code></td>
+                                <td data-label="Property"><code class="property-name">onLoad</code></td>
                                 <td data-label="Type"><span class="property-type">function</span></td>
                                 <td data-label="Required">Yes</td>
-                                <td data-label="Description" class="property-description">Plugin initialization function</td>
+                                <td data-label="Description" class="property-description">Plugin initialization callback</td>
                             </tr>
                             <tr>
                                 <td data-label="Property"><code class="property-name">author</code></td>
@@ -432,10 +450,22 @@ PixelUI.run()</code></pre>
                                 <td data-label="Description" class="property-description">Default configuration options</td>
                             </tr>
                             <tr>
-                                <td data-label="Property"><code class="property-name">destroy</code></td>
+                                <td data-label="Property"><code class="property-name">onUnload</code></td>
                                 <td data-label="Type"><span class="property-type">function</span></td>
                                 <td data-label="Required">No</td>
                                 <td data-label="Description" class="property-description">Cleanup function for plugin unloading</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Property"><code class="property-name">onEnable</code></td>
+                                <td data-label="Type"><span class="property-type">function</span></td>
+                                <td data-label="Required">No</td>
+                                <td data-label="Description" class="property-description">Called when plugin is enabled</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Property"><code class="property-name">onDisable</code></td>
+                                <td data-label="Type"><span class="property-type">function</span></td>
+                                <td data-label="Required">No</td>
+                                <td data-label="Description" class="property-description">Called when plugin is disabled</td>
                             </tr>
                         </tbody>
                     </table>
@@ -452,8 +482,11 @@ PixelUI.run()</code></pre>
                             <i data-lucide="copy"></i>
                         </button>
                         <pre><code class="language-lua">-- plugin-template.lua
-local MyPlugin = {
+
+-- Register the plugin using the correct API
+registerPlugin({
     -- Metadata (required)
+    id = "my_plugin",
     name = "MyPlugin",
     version = "1.0.0",
     author = "Your Name",
@@ -461,8 +494,8 @@ local MyPlugin = {
     
     -- Dependencies (optional)
     dependencies = {
-        -- "other-plugin >= 1.0.0",
-        -- "pixelui >= 1.0.0"
+        "other_plugin@1.0.0",     -- Exact version
+        "another_plugin>=1.0.0"   -- Minimum version
     },
     
     -- Configuration (optional)
@@ -470,31 +503,36 @@ local MyPlugin = {
         enabled = true,
         option1 = "default value",
         option2 = 42
-    }
-}
-
--- Required: Plugin initialization
-function MyPlugin:init(pixelUI)
-    self.PixelUI = pixelUI
+    },
     
-    -- Register widgets, themes, animations, etc.
-    -- Set up event listeners
-    -- Initialize plugin state
+    -- Required: Plugin initialization
+    onLoad = function(plugin)
+        -- Access plugin configuration via plugin.config
+        -- Register widgets, themes, animations, etc.
+        -- Set up event listeners using on("event", callback)
+        -- Initialize plugin state
+        
+        print(plugin.name .. " v" .. plugin.version .. " loaded")
+    end,
     
-    print(self.name .. " v" .. self.version .. " loaded")
-end
-
--- Optional: Plugin cleanup
-function MyPlugin:destroy()
-    -- Unregister components
-    -- Clean up resources
-    -- Remove event listeners
+    -- Optional: Plugin cleanup
+    onUnload = function(plugin)
+        -- Unregister components
+        -- Clean up resources
+        -- Remove event listeners
+        
+        print(plugin.name .. " unloaded")
+    end,
     
-    print(self.name .. " unloaded")
-end
-
--- Export the plugin
-return MyPlugin</code></pre>
+    -- Optional: Plugin enable/disable callbacks
+    onEnable = function(plugin)
+        print(plugin.name .. " enabled")
+    end,
+    
+    onDisable = function(plugin)
+        print(plugin.name .. " disabled")
+    end
+})</code></pre>
                     </div>
                 </div>
             </div>
@@ -634,59 +672,34 @@ return ProgressRingPlugin</code></pre>
                         </thead>
                         <tbody>
                             <tr>
-                                <td data-label="Method"><code class="property-name">PixelUI.plugins.loadFromFile(path)</code></td>
+                                <td data-label="Method"><code class="property-name">PixelUI.loadPluginFromFile(path)</code></td>
                                 <td data-label="Parameters"><span class="property-type">string</span></td>
                                 <td data-label="Description" class="property-description">Load a plugin from file path</td>
                             </tr>
                             <tr>
-                                <td data-label="Method"><code class="property-name">PixelUI.plugins.loadFromDirectory(path)</code></td>
+                                <td data-label="Method"><code class="property-name">PixelUI.loadPluginsFromDirectory(path)</code></td>
                                 <td data-label="Parameters"><span class="property-type">string</span></td>
                                 <td data-label="Description" class="property-description">Load all plugins from directory</td>
                             </tr>
                             <tr>
-                                <td data-label="Method"><code class="property-name">PixelUI.plugins.loadFromURL(url)</code></td>
+                                <td data-label="Method"><code class="property-name">PixelUI.loadPluginFromURL(url)</code></td>
                                 <td data-label="Parameters"><span class="property-type">string</span></td>
                                 <td data-label="Description" class="property-description">Load a plugin from URL</td>
                             </tr>
                             <tr>
-                                <td data-label="Method"><code class="property-name">PixelUI.registerPlugin(info)</code></td>
-                                <td data-label="Parameters"><span class="property-type">table</span></td>
-                                <td data-label="Description" class="property-description">Register a new plugin with the system</td>
+                                <td data-label="Method"><code class="property-name">PixelUI.getPlugin(pluginId)</code></td>
+                                <td data-label="Parameters"><span class="property-type">string</span></td>
+                                <td data-label="Description" class="property-description">Get a loaded plugin by ID</td>
                             </tr>
                             <tr>
-                                <td data-label="Method"><code class="property-name">PixelUI.plugins.enable(name)</code></td>
+                                <td data-label="Method"><code class="property-name">PixelUI.enablePlugin(pluginId)</code></td>
                                 <td data-label="Parameters"><span class="property-type">string</span></td>
                                 <td data-label="Description" class="property-description">Enable a loaded plugin</td>
                             </tr>
                             <tr>
-                                <td data-label="Method"><code class="property-name">PixelUI.plugins.disable(name)</code></td>
+                                <td data-label="Method"><code class="property-name">PixelUI.disablePlugin(pluginId)</code></td>
                                 <td data-label="Parameters"><span class="property-type">string</span></td>
                                 <td data-label="Description" class="property-description">Disable an active plugin</td>
-                            </tr>
-                            <tr>
-                                <td data-label="Method"><code class="property-name">PixelUI.plugins.list()</code></td>
-                                <td data-label="Parameters"><span class="property-type">none</span></td>
-                                <td data-label="Description" class="property-description">Get list of all plugins</td>
-                            </tr>
-                            <tr>
-                                <td data-label="Method"><code class="property-name">PixelUI.plugins.get(name)</code></td>
-                                <td data-label="Parameters"><span class="property-type">string</span></td>
-                                <td data-label="Description" class="property-description">Remove a widget type</td>
-                            </tr>
-                            <tr>
-                                <td data-label="Method"><code class="property-name">PixelUI.registerTheme(name, theme)</code></td>
-                                <td data-label="Parameters"><span class="property-type">string, table</span></td>
-                                <td data-label="Description" class="property-description">Register a custom theme</td>
-                            </tr>
-                            <tr>
-                                <td data-label="Method"><code class="property-name">PixelUI.emit(event, data)</code></td>
-                                <td data-label="Parameters"><span class="property-type">string, any</span></td>
-                                <td data-label="Description" class="property-description">Emit a custom event</td>
-                            </tr>
-                            <tr>
-                                <td data-label="Method"><code class="property-name">PixelUI.on(event, callback)</code></td>
-                                <td data-label="Parameters"><span class="property-type">string, function</span></td>
-                                <td data-label="Description" class="property-description">Listen for custom events</td>
                             </tr>
                         </tbody>
                     </table>
@@ -695,33 +708,150 @@ return ProgressRingPlugin</code></pre>
                 <div class="example-section">
                     <h3 class="section-title">
                         <i data-lucide="code"></i>
-                        Plugin Context API
+                        Plugin Environment API
+                    </h3>
+                    <p class="section-description">
+                        Functions available inside the plugin environment (within onLoad, onUnload, etc.)
+                    </p>
+                    
+                    <table class="property-table">
+                        <thead>
+                            <tr>
+                                <th>Function</th>
+                                <th>Parameters</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-label="Function"><code class="property-name">registerWidget(name, factory)</code></td>
+                                <td data-label="Parameters"><span class="property-type">string, function</span></td>
+                                <td data-label="Description" class="property-description">Register a custom widget type</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Function"><code class="property-name">unregisterWidget(name)</code></td>
+                                <td data-label="Parameters"><span class="property-type">string</span></td>
+                                <td data-label="Description" class="property-description">Remove a widget type</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Function"><code class="property-name">registerEasing(name, func)</code></td>
+                                <td data-label="Parameters"><span class="property-type">string, function</span></td>
+                                <td data-label="Description" class="property-description">Register custom animation easing</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Function"><code class="property-name">registerService(name, service)</code></td>
+                                <td data-label="Parameters"><span class="property-type">string, table</span></td>
+                                <td data-label="Description" class="property-description">Register a shared service</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Function"><code class="property-name">getService(name)</code></td>
+                                <td data-label="Parameters"><span class="property-type">string</span></td>
+                                <td data-label="Description" class="property-description">Get a registered service</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Function"><code class="property-name">on(event, callback)</code></td>
+                                <td data-label="Parameters"><span class="property-type">string, function</span></td>
+                                <td data-label="Description" class="property-description">Listen for events</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Function"><code class="property-name">emit(event, data)</code></td>
+                                <td data-label="Parameters"><span class="property-type">string, any</span></td>
+                                <td data-label="Description" class="property-description">Emit custom events</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Function"><code class="property-name">animate(widget, props, options)</code></td>
+                                <td data-label="Parameters"><span class="property-type">table, table, table</span></td>
+                                <td data-label="Description" class="property-description">Animate widget properties</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="example-section">
+                    <h3 class="section-title">
+                        <i data-lucide="palette"></i>
+                        Drawing API
+                    </h3>
+                    <p class="section-description">
+                        Drawing functions available in the plugin environment via the <code>draw</code> namespace
+                    </p>
+                    
+                    <table class="property-table">
+                        <thead>
+                            <tr>
+                                <th>Function</th>
+                                <th>Parameters</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-label="Function"><code class="property-name">draw.drawFilledRect(x, y, w, h, color)</code></td>
+                                <td data-label="Parameters"><span class="property-type">numbers, color</span></td>
+                                <td data-label="Description" class="property-description">Draw filled rectangle</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Function"><code class="property-name">draw.drawBorder(x, y, w, h, color)</code></td>
+                                <td data-label="Parameters"><span class="property-type">numbers, color</span></td>
+                                <td data-label="Description" class="property-description">Draw border around area</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Function"><code class="property-name">draw.drawText(x, y, text, color)</code></td>
+                                <td data-label="Parameters"><span class="property-type">numbers, string, color</span></td>
+                                <td data-label="Description" class="property-description">Draw text at position</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Function"><code class="property-name">draw.drawCircle(x, y, radius, color)</code></td>
+                                <td data-label="Parameters"><span class="property-type">numbers, color</span></td>
+                                <td data-label="Description" class="property-description">Draw circle outline</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Function"><code class="property-name">draw.drawArc(x, y, radius, start, end, color)</code></td>
+                                <td data-label="Parameters"><span class="property-type">numbers, color</span></td>
+                                <td data-label="Description" class="property-description">Draw arc segment</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="example-section">
+                    <h3 class="section-title">
+                        <i data-lucide="code"></i>
+                        Plugin Environment Example
                     </h3>
                     
                     <div class="code-example">
                         <button class="copy-btn" aria-label="Copy code">
                             <i data-lucide="copy"></i>
                         </button>
-                        <pre><code class="language-lua">-- Plugin receives PixelUI context in init()
-function MyPlugin:init(pixelUI)
-    -- Access to core framework
-    self.PixelUI = pixelUI
+                        <pre><code class="language-lua">-- Plugin context provides these functions directly
+registerPlugin({
+    id = "example_plugin",
+    name = "Example Plugin",
+    version = "1.0.0",
     
-    -- Register widgets
-    pixelUI.registerWidget("myWidget", self.createWidget)
-    
-    -- Access animation system
-    pixelUI.animate(widget, {x = 10}, {duration = 1})
-    
-    -- Access event system
-    pixelUI.on("customEvent", self.handleEvent)
-    
-    -- Access theme system
-    pixelUI.setTheme("dark")
-    
-    -- Access configuration
-    local config = pixelUI.getConfig()
-end</code></pre>
+    onLoad = function(plugin)
+        -- Register a widget (no PixelUI. prefix needed)
+        registerWidget("customButton", function(props)
+            -- Use drawing functions (draw namespace)
+            draw.drawFilledRect(props.x, props.y, props.width, props.height, props.color)
+            draw.drawText(props.x + 2, props.y + 1, props.text, colors.white)
+        end)
+        
+        -- Listen for events (no PixelUI. prefix needed)
+        on("widgetClicked", function(data)
+            print("Widget clicked: " .. data.widgetType)
+        end)
+        
+        -- Register a service
+        registerService("dataProvider", {
+            getData = function() return {value = 42} end
+        })
+        
+        -- Animate widgets
+        animate(someWidget, {x = 10}, {duration = 1.0})
+    end
+})</code></pre>
                     </div>
                 </div>
             </div>
@@ -763,21 +893,35 @@ end</code></pre>
                             <div class="stage-number">3</div>
                             <div class="stage-content">
                                 <h4>Initialization</h4>
-                                <p>init() method is called with PixelUI context</p>
+                                <p>onLoad() callback is called with plugin context</p>
                             </div>
                         </div>
                         <div class="stage">
                             <div class="stage-number">4</div>
+                            <div class="stage-content">
+                                <h4>Activation</h4>
+                                <p>onEnable() callback called when plugin is enabled</p>
+                            </div>
+                        </div>
+                        <div class="stage">
+                            <div class="stage-number">5</div>
                             <div class="stage-content">
                                 <h4>Runtime</h4>
                                 <p>Plugin is active and responding to events</p>
                             </div>
                         </div>
                         <div class="stage">
-                            <div class="stage-number">5</div>
+                            <div class="stage-number">6</div>
+                            <div class="stage-content">
+                                <h4>Deactivation</h4>
+                                <p>onDisable() callback called when plugin is disabled</p>
+                            </div>
+                        </div>
+                        <div class="stage">
+                            <div class="stage-number">7</div>
                             <div class="stage-content">
                                 <h4>Cleanup</h4>
-                                <p>destroy() method called during unloading</p>
+                                <p>onUnload() callback called during unloading</p>
                             </div>
                         </div>
                     </div>
@@ -793,61 +937,89 @@ end</code></pre>
                         <button class="copy-btn" aria-label="Copy code">
                             <i data-lucide="copy"></i>
                         </button>
-                        <pre><code class="language-lua">local MyPlugin = {
+                        <pre><code class="language-lua">-- Complete lifecycle example using correct plugin API
+registerPlugin({
+    id = "lifecycle_example",
     name = "LifecycleExample",
     version = "1.0.0",
-    dependencies = {"core-plugin >= 1.0.0"}
-}
-
--- Called during plugin loading
-function MyPlugin:init(pixelUI)
-    print("Plugin initializing...")
+    dependencies = {"core_plugin@1.0.0"},
     
-    -- Store context
-    self.PixelUI = pixelUI
-    self.widgets = {}
-    self.eventHandlers = {}
+    -- State variables
+    widgets = {},
+    eventHandlers = {},
+    isActive = false,
     
-    -- Register components
-    self:registerComponents()
+    -- Called during plugin loading
+    onLoad = function(plugin)
+        print("Plugin loading: " .. plugin.name)
+        
+        -- Initialize plugin state
+        plugin.widgets = {}
+        plugin.eventHandlers = {}
+        
+        -- Register components using plugin environment functions
+        registerWidget("myWidget", function(props)
+            local widget = {
+                x = props.x or 1,
+                y = props.y or 1,
+                text = props.text or "Widget"
+            }
+            
+            widget.render = function(self)
+                draw.drawText(self.x, self.y, self.text, colors.white)
+            end
+            
+            return widget
+        end)
+        
+        -- Set up event listeners using plugin environment
+        on("themeChanged", function(theme)
+            print("Theme changed to: " .. theme.name)
+        end)
+        
+        print("Plugin loaded successfully!")
+    end,
     
-    -- Set up event listeners
-    self:setupEventListeners()
+    -- Called when plugin is enabled
+    onEnable = function(plugin)
+        print("Plugin enabled: " .. plugin.name)
+        plugin.isActive = true
+        
+        -- Enable any disabled functionality
+        emit("pluginEnabled", {pluginId = plugin.id})
+    end,
     
-    -- Initialize state
-    self.isActive = true
+    -- Called when plugin is disabled
+    onDisable = function(plugin)
+        print("Plugin disabled: " .. plugin.name)
+        plugin.isActive = false
+        
+        -- Disable functionality but don't unload
+        emit("pluginDisabled", {pluginId = plugin.id})
+    end,
     
-    print("Plugin initialized successfully!")
-end
-
-function MyPlugin:registerComponents()
-    -- Register widgets, themes, animations
-    self.PixelUI.registerWidget("myWidget", self.createWidget)
-end
-
-function MyPlugin:setupEventListeners()
-    -- Listen for framework events
-    self.PixelUI.on("themeChanged", function(theme)
-        self:onThemeChanged(theme)
-    end)
-end
-
--- Called during plugin unloading
-function MyPlugin:destroy()
-    print("Plugin shutting down...")
-    
-    -- Clean up widgets
-    for _, widget in pairs(self.widgets) do
-        widget:destroy()
+    -- Called during plugin unloading
+    onUnload = function(plugin)
+        print("Plugin unloading: " .. plugin.name)
+        
+        -- Clean up resources
+        for _, widget in pairs(plugin.widgets) do
+            if widget.destroy then
+                widget:destroy()
+            end
+        end
+        
+        -- Unregister components
+        unregisterWidget("myWidget")
+        
+        -- Clear state
+        plugin.widgets = {}
+        plugin.eventHandlers = {}
+        plugin.isActive = false
+        
+        print("Plugin unloaded successfully!")
     end
-    
-    -- Remove event listeners
-    for _, handler in pairs(self.eventHandlers) do
-        self.PixelUI.off(handler)
-    end
-    
-    -- Unregister components
-    self.PixelUI.unregisterWidget("myWidget")
+})</code></pre>
     
     -- Clear state
     self.isActive = false
@@ -1015,40 +1187,36 @@ plugin:updateConfig({
                         <button class="copy-btn" aria-label="Copy code">
                             <i data-lucide="copy"></i>
                         </button>
-                        <pre><code class="language-lua">local AdvancedPlugin = {
+                        <pre><code class="language-lua">-- Correct dependency syntax
+registerPlugin({
+    id = "advanced_widget",
     name = "AdvancedWidget",
     version = "2.1.0",
     
-    -- Dependency specifications
+    -- Dependency specifications (simplified syntax)
     dependencies = {
-        -- Required exact version
-        "pixelui >= 1.0.0",
+        -- Exact version
+        "other_plugin@1.0.0",
         
-        -- Version range
-        "animation-library >= 1.2.0, < 2.0.0",
+        -- Minimum version
+        "animation_lib>=1.2.0",
         
-        -- Optional dependency
-        "sound-effects >= 1.0.0 [optional]",
-        
-        -- Multiple alternatives
-        "data-storage >= 1.0.0 || local-storage >= 2.0.0"
-    }
-}
-
-function AdvancedPlugin:init(pixelUI)
-    -- Check if optional dependencies are available
-    if pixelUI.plugins.isLoaded("sound-effects") then
-        self.soundsEnabled = true
-        self.sounds = pixelUI.plugins.get("sound-effects")
-    end
+        -- Note: Complex version constraints and optional dependencies
+        -- are not supported in the current implementation
+    },
     
-    -- Access required dependencies
-    self.animations = pixelUI.plugins.get("animation-library")
-    self.storage = pixelUI.plugins.get("data-storage") or 
-                   pixelUI.plugins.get("local-storage")
-end
-
-return AdvancedPlugin</code></pre>
+    onLoad = function(plugin)
+        -- Dependencies are automatically loaded before this callback
+        -- Access other plugins via PixelUI.getPlugin()
+        local animLib = PixelUI.getPlugin("animation_lib")
+        
+        if animLib then
+            print("Animation library is available")
+        else
+            error("Required dependency 'animation_lib' not found")
+        end
+    end
+})</code></pre>
                     </div>
                 </div>
 
@@ -1067,29 +1235,29 @@ return AdvancedPlugin</code></pre>
                         </thead>
                         <tbody>
                             <tr>
+                                <td data-label="Operator"><code class="property-name">@</code></td>
+                                <td data-label="Example"><span class="property-type">plugin@1.0.0</span></td>
+                                <td data-label="Description" class="property-description">Exact version required</td>
+                            </tr>
+                            <tr>
                                 <td data-label="Operator"><code class="property-name">>=</code></td>
-                                <td data-label="Example"><span class="property-type">plugin >= 1.0.0</span></td>
+                                <td data-label="Example"><span class="property-type">plugin>=1.0.0</span></td>
                                 <td data-label="Description" class="property-description">Minimum version required</td>
                             </tr>
                             <tr>
                                 <td data-label="Operator"><code class="property-name">></code></td>
-                                <td data-label="Example"><span class="property-type">plugin > 1.0.0</span></td>
+                                <td data-label="Example"><span class="property-type">plugin>1.0.0</span></td>
                                 <td data-label="Description" class="property-description">Strictly greater than version</td>
                             </tr>
                             <tr>
+                                <td data-label="Operator"><code class="property-name"><=</code></td>
+                                <td data-label="Example"><span class="property-type">plugin<=2.0.0</span></td>
+                                <td data-label="Description" class="property-description">Maximum version (inclusive)</td>
+                            </tr>
+                            <tr>
                                 <td data-label="Operator"><code class="property-name"><</code></td>
-                                <td data-label="Example"><span class="property-type">plugin < 2.0.0</span></td>
+                                <td data-label="Example"><span class="property-type">plugin<2.0.0</span></td>
                                 <td data-label="Description" class="property-description">Maximum version (exclusive)</td>
-                            </tr>
-                            <tr>
-                                <td data-label="Operator"><code class="property-name">||</code></td>
-                                <td data-label="Example"><span class="property-type">plugin-a || plugin-b</span></td>
-                                <td data-label="Description" class="property-description">Either dependency acceptable</td>
-                            </tr>
-                            <tr>
-                                <td data-label="Operator"><code class="property-name">[optional]</code></td>
-                                <td data-label="Example"><span class="property-type">plugin [optional]</span></td>
-                                <td data-label="Description" class="property-description">Optional dependency</td>
                             </tr>
                         </tbody>
                     </table>
@@ -1534,82 +1702,100 @@ return AdvancedAnimationsPlugin</code></pre>
                         <button class="copy-btn" aria-label="Copy code">
                             <i data-lucide="copy"></i>
                         </button>
-                        <pre><code class="language-lua">local EventDrivenPlugin = {
+                        <pre><code class="language-lua">-- Event-driven plugin using correct API
+registerPlugin({
+    id = "event_driven",
     name = "EventDriven",
     version = "1.0.0",
-    description = "Demonstrates custom event usage"
-}
-
-function EventDrivenPlugin:init(pixelUI)
-    self.PixelUI = pixelUI
+    description = "Demonstrates custom event usage",
     
-    -- Register custom event handlers
-    pixelUI.on("widgetCreated", self.onWidgetCreated)
-    pixelUI.on("themeChanged", self.onThemeChanged)
-    pixelUI.on("userAction", self.onUserAction)
-    
-    -- Create custom widget that emits events
-    pixelUI.registerWidget("eventWidget", self.createEventWidget)
-end
-
-function EventDrivenPlugin:createEventWidget(props)
-    local widget = {
-        x = props.x or 1,
-        y = props.y or 1,
-        width = props.width or 10,
-        height = props.height or 3,
-        text = props.text or "Event Widget",
-        clickCount = 0
-    }
-    
-    widget.render = function(self)
-        -- Render widget
-        self.PixelUI.drawFilledRect(self.x, self.y, self.width, self.height, colors.blue)
-        self.PixelUI.drawText(self.x + 1, self.y + 1, self.text, colors.white)
-    end
-    
-    widget.onMouseClick = function(self, x, y, button)
-        self.clickCount = self.clickCount + 1
+    onLoad = function(plugin)
+        -- Register custom event handlers using plugin environment
+        on("widgetCreated", function(data)
+            print("Widget created: " .. data.widgetType)
+        end)
         
-        -- Emit custom event
-        self.PixelUI.emit("widgetClicked", {
-            widget = self,
-            clickCount = self.clickCount,
-            position = {x = x, y = y},
-            button = button
-        })
+        on("themeChanged", function(data)
+            print("Theme changed to: " .. data.themeName)
+        end)
         
-        -- Emit achievement event if milestone reached
-        if self.clickCount == 10 then
-            self.PixelUI.emit("achievement", {
-                type = "clickMaster",
-                widget = self,
-                description = "Clicked widget 10 times!"
-            })
-        end
+        on("userAction", function(data)
+            print("User action: " .. data.action)
+        end)
+        
+        -- Create custom widget that emits events
+        registerWidget("eventWidget", function(props)
+            local widget = {
+                x = props.x or 1,
+                y = props.y or 1,
+                width = props.width or 10,
+                height = props.height or 3,
+                text = props.text or "Event Widget",
+                clickCount = 0
+            }
+            
+            widget.render = function(self)
+                -- Render widget using drawing API
+                draw.drawFilledRect(self.x, self.y, self.width, self.height, colors.blue)
+                draw.drawText(self.x + 1, self.y + 1, self.text, colors.white)
+            end
+            
+            widget.onMouseClick = function(self, x, y, button)
+                self.clickCount = self.clickCount + 1
+                
+                -- Emit custom event using plugin environment
+                emit("widgetClicked", {
+                    widget = self,
+                    clickCount = self.clickCount,
+                    position = {x = x, y = y},
+                    button = button
+                })
+                
+                -- Emit achievement event if milestone reached
+                if self.clickCount == 10 then
+                    emit("achievement", {
+                        type = "clickMaster",
+                        widget = self,
+                        description = "Clicked widget 10 times!"
+                    })
+                end
+            end
+            
+            widget.onMouseEnter = function(self)
+                -- Emit hover event using plugin environment
+                emit("widgetHover", {
+                    widget = self,
+                    action = "enter"
+                })
+            end
+            
+            widget.onMouseLeave = function(self)
+                -- Emit hover event using plugin environment
+                emit("widgetHover", {
+                    widget = self,
+                    action = "leave"
+                })
+            end
+            
+            return widget
+        end)
+        
+        -- Set up cross-plugin communication
+        on("achievement", function(data)
+            print("Achievement unlocked: " .. data.description)
+            
+            -- Forward to notification system if available
+            local notificationService = getService("notifications")
+            if notificationService then
+                notificationService.show({
+                    title = "Achievement!",
+                    message = data.description,
+                    type = "success"
+                })
+            end
+        end)
     end
-    
-    widget.onMouseEnter = function(self)
-        -- Emit hover event
-        self.PixelUI.emit("widgetHover", {
-            widget = self,
-            action = "enter"
-        })
-    end
-    
-    widget.onMouseLeave = function(self)
-        -- Emit hover event
-        self.PixelUI.emit("widgetHover", {
-            widget = self,
-            action = "leave"
-        })
-    end
-    
-    return widget
-end
-
--- Event handlers
-function EventDrivenPlugin:onWidgetCreated(data)
+})</code></pre>
     print("Widget created: " .. data.widget.type)
 end
 
@@ -1670,65 +1856,81 @@ return EventDrivenPlugin</code></pre>
                         <button class="copy-btn" aria-label="Copy code">
                             <i data-lucide="copy"></i>
                         </button>
-                        <pre><code class="language-lua">-- Data Provider Plugin
-local DataProviderPlugin = {
+                        <pre><code class="language-lua">-- Data Provider Plugin (using correct API)
+registerPlugin({
+    id = "data_provider",
     name = "DataProvider",
     version = "1.0.0",
-    description = "Provides shared data services"
-}
-
-function DataProviderPlugin:init(pixelUI)
-    self.PixelUI = pixelUI
-    self.dataStore = {}
+    description = "Provides shared data services",
     
-    -- Register as a service
-    pixelUI.registerService("dataProvider", self)
-    
-    -- Listen for data requests
-    pixelUI.on("dataRequest", function(request)
-        self:handleDataRequest(request)
-    end)
-end
+    onLoad = function(plugin)
+        local dataStore = {}
+        
+        local service = {
+            setData = function(key, value)
+                dataStore[key] = value
+                
+                -- Notify subscribers using plugin environment
+                emit("dataChanged", {
+                    key = key,
+                    value = value,
+                    provider = plugin.name
+                })
+            end,
+            
+            getData = function(key)
+                return dataStore[key]
+            end,
+            
+            getAllData = function()
+                return dataStore
+            end
+        }
+        
+        -- Register service using plugin environment function
+        registerService("dataProvider", service)
+        
+        -- Listen for data requests using plugin environment
+        on("dataRequest", function(request)
+            local data = service.getData(request.key)
+            
+            -- Send response
+            emit("dataResponse", {
+                requestId = request.id,
+                key = request.key,
+                data = data,
+                found = data ~= nil
+            })
+        end)
+    end
+})
 
-function DataProviderPlugin:setData(key, value)
-    self.dataStore[key] = value
-    
-    -- Notify subscribers
-    self.PixelUI.emit("dataChanged", {
-        key = key,
-        value = value,
-        provider = self.name
-    })
-end
-
-function DataProviderPlugin:getData(key)
-    return self.dataStore[key]
-end
-
-function DataProviderPlugin:handleDataRequest(request)
-    local data = self:getData(request.key)
-    
-    -- Send response
-    self.PixelUI.emit("dataResponse", {
-        requestId = request.id,
-        key = request.key,
-        data = data,
-        found = data ~= nil
-    })
-end
-
--- Data Consumer Plugin
-local DataConsumerPlugin = {
+-- Data Consumer Plugin (using correct API)
+registerPlugin({
+    id = "data_consumer", 
     name = "DataConsumer",
     version = "1.0.0",
-    dependencies = {"DataProvider"}
-}
-
-function DataConsumerPlugin:init(pixelUI)
-    self.PixelUI = pixelUI
+    dependencies = {"data_provider@1.0.0"},
     
-    -- Get reference to data provider service
-    self.dataProvider = pixelUI.getService("dataProvider")
+    onLoad = function(plugin)
+        -- Get reference to data provider service using plugin environment
+        local dataProvider = getService("dataProvider")
+        
+        if dataProvider then
+            -- Use the service
+            dataProvider.setData("user_preference", "dark_theme")
+            local theme = dataProvider.getData("user_preference")
+            print("Current theme: " .. theme)
+        else
+            print("Data provider service not available")
+        end
+        
+        -- Listen for data changes
+        on("dataChanged", function(data)
+            print("Data changed: " .. data.key .. " = " .. tostring(data.value))
+        end)
+    end
+})</code></pre>
     
     -- Listen for data changes
     pixelUI.on("dataChanged", function(event)
