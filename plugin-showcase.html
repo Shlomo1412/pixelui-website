@@ -137,42 +137,192 @@
         </div>
     </div>
 
-    <!-- Plugins Section -->
+    <!-- Enhanced Plugins Section -->
     <section class="section plugins-section" id="plugins" style="display: none;">
+        <div class="plugins-background">
+            <div class="plugins-pattern"></div>
+            <div class="plugins-glow"></div>
+        </div>
+        
         <div class="container">
-            <!-- Filters -->
-            <div class="plugin-filters">
-                <div class="filter-group">
-                    <label class="filter-label">Filter by type:</label>
-                    <div class="filter-buttons">
-                        <button class="filter-btn active" data-filter="all">All Plugins</button>
-                        <button class="filter-btn" data-filter="widget">Widgets</button>
-                        <button class="filter-btn" data-filter="theme">Themes</button>
-                        <button class="filter-btn" data-filter="hook">Hooks</button>
-                        <button class="filter-btn" data-filter="api">API Extensions</button>
-                    </div>
+            <!-- Enhanced Section Header -->
+            <div class="plugins-header">
+                <div class="section-badge">
+                    <i data-lucide="package"></i>
+                    <span>Plugin Repository</span>
                 </div>
                 
-                <div class="search-group">
-                    <div class="search-input-wrapper">
-                        <i data-lucide="search" class="search-icon"></i>
-                        <input type="text" id="plugin-search" class="search-input" placeholder="Search plugins...">
+                <h2 class="section-title">
+                    Browse <span class="gradient-text">Plugins</span>
+                </h2>
+                
+                <p class="section-description">
+                    Discover community-created plugins to extend your PixelUI applications. 
+                    Filter by category, search by name, or explore featured plugins.
+                </p>
+            </div>
+
+            <!-- Enhanced Statistics -->
+            <div class="plugins-stats" id="plugins-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i data-lucide="package"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="total-plugins-stat">-</div>
+                        <div class="stat-label">Total Plugins</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i data-lucide="monitor"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="widget-plugins-stat">-</div>
+                        <div class="stat-label">Widget Plugins</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i data-lucide="palette"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="theme-plugins-stat">-</div>
+                        <div class="stat-label">Theme Plugins</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i data-lucide="zap"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="hook-plugins-stat">-</div>
+                        <div class="stat-label">Hook Plugins</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Plugin Grid -->
+            <!-- Enhanced Filters -->
+            <div class="plugin-filters">
+                <div class="filters-left">
+                    <div class="filter-group">
+                        <label class="filter-label">
+                            <i data-lucide="filter"></i>
+                            Filter by category:
+                        </label>
+                        <div class="filter-buttons">
+                            <button class="filter-btn active" data-filter="all">
+                                <i data-lucide="grid-3x3"></i>
+                                <span>All Plugins</span>
+                                <span class="filter-count" id="count-all">-</span>
+                            </button>
+                            <button class="filter-btn" data-filter="widget">
+                                <i data-lucide="monitor"></i>
+                                <span>Widgets</span>
+                                <span class="filter-count" id="count-widget">-</span>
+                            </button>
+                            <button class="filter-btn" data-filter="theme">
+                                <i data-lucide="palette"></i>
+                                <span>Themes</span>
+                                <span class="filter-count" id="count-theme">-</span>
+                            </button>
+                            <button class="filter-btn" data-filter="hook">
+                                <i data-lucide="zap"></i>
+                                <span>Hooks</span>
+                                <span class="filter-count" id="count-hook">-</span>
+                            </button>
+                            <button class="filter-btn" data-filter="api">
+                                <i data-lucide="code"></i>
+                                <span>API Extensions</span>
+                                <span class="filter-count" id="count-api">-</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="filters-right">
+                    <div class="search-group">
+                        <div class="search-input-wrapper">
+                            <i data-lucide="search" class="search-icon"></i>
+                            <input type="text" id="plugin-search" class="search-input" placeholder="Search plugins by name, description, or author...">
+                            <div class="search-shortcut">
+                                <span>⌘</span>
+                                <span>K</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="sort-group">
+                        <label class="sort-label">
+                            <i data-lucide="arrow-up-down"></i>
+                            Sort by:
+                        </label>
+                        <select class="sort-select" id="plugin-sort">
+                            <option value="name">Name</option>
+                            <option value="updated">Last Updated</option>
+                            <option value="downloads">Downloads</option>
+                            <option value="rating">Rating</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Header -->
+            <div class="results-header" id="results-header">
+                <div class="results-info">
+                    <span class="results-count" id="results-count">Loading plugins...</span>
+                    <span class="results-filter" id="results-filter"></span>
+                </div>
+                
+                <div class="view-toggle">
+                    <button class="view-btn active" data-view="grid" title="Grid view">
+                        <i data-lucide="grid-3x3"></i>
+                    </button>
+                    <button class="view-btn" data-view="list" title="List view">
+                        <i data-lucide="list"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Enhanced Plugin Grid -->
             <div class="plugins-grid" id="plugins-grid">
                 <!-- Plugins will be dynamically loaded here -->
             </div>
 
-            <!-- Empty State -->
+            <!-- Enhanced Empty State -->
             <div class="empty-state" id="empty-state" style="display: none;">
-                <div class="empty-icon">
-                    <i data-lucide="search"></i>
+                <div class="empty-background">
+                    <div class="empty-pattern"></div>
                 </div>
-                <h3>No plugins found</h3>
-                <p>Try adjusting your search criteria or filters.</p>
+                <div class="empty-content">
+                    <div class="empty-icon">
+                        <i data-lucide="search-x"></i>
+                    </div>
+                    <h3 class="empty-title">No plugins found</h3>
+                    <p class="empty-description">
+                        We couldn't find any plugins matching your criteria. 
+                        Try adjusting your search terms or filters.
+                    </p>
+                    <div class="empty-actions">
+                        <button class="btn btn-primary" onclick="clearFilters()">
+                            <i data-lucide="refresh-cw"></i>
+                            Clear Filters
+                        </button>
+                        <a href="./plugins.html" class="btn btn-secondary">
+                            <i data-lucide="plus"></i>
+                            Create Plugin
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Load More Button -->
+            <div class="load-more-section" id="load-more-section" style="display: none;">
+                <button class="btn btn-outline load-more-btn" id="load-more-btn">
+                    <i data-lucide="plus"></i>
+                    Load More Plugins
+                    <span class="load-count">(12 more)</span>
+                </button>
             </div>
         </div>
     </section>
