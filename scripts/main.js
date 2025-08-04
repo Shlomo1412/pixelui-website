@@ -566,37 +566,83 @@ end`
     }
 };
 
-// Widget showcase functionality
+// Enhanced Widget showcase functionality
 class WidgetShowcase {
     constructor() {
         this.widgets = widgetData;
         this.currentCategory = 'all';
+        this.searchTerm = '';
         this.init();
     }
     
     init() {
+        this.updateCategoryCounts();
         this.renderWidgets();
         this.bindEvents();
     }
     
-    renderWidgets() {
-        const grid = document.getElementById('widgets-grid');
-        const filteredWidgets = this.currentCategory === 'all' 
+    updateCategoryCounts() {
+        const categoryCounts = {
+            all: this.widgets.length,
+            input: this.widgets.filter(w => w.category === 'input').length,
+            display: this.widgets.filter(w => w.category === 'display').length,
+            layout: this.widgets.filter(w => w.category === 'layout').length,
+            navigation: this.widgets.filter(w => w.category === 'navigation').length,
+            feedback: this.widgets.filter(w => w.category === 'feedback').length
+        };
+        
+        // Update tab counts
+        document.querySelectorAll('.category-tab').forEach(tab => {
+            const category = tab.dataset.category;
+            const countElement = tab.querySelector('.tab-count');
+            if (countElement && categoryCounts[category] !== undefined) {
+                countElement.textContent = categoryCounts[category];
+            }
+        });
+    }
+    
+    getFilteredWidgets() {
+        let filtered = this.currentCategory === 'all' 
             ? this.widgets 
             : this.widgets.filter(widget => widget.category === this.currentCategory);
         
-        grid.innerHTML = filteredWidgets.map(widget => `
-            <div class="widget-card" data-category="${widget.category}">
-                <div class="widget-header">
-                    <div class="widget-name">PixelUI.${widget.name}()</div>
-                    <div class="widget-category">${widget.category}</div>
+        if (this.searchTerm) {
+            const searchLower = this.searchTerm.toLowerCase();
+            filtered = filtered.filter(widget => 
+                widget.name.toLowerCase().includes(searchLower) ||
+                widget.description.toLowerCase().includes(searchLower) ||
+                widget.category.toLowerCase().includes(searchLower)
+            );
+        }
+        
+        return filtered;
+    }
+    
+    renderWidgets() {
+        const grid = document.getElementById('widgets-grid');
+        const emptyState = document.getElementById('widgets-empty');
+        const filteredWidgets = this.getFilteredWidgets();
+        
+        if (filteredWidgets.length === 0) {
+            grid.style.display = 'none';
+            emptyState.style.display = 'block';
+        } else {
+            grid.style.display = 'grid';
+            emptyState.style.display = 'none';
+            
+            grid.innerHTML = filteredWidgets.map(widget => `
+                <div class="widget-card" data-category="${widget.category}">
+                    <div class="widget-header">
+                        <div class="widget-name">PixelUI.${widget.name}()</div>
+                        <div class="widget-category">${widget.category}</div>
+                    </div>
+                    <div class="widget-description">${widget.description}</div>
+                    <div class="widget-example">
+                        <pre><code class="language-lua">${widget.example}</code></pre>
+                    </div>
                 </div>
-                <div class="widget-description">${widget.description}</div>
-                <div class="widget-example">
-                    <pre><code class="language-lua">${widget.example}</code></pre>
-                </div>
-            </div>
-        `).join('');
+            `).join('');
+        }
         
         // Re-highlight code
         if (window.Prism) {
@@ -615,12 +661,34 @@ class WidgetShowcase {
         document.querySelector(`[data-category="${category}"]`).classList.add('active');
     }
     
+    search(term) {
+        this.searchTerm = term;
+        this.renderWidgets();
+    }
+    
     bindEvents() {
+        // Category filters
         document.querySelectorAll('.category-tab').forEach(tab => {
             tab.addEventListener('click', () => {
                 this.filterByCategory(tab.dataset.category);
             });
         });
+        
+        // Search functionality
+        const searchInput = document.getElementById('widget-search');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                this.search(e.target.value);
+            });
+            
+            // Clear search on escape
+            searchInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    e.target.value = '';
+                    this.search('');
+                }
+            });
+        }
     }
 }
 

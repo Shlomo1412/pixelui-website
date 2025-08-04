@@ -427,25 +427,180 @@
 
     <!-- Widgets Showcase -->
     <section class="section widgets" id="widgets">
+        <div class="widgets-background">
+            <div class="widgets-pattern"></div>
+            <div class="widgets-glow"></div>
+        </div>
+        
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">Widget Library</h2>
+                <div class="section-badge">
+                    <i data-lucide="package"></i>
+                    <span>Comprehensive Library</span>
+                </div>
+                <h2 class="section-title">
+                    Widget <span class="gradient-text">Library</span>
+                </h2>
                 <p class="section-description">
-                    Explore our comprehensive collection of UI widgets
+                    Explore our comprehensive collection of 30+ UI widgets designed for ComputerCraft. 
+                    From simple buttons to complex charts, every widget is optimized for performance and beauty.
                 </p>
             </div>
             
-            <div class="widget-categories">
-                <button class="category-tab active" data-category="all">All Widgets</button>
-                <button class="category-tab" data-category="input">Input</button>
-                <button class="category-tab" data-category="display">Display</button>
-                <button class="category-tab" data-category="layout">Layout</button>
-                <button class="category-tab" data-category="navigation">Navigation</button>
-                <button class="category-tab" data-category="feedback">Feedback</button>
+            <div class="widgets-overview">
+                <div class="widgets-stats">
+                    <div class="widget-stat">
+                        <div class="stat-icon">
+                            <i data-lucide="mouse-pointer-click"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">8</div>
+                            <div class="stat-label">Input Widgets</div>
+                        </div>
+                    </div>
+                    <div class="widget-stat">
+                        <div class="stat-icon">
+                            <i data-lucide="monitor"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">12</div>
+                            <div class="stat-label">Display Widgets</div>
+                        </div>
+                    </div>
+                    <div class="widget-stat">
+                        <div class="stat-icon">
+                            <i data-lucide="layout-grid"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">6</div>
+                            <div class="stat-label">Layout Widgets</div>
+                        </div>
+                    </div>
+                    <div class="widget-stat">
+                        <div class="stat-icon">
+                            <i data-lucide="activity"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">4</div>
+                            <div class="stat-label">Feedback Widgets</div>
+                        </div>
+                    </div>
+                </div>
             </div>
             
-            <div class="widgets-grid" id="widgets-grid">
-                <!-- Widgets will be populated by JavaScript -->
+            <div class="widget-categories">
+                <div class="categories-header">
+                    <h3 class="categories-title">Filter by Category</h3>
+                    <div class="categories-search">
+                        <div class="search-wrapper">
+                            <i data-lucide="search" class="search-icon"></i>
+                            <input type="text" id="widget-search" placeholder="Search widgets..." class="search-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="categories-tabs">
+                    <button class="category-tab active" data-category="all">
+                        <i data-lucide="grid-3x3"></i>
+                        <span>All Widgets</span>
+                        <span class="tab-count">30</span>
+                    </button>
+                    <button class="category-tab" data-category="input">
+                        <i data-lucide="mouse-pointer-click"></i>
+                        <span>Input</span>
+                        <span class="tab-count">8</span>
+                    </button>
+                    <button class="category-tab" data-category="display">
+                        <i data-lucide="monitor"></i>
+                        <span>Display</span>
+                        <span class="tab-count">12</span>
+                    </button>
+                    <button class="category-tab" data-category="layout">
+                        <i data-lucide="layout-grid"></i>
+                        <span>Layout</span>
+                        <span class="tab-count">6</span>
+                    </button>
+                    <button class="category-tab" data-category="navigation">
+                        <i data-lucide="navigation"></i>
+                        <span>Navigation</span>
+                        <span class="tab-count">3</span>
+                    </button>
+                    <button class="category-tab" data-category="feedback">
+                        <i data-lucide="activity"></i>
+                        <span>Feedback</span>
+                        <span class="tab-count">4</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="widgets-showcase">
+                <div class="widgets-grid" id="widgets-grid">
+                    <!-- Widgets will be populated by JavaScript -->
+                </div>
+                
+                <div class="widgets-empty" id="widgets-empty" style="display: none;">
+                    <div class="empty-icon">
+                        <i data-lucide="search-x"></i>
+                    </div>
+                    <h3>No widgets found</h3>
+                    <p>Try adjusting your search criteria or category filter.</p>
+                </div>
+            </div>
+            
+            <div class="widgets-cta">
+                <div class="cta-content">
+                    <h3 class="cta-title">Need More Widgets?</h3>
+                    <p class="cta-description">
+                        Explore our plugin ecosystem for additional widgets created by the community, 
+                        or learn how to create your own custom widgets.
+                    </p>
+                    <div class="cta-actions">
+                        <a href="./plugin-showcase.html" class="btn btn-primary">
+                            <i data-lucide="puzzle"></i>
+                            Browse Plugins
+                        </a>
+                        <a href="./api.html" class="btn btn-secondary">
+                            <i data-lucide="book"></i>
+                            Widget API Docs
+                        </a>
+                    </div>
+                </div>
+                <div class="cta-visual">
+                    <div class="widget-preview-grid">
+                        <div class="preview-widget button-preview">
+                            <div class="widget-frame">
+                                <div class="widget-button">Click Me</div>
+                            </div>
+                        </div>
+                        <div class="preview-widget slider-preview">
+                            <div class="widget-frame">
+                                <div class="widget-slider">
+                                    <div class="slider-track">
+                                        <div class="slider-fill"></div>
+                                        <div class="slider-thumb"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="preview-widget chart-preview">
+                            <div class="widget-frame">
+                                <div class="widget-chart">
+                                    <div class="chart-bar" style="height: 60%"></div>
+                                    <div class="chart-bar" style="height: 80%"></div>
+                                    <div class="chart-bar" style="height: 45%"></div>
+                                    <div class="chart-bar" style="height: 90%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="preview-widget input-preview">
+                            <div class="widget-frame">
+                                <div class="widget-input">
+                                    <div class="input-field">Enter text...</div>
+                                    <div class="input-cursor"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
