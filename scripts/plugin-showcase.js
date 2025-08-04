@@ -11,8 +11,8 @@ class PluginShowcase {
         this.searchQuery = '';
         this.isLoading = false;
         
-        this.apiBaseUrl = 'https://api.github.com/repos/Shlomo1412/PixelUI';
-        this.rawBaseUrl = 'https://raw.githubusercontent.com/Shlomo1412/PixelUI/main';
+        this.apiBaseUrl = 'https://api.github.com/repos/Shlomo1412/PixelUI-plugins';
+        this.rawBaseUrl = 'https://raw.githubusercontent.com/Shlomo1412/PixelUI-plugins/main';
         
         this.initializeElements();
         this.setupEventListeners();
@@ -71,29 +71,33 @@ class PluginShowcase {
         this.showLoading();
         
         try {
-            // First, get the plugins directory structure
-            const pluginsResponse = await fetch(`${this.apiBaseUrl}/contents/plugins`);
+            // Get the root directory of the plugins repository
+            const repoResponse = await fetch(`${this.apiBaseUrl}/contents`);
             
-            if (!pluginsResponse.ok) {
-                throw new Error(`Failed to fetch plugins directory: ${pluginsResponse.status}`);
+            if (!repoResponse.ok) {
+                throw new Error(`Failed to fetch repository contents: ${repoResponse.status}`);
             }
             
-            const pluginsData = await pluginsResponse.json();
+            const repoData = await repoResponse.json();
             
-            // Filter for directories (plugin folders)
-            const pluginDirs = pluginsData.filter(item => item.type === 'dir');
+            // Filter for .lua files (plugin files)
+            const pluginFiles = repoData.filter(item => 
+                item.type === 'file' && 
+                item.name.endsWith('.lua') && 
+                !item.name.startsWith('.')
+            );
             
-            if (pluginDirs.length === 0) {
+            if (pluginFiles.length === 0) {
                 this.showEmptyRepository();
                 return;
             }
             
             // Load each plugin's metadata
-            const pluginPromises = pluginDirs.map(async (dir) => {
+            const pluginPromises = pluginFiles.map(async (file) => {
                 try {
-                    return await this.loadPluginMetadata(dir.name);
+                    return await this.loadPluginMetadata(file.name);
                 } catch (error) {
-                    console.warn(`Failed to load plugin ${dir.name}:`, error);
+                    console.warn(`Failed to load plugin ${file.name}:`, error);
                     return null;
                 }
             });
@@ -119,56 +123,26 @@ class PluginShowcase {
         }
     }
     
-    async loadPluginMetadata(pluginName) {
+    async loadPluginMetadata(fileName) {
         try {
-            // Try to load plugin.lua or plugin.json
-            let metadata = null;
-            let pluginCode = null;
+            // Load the plugin file directly
+            const luaResponse = await fetch(`${this.rawBaseUrl}/${fileName}`);
             
-            // First try plugin.json for metadata
-            try {
-                const jsonResponse = await fetch(`${this.rawBaseUrl}/plugins/${pluginName}/plugin.json`);
-                if (jsonResponse.ok) {
-                    metadata = await jsonResponse.json();
-                }
-            } catch (e) {
-                // Ignore, will try Lua file
+            if (!luaResponse.ok) {
+                throw new Error(`Failed to fetch plugin file: ${luaResponse.status}`);
             }
             
-            // Load the main plugin file
-            try {
-                const luaResponse = await fetch(`${this.rawBaseUrl}/plugins/${pluginName}/plugin.lua`);
-                if (luaResponse.ok) {
-                    pluginCode = await luaResponse.text();
-                }
-            } catch (e) {
-                // Try alternative names
-                const alternatives = [`${pluginName}.lua`, 'init.lua', 'main.lua'];
-                for (const alt of alternatives) {
-                    try {
-                        const altResponse = await fetch(`${this.rawBaseUrl}/plugins/${pluginName}/${alt}`);
-                        if (altResponse.ok) {
-                            pluginCode = await altResponse.text();
-                            break;
-                        }
-                    } catch (e) {
-                        continue;
-                    }
-                }
-            }
+            const pluginCode = await luaResponse.text();
             
-            if (!pluginCode && !metadata) {
-                throw new Error('No plugin file found');
-            }
+            // Parse metadata from Lua comments
+            const metadata = this.parsePluginMetadata(pluginCode);
             
-            // Parse metadata from Lua comments if no JSON metadata
-            if (!metadata && pluginCode) {
-                metadata = this.parsePluginMetadata(pluginCode);
-            }
+            // Extract plugin name from filename (remove .lua extension)
+            const pluginId = fileName.replace('.lua', '');
             
             // Set defaults
-            metadata = {
-                name: pluginName,
+            const finalMetadata = {
+                name: pluginId,
                 version: '1.0.0',
                 type: 'widget',
                 description: 'A PixelUI plugin',
@@ -179,24 +153,34 @@ class PluginShowcase {
             };
             
             return {
-                ...metadata,
-                id: pluginName,
+                ...finalMetadata,
+                id: pluginId,
+                fileName: fileName,
                 code: pluginCode,
-                url: `https://github.com/Shlomo1412/PixelUI/tree/main/plugins/${pluginName}`,
-                downloadUrl: `${this.rawBaseUrl}/plugins/${pluginName}/plugin.lua`
+                url: `https://github.com/Shlomo1412/PixelUI-plugins/blob/main/${fileName}`,
+                downloadUrl: `${this.rawBaseUrl}/${fileName}`
             };
             
         } catch (error) {
-            throw new Error(`Failed to load plugin ${pluginName}: ${error.message}`);
+            throw new Error(`Failed to load plugin ${fileName}: ${error.message}`);
         }
     }
     
     parsePluginMetadata(code) {
         const metadata = {};
         const lines = code.split('\n');
+        let currentDescription = '';
+        let isMultiLineDescription = false;
         
-        for (const line of lines) {
-            const commentMatch = line.match(/^--\s*@(\w+)\s+(.+)$/);
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i].trim();
+            
+            // Stop parsing after first non-comment section
+            if (line && !line.startsWith('--')) {
+                break;
+            }
+            
+            const commentMatch = line.match(/^--\s*@(\w+)\s+(.*)$/);
             if (commentMatch) {
                 const [, key, value] = commentMatch;
                 switch (key.toLowerCase()) {
@@ -207,7 +191,26 @@ class PluginShowcase {
                         metadata.version = value.trim();
                         break;
                     case 'description':
-                        metadata.description = value.trim();
+                        currentDescription = value.trim();
+                        isMultiLineDescription = true;
+                        // Check if description continues on next lines
+                        let j = i + 1;
+                        while (j < lines.length) {
+                            const nextLine = lines[j].trim();
+                            if (nextLine.startsWith('-- ') && !nextLine.includes('@')) {
+                                // Continuation of description
+                                const descLine = nextLine.replace(/^--\s*/, '');
+                                if (descLine) {
+                                    currentDescription += ' ' + descLine;
+                                }
+                                j++;
+                            } else {
+                                break;
+                            }
+                        }
+                        metadata.description = currentDescription.trim();
+                        isMultiLineDescription = false;
+                        i = j - 1; // Skip the lines we've already processed
                         break;
                     case 'author':
                         metadata.author = value.trim();
@@ -226,11 +229,6 @@ class PluginShowcase {
                         metadata.dependencies.push(...value.split(',').map(d => d.trim()));
                         break;
                 }
-            }
-            
-            // Stop parsing after first non-comment section
-            if (line.trim() && !line.trim().startsWith('--')) {
-                break;
             }
         }
         
