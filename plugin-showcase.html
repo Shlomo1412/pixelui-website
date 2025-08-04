@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plugin Showcase - PixelUI Framework</title>
+    <meta name="description" content="Discover and explore community-created plugins for the PixelUI framework. Browse widgets, themes, and extensions.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="./styles/main.css">
+    <link rel="stylesheet" href="./styles/plugin-showcase.css">
+    
+    <!-- Prism.js for code highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="./assets/logo.svg" alt="PixelUI" class="nav-logo">
+                <span class="nav-title">PixelUI</span>
+                <span class="nav-version">v1.0</span>
+            </div>
+            
+            <div class="nav-links">
+                <a href="./index.html" class="nav-link">Home</a>
+                <a href="./index.html#features" class="nav-link">Features</a>
+                <a href="./index.html#widgets" class="nav-link">Widgets</a>
+                <a href="./api.html" class="nav-link">Docs</a>
+                <a href="./plugins.html" class="nav-link">Plugin Guide</a>
+                <a href="./plugin-showcase.html" class="nav-link active">Plugin Gallery</a>
+            </div>
+            
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                    <i data-lucide="sun" class="theme-icon light-icon"></i>
+                    <i data-lucide="moon" class="theme-icon dark-icon"></i>
+                </button>
+                <a href="https://github.com/Shlomo1412/PixelUI" class="nav-github" target="_blank" rel="noopener">
+                    <i data-lucide="github"></i>
+                </a>
+                <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background">
+            <div class="hero-grid"></div>
+            <div class="hero-glow"></div>
+        </div>
+        
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i data-lucide="puzzle"></i>
+                    <span>Community Plugins</span>
+                </div>
+                
+                <h1 class="hero-title">
+                    Plugin <span class="gradient-text">Showcase</span>
+                </h1>
+                
+                <p class="hero-description">
+                    Discover amazing plugins created by the PixelUI community. Extend your applications 
+                    with custom widgets, themes, and functionality.
+                </p>
+                
+                <div class="hero-actions">
+                    <a href="#plugins" class="btn btn-primary">
+                        <i data-lucide="search"></i>
+                        Browse Plugins
+                    </a>
+                    <a href="./plugins.html" class="btn btn-secondary">
+                        <i data-lucide="book"></i>
+                        Development Guide
+                    </a>
+                </div>
+                
+                <div class="hero-stats" id="plugin-stats">
+                    <div class="stat">
+                        <div class="stat-number" id="total-plugins">-</div>
+                        <div class="stat-label">Total Plugins</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number" id="widget-plugins">-</div>
+                        <div class="stat-label">Widget Plugins</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number" id="theme-plugins">-</div>
+                        <div class="stat-label">Theme Plugins</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Loading State -->
+    <div class="loading-section" id="loading-section">
+        <div class="container">
+            <div class="loading-content">
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                </div>
+                <h3>Loading Plugins...</h3>
+                <p>Fetching the latest plugins from the repository</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error State -->
+    <div class="error-section" id="error-section" style="display: none;">
+        <div class="container">
+            <div class="error-content">
+                <div class="error-icon">
+                    <i data-lucide="wifi-off"></i>
+                </div>
+                <h3>Unable to Load Plugins</h3>
+                <p id="error-message">There was an error loading plugins from the repository. Please try again later.</p>
+                <button class="btn btn-primary" onclick="window.location.reload()">
+                    <i data-lucide="refresh-cw"></i>
+                    Retry
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Plugins Section -->
+    <section class="section plugins-section" id="plugins" style="display: none;">
+        <div class="container">
+            <!-- Filters -->
+            <div class="plugin-filters">
+                <div class="filter-group">
+                    <label class="filter-label">Filter by type:</label>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="all">All Plugins</button>
+                        <button class="filter-btn" data-filter="widget">Widgets</button>
+                        <button class="filter-btn" data-filter="theme">Themes</button>
+                        <button class="filter-btn" data-filter="hook">Hooks</button>
+                        <button class="filter-btn" data-filter="api">API Extensions</button>
+                    </div>
+                </div>
+                
+                <div class="search-group">
+                    <div class="search-input-wrapper">
+                        <i data-lucide="search" class="search-icon"></i>
+                        <input type="text" id="plugin-search" class="search-input" placeholder="Search plugins...">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Plugin Grid -->
+            <div class="plugins-grid" id="plugins-grid">
+                <!-- Plugins will be dynamically loaded here -->
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state" id="empty-state" style="display: none;">
+                <div class="empty-icon">
+                    <i data-lucide="search"></i>
+                </div>
+                <h3>No plugins found</h3>
+                <p>Try adjusting your search criteria or filters.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Plugin Detail Modal -->
+    <div class="modal-overlay" id="plugin-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modal-title">Plugin Details</h2>
+                <button class="modal-close" id="modal-close">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Plugin details will be dynamically loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Contribution Section -->
+    <section class="section contribution-section">
+        <div class="container">
+            <div class="contribution-card">
+                <div class="contribution-content">
+                    <h2 class="contribution-title">Share Your Plugin</h2>
+                    <p class="contribution-description">
+                        Created an amazing plugin for PixelUI? Share it with the community! 
+                        Submit your plugin to the repository and help other developers build better UIs.
+                    </p>
+                    <div class="contribution-steps">
+                        <div class="step">
+                            <div class="step-icon">
+                                <i data-lucide="code"></i>
+                            </div>
+                            <div class="step-content">
+                                <h4>Create Your Plugin</h4>
+                                <p>Follow our plugin development guide to create your custom widget, theme, or extension.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-icon">
+                                <i data-lucide="git-pull-request"></i>
+                            </div>
+                            <div class="step-content">
+                                <h4>Submit Pull Request</h4>
+                                <p>Add your plugin to the plugins directory and submit a pull request to the repository.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-icon">
+                                <i data-lucide="users"></i>
+                            </div>
+                            <div class="step-content">
+                                <h4>Share with Community</h4>
+                                <p>Once approved, your plugin will be available for everyone to discover and use.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contribution-actions">
+                        <a href="./plugins.html" class="btn btn-primary">
+                            <i data-lucide="book"></i>
+                            Development Guide
+                        </a>
+                        <a href="https://github.com/Shlomo1412/PixelUI/tree/main/plugins" class="btn btn-secondary" target="_blank">
+                            <i data-lucide="folder"></i>
+                            Browse Plugin Directory
+                        </a>
+                        <a href="https://github.com/Shlomo1412/PixelUI/compare" class="btn btn-accent" target="_blank">
+                            <i data-lucide="git-pull-request"></i>
+                            Submit Plugin
+                        </a>
+                    </div>
+                </div>
+                <div class="contribution-visual">
+                    <div class="plugin-flow">
+                        <div class="flow-step">
+                            <div class="flow-icon">
+                                <i data-lucide="lightbulb"></i>
+                            </div>
+                            <span>Idea</span>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="flow-icon">
+                                <i data-lucide="code"></i>
+                            </div>
+                            <span>Develop</span>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="flow-icon">
+                                <i data-lucide="share"></i>
+                            </div>
+                            <span>Share</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-brand">
+                        <img src="./assets/logo.svg" alt="PixelUI" class="footer-logo">
+                        <span class="footer-title">PixelUI</span>
+                    </div>
+                    <p class="footer-description">
+                        The most comprehensive UI framework for ComputerCraft/CC: Tweaked.
+                        Build beautiful, interactive applications with ease.
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 class="footer-heading">Documentation</h3>
+                    <ul class="footer-links">
+                        <li><a href="./index.html#getting-started">Getting Started</a></li>
+                        <li><a href="./index.html#widgets">Widget Reference</a></li>
+                        <li><a href="./api.html">API Documentation</a></li>
+                        <li><a href="./plugins.html">Plugin Guide</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 class="footer-heading">Community</h3>
+                    <ul class="footer-links">
+                        <li><a href="https://github.com/Shlomo1412/PixelUI/issues" target="_blank">Report Issues</a></li>
+                        <li><a href="https://github.com/Shlomo1412/PixelUI/discussions" target="_blank">Discussions</a></li>
+                        <li><a href="https://github.com/Shlomo1412/PixelUI/blob/main/CONTRIBUTING.md" target="_blank">Contributing</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 class="footer-heading">Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="https://tweaked.cc/" target="_blank">CC: Tweaked</a></li>
+                        <li><a href="https://computercraft.info/" target="_blank">ComputerCraft</a></li>
+                        <li><a href="https://github.com/Shlomo1412/PixelUI/releases" target="_blank">Releases</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    © 2024 PixelUI Framework. Open source under MIT License.
+                </p>
+                <p class="footer-credits">
+                    Made with ❤️ for the ComputerCraft community
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="./scripts/plugin-showcase.js"></script>
+    <script src="./scripts/main.js"></script>
+</body>
+</html>
