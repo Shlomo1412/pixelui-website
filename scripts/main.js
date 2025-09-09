@@ -761,7 +761,7 @@ class SmoothScroll {
         this.currentSectionIndex = 0;
         this.isAutoScrolling = false;
         this.scrollThreshold = 0.9; // 90% of section height
-        this.autoAdvanceEnabled = localStorage.getItem('autoAdvanceEnabled') !== 'false'; // Default to true
+        this.autoAdvanceEnabled = false; // Disabled auto-advance by default
         this.init();
     }
     
@@ -1288,7 +1288,7 @@ document.addEventListener('DOMContentLoaded', function() {
     new ThemeManager();
     new WidgetShowcase();
     new DemoAnimation();
-    window.smoothScrollInstance = new SmoothScroll(); // Store reference for utility functions
+    // Disabled auto-scrolling: window.smoothScrollInstance = new SmoothScroll(); // Store reference for utility functions
     new NavbarScroll();
     new MobileMenu();
     new ScrollAnimations();
