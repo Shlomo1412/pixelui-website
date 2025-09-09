@@ -87,14 +87,6 @@ PixelUI.run({
     onKey = function(key)
         if key == keys.q then
             return false -- Exit the loop
-        elseif key == keys.r then
-            print("Refreshing...")
-            return true -- Continue loop
-        end
-    end,
-    onEvent = function(event, ...)
-        if event == "monitor_touch" then
-            print("Monitor touched!")
         end
     end,
     onQuit = function()
@@ -3092,6 +3084,99 @@ local exportBtn = button.new(layerPanel, 62, 3, 5, 2, {
         notes: ['Canvas supports multiple layers for complex artwork', 'Pixel-perfect mode ensures crisp pixel art rendering', 'Undo/redo functionality helps with editing workflow', 'Export functionality allows saving artwork in various formats']
     },
     
+    image: {
+        name: 'Image',
+        category: 'Display Widgets',
+        description: 'A widget for displaying images in NFP (ComputerCraft native) and BIMG (binary image) formats with scaling and error handling.',
+        syntax: 'image.new(parent, x, y, width, height, options)',
+        properties: [
+            { name: 'x', type: 'number', description: 'X coordinate position' },
+            { name: 'y', type: 'number', description: 'Y coordinate position' },
+            { name: 'width', type: 'number', description: 'Width of the image widget' },
+            { name: 'height', type: 'number', description: 'Height of the image widget' },
+            { name: 'path', type: 'string', description: 'Path to the image file (NFP or BIMG format)' },
+            { name: 'scale', type: 'number', description: 'Scale factor for the image (1.0 = original size)' },
+            { name: 'aspectRatio', type: 'string', description: 'How to handle aspect ratio: "fit", "fill", "stretch"' },
+            { name: 'backgroundColor', type: 'color', description: 'Background color behind the image' },
+            { name: 'borderColor', type: 'color', description: 'Border color around the image' },
+            { name: 'border', type: 'boolean', description: 'Whether to show border around image' },
+            { name: 'placeholder', type: 'string', description: 'Text to show when no image is loaded' },
+            { name: 'errorText', type: 'string', description: 'Text to show when image fails to load' },
+            { name: 'imageData', type: 'table', description: 'Loaded image data (read-only)' },
+            { name: 'loadError', type: 'string', description: 'Error message if image failed to load (read-only)' },
+            { name: 'enabled', type: 'boolean', description: 'Whether the image widget is interactive' },
+            { name: 'visible', type: 'boolean', description: 'Whether the image widget is visible' }
+        ],
+        methods: [
+            { name: 'setPath(path)', params: 'string', description: 'Sets the image file path and loads the image' },
+            { name: 'getPath()', returns: 'string', description: 'Gets the current image file path' },
+            { name: 'reload()', description: 'Reloads the current image from disk' },
+            { name: 'hasImage()', returns: 'boolean', description: 'Checks if an image is successfully loaded' },
+            { name: 'hasError()', returns: 'boolean', description: 'Checks if there was an error loading the image' },
+            { name: 'getError()', returns: 'string', description: 'Gets the error message if image failed to load' },
+            { name: 'getImageSize()', returns: 'number, number', description: 'Gets the original image dimensions' },
+            { name: 'setScale(scale)', params: 'number', description: 'Sets the image scale factor' },
+            { name: 'getScale()', returns: 'number', description: 'Gets the current scale factor' },
+            { name: 'setAspectRatio(mode)', params: 'string', description: 'Sets aspect ratio handling mode' },
+            { name: 'clear()', description: 'Clears the current image' },
+            { name: 'setEnabled(enabled)', params: 'boolean', description: 'Enables or disables the image widget' },
+            { name: 'setVisible(visible)', params: 'boolean', description: 'Shows or hides the image widget' }
+        ],
+        events: [
+            { name: 'onImageLoad', params: 'self, imageData', description: 'Fired when image is successfully loaded' },
+            { name: 'onImageError', params: 'self, error', description: 'Fired when image fails to load' },
+            { name: 'onClick', params: 'self, x, y', description: 'Fired when image is clicked' },
+            { name: 'onResize', params: 'self, width, height', description: 'Fired when image widget is resized' }
+        ],
+        examples: {
+            basic: `-- Simple image display
+local logoImage = image.new(parent, 10, 5, 20, 10, {
+    path = "assets/logo.nfp",
+    scale = 1.0,
+    aspectRatio = "fit",
+    border = true,
+    borderColor = colors.gray
+})
+
+-- Handle image events
+logoImage.onImageLoad = function(self, imageData)
+    print("Image loaded successfully: " .. imageData.width .. "x" .. imageData.height)
+end
+
+logoImage.onImageError = function(self, error)
+    print("Failed to load image: " .. error)
+end`,
+            advanced: `-- Dynamic image gallery
+local imageGallery = container.new(parent, 5, 5, 40, 15)
+local currentImageIndex = 1
+local imageFiles = {"img1.nfp", "img2.nfp", "img3.nfp"}
+
+local galleryImage = image.new(imageGallery, 2, 2, 30, 10, {
+    path = imageFiles[currentImageIndex],
+    aspectRatio = "fit",
+    backgroundColor = colors.black,
+    border = true
+})
+
+local prevButton = button.new(imageGallery, 2, 13, 8, 1, {
+    text = "Previous",
+    onClick = function()
+        currentImageIndex = math.max(1, currentImageIndex - 1)
+        galleryImage:setPath(imageFiles[currentImageIndex])
+    end
+})
+
+local nextButton = button.new(imageGallery, 25, 13, 8, 1, {
+    text = "Next",
+    onClick = function()
+        currentImageIndex = math.min(#imageFiles, currentImageIndex + 1)
+        galleryImage:setPath(imageFiles[currentImageIndex])
+    end
+})`
+        },
+        notes: ['Supports both NFP (text-based) and BIMG (binary) image formats', 'Auto-sizing adjusts widget dimensions to image size if not specified', 'Error handling displays user-friendly messages for missing or invalid files', 'Scale factor allows zooming in/out while maintaining aspect ratio', 'Border and background options provide visual separation from surrounding content']
+    },
+    
     loadingIndicator: {
         name: 'LoadingIndicator',
         category: 'Feedback Widgets',
@@ -5633,7 +5718,7 @@ local fileBreadcrumb = breadcrumb.new(screen, 5, 3, 70, 3, {
     separator = " / ",
     clickable = true,
     showHome = true,
-    homeText = "🏠",
+    homeText = "home",
     backgroundColor = colors.lightGray,
     textColor = colors.black,
     linkColor = colors.blue,
@@ -7444,7 +7529,8 @@ class APIDocumentationManager {
     }
 
     renderWidgetDocumentation(widget) {
-        const hasAdvancedExample = widget.example && widget.example.advanced;
+        const exampleObj = widget.example || widget.examples;
+        const hasAdvancedExample = exampleObj && exampleObj.advanced;
         const widgetTitle = widget.title || widget.name;
         
         return `
