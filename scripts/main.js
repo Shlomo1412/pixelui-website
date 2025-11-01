@@ -1,8 +1,13 @@
 // PixelUI Documentation JavaScript
 
-// Initialize Lucide icons
+// Initialize Lucide icons and archived notice
 document.addEventListener('DOMContentLoaded', function() {
     lucide.createIcons();
+    
+    // Initialize archived notice
+    if (typeof PixelUIDemo !== 'undefined' && PixelUIDemo.initArchivedNotice) {
+        PixelUIDemo.initArchivedNotice();
+    }
 });
 
 // Theme management with enhanced toggle
@@ -1468,5 +1473,39 @@ window.PixelUIDemo = {
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
+    },
+    
+    // Archived Notice Management
+    initArchivedNotice: function() {
+        const notice = document.getElementById('archived-notice');
+        const closeButton = document.getElementById('archived-close');
+        
+        if (!notice || !closeButton) return;
+        
+        // Check if user has previously dismissed the notice
+        const isDismissed = localStorage.getItem('pixelui-archived-dismissed') === 'true';
+        
+        if (isDismissed) {
+            notice.classList.add('hidden');
+        } else {
+            // Auto-show after a brief delay for dramatic effect
+            setTimeout(() => {
+                notice.style.display = 'block';
+            }, 500);
+        }
+        
+        // Handle close button
+        closeButton.addEventListener('click', () => {
+            notice.classList.add('hidden');
+            localStorage.setItem('pixelui-archived-dismissed', 'true');
+        });
+        
+        // Add keyboard accessibility
+        closeButton.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                closeButton.click();
+            }
+        });
     }
 };
